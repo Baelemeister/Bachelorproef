@@ -243,11 +243,11 @@ Door een port scan uit te voeren op een netwerk kan je zien welke poorten er ope
 Er zijn verschillende soorten port scans en elk van deze hebben hun eigen accenten. 
 \begin{itemize}
 	\item Vanilla = Ook wel een "full scan" genoemd. Hierbij wordt er geprobeerd om met alle 65 535 poorten verbinding te maken. Er wordt een SYN flag (vraag om te verbinden) verzonden en na het ontvangen van een SYN-ACK respons wordt er een ACK flag teruggestuurd. Dit staat ook wel bekend als een TCP handshake. Deze soort scans zijn zeer nauwkeurig maar zijn makkelijk detecteerbaar omdat deze soort verbindingen altijd worden gelogged door de firewall.
-	\item Fragmented Packets = De scanner zend fragmenten van pakketten uit die door een simpele packet filter geraken in een firewall.
+	\item Fragmented Packets = De scanner zend fragmenten van pakketten uit die door een simpele packet filter geraken in een firewall. Dit doen ze door de TCP header te splitsen in verschillende IP-fragmenten zodat een packet filter firewall geen complete TCP header kunnen zien die aan hun filterregels voldoen. Er zijn firewalls die alle IP-fragmenten bekijken, maar veel netwerken kunnen hun het verlies in performance niet veroorloven.
 	\item Strobe = Is een iets specifiekere scan die enkel kijkt naar bekende services die kunnen geexploid worden.
 	\item Stealth scan = De scanner blokkeert de gescande computer om de port scan activiteiten te onthouden
-	\item UDP = Er wordt gekeken naar open UDP-poorten.
-	\item FTP Bounce = Scanner gaat door een FTP-server om de bron van de scan te verbergen.
+	\item UDP = Bij een port scan wordt er meestal gekeken naar TCP-poorten. UDP-poorten reageren op een andere manier. Om open UDP-poorten te vinden wordt er een leeg UDP datagram verzonden. Als de poort luistert dan moet de service een foutbericht terug moeten sturen, als de poort gesloten is dan kijg je meestal dit bericht van het systeem "ICMP Port Unreachable"
+	\item FTP Bounce = Scanner gaat door een FTP-server om de bron van de scan te verbergen. Deze techniek is zeer moeilijk om tegen te houden en op te sporen, maar het is ook zeer traag.
 \end{itemize}
 
 \chapter{Port scanning als bedreiging}
@@ -268,7 +268,7 @@ Er zijn verschillende soorten port scans en elk van deze hebben hun eigen accent
 
 
 \bibliographystyle{apa}
-\bibliography{tin-bachproef}
+\bibliography{bibliografie BP}
 
 %%---------- Back matter -------------------------------------------------
 
