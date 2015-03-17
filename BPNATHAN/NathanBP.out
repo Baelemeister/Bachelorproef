@@ -1,9 +1,15 @@
-\BOOKMARK [0][-]{chapter.1}{Inleidingk}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Inleiding}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Probleemstelling en Onderzoeksvragen}{chapter.1}% 2
 \BOOKMARK [2][-]{subsection.1.1.1}{Hoe kan port scanning de beveiliging van je eigen netwerk verbeteren en wat zijn de gevaren ervan?}{section.1.1}% 3
-\BOOKMARK [0][-]{chapter.2}{Methodologie}{}% 4
-\BOOKMARK [1][-]{section.2.1}{Port scanning}{chapter.2}% 5
-\BOOKMARK [2][-]{subsection.2.1.1}{Onderzoek}{section.2.1}% 6
-\BOOKMARK [2][-]{subsection.2.1.2}{Opzetten testomgeving}{section.2.1}% 7
-\BOOKMARK [0][-]{chapter.3}{Corpus}{}% 8
-\BOOKMARK [0][-]{chapter.4}{Conclusie}{}% 9
+\BOOKMARK [2][-]{subsection.1.1.2}{Wat is de beste en effici\353nste manier om jouw netwerk te beschermen tegen port scanning?}{section.1.1}% 4
+\BOOKMARK [0][-]{chapter.2}{Methodologie}{}% 5
+\BOOKMARK [1][-]{section.2.1}{Port scanning}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.1.1}{Onderzoek}{section.2.1}% 7
+\BOOKMARK [2][-]{subsection.2.1.2}{Opzetten testomgeving}{section.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.1.3}{}{section.2.1}% 9
+\BOOKMARK [0][-]{chapter.3}{Port scanning interpreteren}{}% 10
+\BOOKMARK [1][-]{section.3.1}{Wat is port scanning?}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.2}{Soorten port scans MEER INFO ZOEKEN}{chapter.3}% 12
+\BOOKMARK [0][-]{chapter.4}{Port scanning als bedreiging}{}% 13
+\BOOKMARK [0][-]{chapter.5}{Port scanning als hulpmiddel}{}% 14
+\BOOKMARK [0][-]{chapter.6}{Conclusie}{}% 15
