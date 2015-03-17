@@ -77,7 +77,7 @@
 \newcommand{\instelling}{---}
 
 % De titel van het rapport/bachelorproef
-\newcommand{\titel}{De efficiëntste manier om een Windows Server 2012 R2 netwerk te beveiligen tegen interne en externe bedreigingen in het bedrijfsleven}
+\newcommand{\titel}{Beveiliging van een Windows Server 2012 R2 webserver met ASP.NET applicatie...............}
 
 % Datum van indienen
 \newcommand{\datum}{29 mei 2015}
@@ -173,13 +173,13 @@ Mijn grootste doelstelling is om een overzicht te voorzien van welke soorten maa
 Om dit probleem te onderzoeken heb ik op voorhand enkele onderzoeksvragen vastgesteld. Wat zijn de bekendste soorten van externe en interne bedreigingen en hoe worden deze het efficiëntst opgelost? Hoe word je router en switch zo optimaal mogelijk beveiligd? Hoe wordt de server zo goed mogelijk beveiligd? Wat zijn de voor -en nadelen van bepaalde beveiligingstechnieken? \newline 
 
 
-\textbf{- Wat zijn de bekendste soorten van externe bedreigingen en hoe los je deze het efficiëntst op? - Wat zijn de bekendste soorten van interne bedreigingen en hoe los je deze het efficiëntst op? - Is er in het huidige bedrijfsleven (kleine, middelgrote en grote ondernemingen) nood/budget aan een stevige beveiliging. - Hoe beveilig je de router en switch zo optimaal mogelijk? - Hoe beveilig je de server en werkstations zo optimaal mogelijk? - Wat zijn de voor -en nadelen van bepaalde beveiligingstechnieken? .... 
+\textbf{Zijn de 'best practices' voldoende als beveiliging tegen een externe of interne aanval? Wat is de beste manier om als administrator sporen terug te vinden van een aanval?
 } (KAN NOG VERANDEREN)
 \end{abstract}
 
 \chapter*{Voorwoord}
 \label{ch:voorwoord}
-Deze scriptie zou niet to stand gekomen zijn zonder de hulp van mijn stagementer en co-promotor Selami Top. Ik mocht gebruik maken van zijn huidig netwerk en ik mocht enkele zaken uitproberen op zijn nieuw netwerk. Hierdoor kon ik de zaken die ik onderzocht en opgezocht had uit proberen in een echte omgeving en kreeg ik een betere kijk op een realistische beveiliging. Verder wil ik ook mijn promotor Bert Van Vreckem bedanken die mij heeft geholpen om deze bachelorproef tot stand te brengen. (NOG WAT TOEVOEGEN). Tot slot wil ik alle auteurs bedanken van de lectuur die ik heb gebruikt om deze scriptie te maken (LIJST VAN ALLE AUTEURS?)
+Deze scriptie zou niet to stand gekomen zijn zonder de hulp van mijn stagementor en co-promotor Selami Top. Ik mocht gebruik maken van zijn huidig netwerk en ik mocht enkele zaken uitproberen op zijn nieuw netwerk. Hierdoor kon ik de zaken die ik onderzocht en opgezocht had uit proberen in een echte omgeving en kreeg ik een betere kijk op een realistische beveiliging. Verder wil ik ook mijn promotor Bert Van Vreckem bedanken die mij heeft geholpen om deze bachelorproef tot stand te brengen. Zijn tips en technische kennis waren een enorme hulp om dit resultaat te bekomen. (NOG WAT TOEVOEGEN). Tot slot wil ik alle auteurs bedanken van de lectuur die ik heb gebruikt om deze scriptie te maken (LIJST VAN ALLE AUTEURS?)
 % TODO: Vergeet ook niet te bedankten wie je geholpen/gesteund/... heeft
 
 \tableofcontents
@@ -205,11 +205,11 @@ Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backsla
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
 % onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
-\subsection{Hoe kan port scanning de beveiliging van je eigen netwerk verbeteren en wat zijn de gevaren ervan?}
+\subsection{Zijn de 'best practices' voldoende als beveiliging tegen een externe of interne aanval?}
 
 Port scanning is een bekende manier om iemand zijn netwerk in kaart te brengen en te kijken naar een manier hoe je er binnen kan geraken. Port scanning is kan jouw netwerk in gevaar brengen, maar kan er ook voor zorgen dat jouw netwerk beter beveiligd is als je weet hoe je het moet gebruiken en hoe je jezelf ertegen moet beschermen. De vraag die hier wordt gesteld is hoe dat je port scanning als ethische hacker kan gebruiken om jouw netwerk beter te beveiligen tegen mensen die port scannen gebruiken voor niet zo ethische doelstellingen.
 
-\subsection{Wat is de beste en efficiënste manier om jouw netwerk te beschermen tegen port scanning?}
+\subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
 
 \chapter{Methodologie}
 \label{ch:methodologie}
@@ -219,42 +219,28 @@ Port scanning is een bekende manier om iemand zijn netwerk in kaart te brengen e
 % op deze manier te werk gegaan bent. Je moet kunnen aantonen dat je de best
 % mogelijke manier toegepast hebt om een antwoord te vinden op de
 % onderzoeksvraag.
-\section{Port scanning}
+\section{Voorbereiding}
 \subsection{Onderzoek}
-Om een goed antwoord te kunnen geven op deze onderzoeksvraag moet ik eerst een goede kennis hebben over het onderwerp. Dit heb ik gedaan door het verzamelen van lectuur over hoe je moet ethisch hacken en wat port scanning precies is. Om de gevaren van port scanning te kennen, moet ik eerst weten hoe een port scan werkt en hoe ik de output ervan kan interpreteren. 
+Om een goed antwoord te kunnen geven op deze onderzoeksvraag moet ik eerst een goede kennis hebben over het onderwerp. Dit heb ik gedaan door het verzamelen van lectuur over de volgende zaken:
+\begin{itemize}
+	\item Ethisch hacken
+	\item Beveiligen van Windows Server 2012 R2-netwerk best practices
+\end{itemize}
+Deze lectuur gaf mij een degelijke basis om mijn onderzoek te starten. In de bibliografie is te zien welke lectuur ik hier specifiek voor heb gebruikt. Natuurlijk kan je met te lezen niet alles leren dus heb ik ook enkele zaken moeten oefenen. Ik ben begonnen bij het begin en heb eerst een oude Windows XP-machine zonder enkele patch en firewall proberen te hacken. In theorie is dit niet moeilijk, maar je moet ergens beginnen. Ik heb mijn Kali-machine opgestart en heb eerst een port scan uitgevoerd om te kijken welke poorten er open waren. Nadat ik dit wist heb ik gezocht naar een exploit, heb ik deze gevonden en ben ik via deze exploit binnen geraakt in de opdrachtprompt van de Windows XP-machine met administrator rechten. Door deze kleine oefening leerde ik de methodiek die wordt gebruikt om in werkstations en servers binnen te dringen. \newline \newline
+
+Natuurlijk was voorgaande oefening enorm simpel, maar deze was dan ook voor de techniek onder de knie te krijgen. Nu is het tijd voor een iets moeilijkere oefening.
 
 \subsection{Opzetten testomgeving}
-Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{HARDO}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik al subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Daarna ben ik naar de website van nmap gegaan om de nmap-tools te downloaden. Deze zijn zeer belangrijk om zelf aan port scanning te doen. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. \newline
+Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{HARDO}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik al subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. \newline
 
-Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe te voegen aan het domein. Ik heb 3 Windows 8.1-hosts opgezet met de IP-adressen 192.168.1.31 - 192.168.1.32 - 192.168.1.33 en naam WS1 - WS2 - WS3. Met deze 4 virtuele machines kan ik verschillende soorten software en technologieën testen die ervoor zorgen dat ik mijn onderzoeksvragen zo nauwkeurig en correct mogelijk kan beantwoorden.
+Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe te voegen aan het domein. Ik heb 3 Windows hosts opgezet met de IP-adressen 192.168.1.31 - 192.168.1.32 - 192.168.1.33 en naam WS1 - WS2 - WS3. WS1 is een Windows 8.1-machine, WS2 is een Windows 7-machine en WS1 is een Windows Vista-machine. Tot slot heb ik een kali virtuele machine gemaakt om in het netwerk binnen te dringen. Met deze 5 virtuele machines kan ik verschillende soorten software en technologieën testen die ervoor zorgen dat ik mijn onderzoeksvragen zo nauwkeurig en correct mogelijk kan beantwoorden. 
 
 \subsection{}
-\chapter{Port scanning interpreteren}
+\chapter{Test}
 
 %% TODO: de structuur en titel van deze hoofdstukken hangen af van je
 % eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
 
-\section{Wat is port scanning?}
-Om te antwoorden op de onderzoeksvragen moet je eerst weten wat port scanning precies is en doet. Port scanning is één van de meest gebruikte en bekendste manieren die er bestaat om een weg te vinden in het netwerk van een persoon of een bedrijf. Bij een port scan wordt er gekeken welke poorten er allemaal open staan in een netwerk. Via poorten wordt er informatie verzonden en ontvangen dus je kan deze techniek vergelijken met in een gang met 65 535 deuren aan elke deur eens voelen en kijken of deze open staat of gesloten is. \newline \newline
-
-Door een port scan uit te voeren op een netwerk kan je zien welke poorten er open zijn, maar ook welke poorten er luisteren. Dit wilt zeggen welke poorten er informatie ontvangen. Je kan ook zien welke beveiligings apparaten zoals firewalls die aanwezig zijn tussen de zender en de ontvanger. Deze techniek wordt ook wel fingerprinting genoemd en wordt vaak gebruikt door aanvallers om een zwak punt in het netwerk te vinden. 
-
-\section{Soorten port scans MEER INFO ZOEKEN}
-Er zijn verschillende soorten port scans en elk van deze hebben hun eigen accenten. 
-\begin{itemize}
-	\item Vanilla = Ook wel een "full scan" genoemd. Hierbij wordt er geprobeerd om met alle 65 535 poorten verbinding te maken. Er wordt een SYN flag (vraag om te verbinden) verzonden en na het ontvangen van een SYN-ACK respons wordt er een ACK flag teruggestuurd. Dit staat ook wel bekend als een TCP handshake. Deze soort scans zijn zeer nauwkeurig maar zijn makkelijk detecteerbaar omdat deze soort verbindingen altijd worden gelogged door de firewall.
-	\item Fragmented Packets = De scanner zend fragmenten van pakketten uit die door een simpele packet filter geraken in een firewall. Dit doen ze door de TCP header te splitsen in verschillende IP-fragmenten zodat een packet filter firewall geen complete TCP header kunnen zien die aan hun filterregels voldoen. Er zijn firewalls die alle IP-fragmenten bekijken, maar veel netwerken kunnen hun het verlies in performance niet veroorloven.
-	\item Strobe = Is een iets specifiekere scan die enkel kijkt naar bekende services die kunnen geexploid worden.
-	\item Stealth scan = De scanner blokkeert de gescande computer om de port scan activiteiten te onthouden
-	\item UDP = Bij een port scan wordt er meestal gekeken naar TCP-poorten. UDP-poorten reageren op een andere manier. Om open UDP-poorten te vinden wordt er een leeg UDP datagram verzonden. Als de poort luistert dan moet de service een foutbericht terug moeten sturen, als de poort gesloten is dan kijg je meestal dit bericht van het systeem "ICMP Port Unreachable"
-	\item FTP Bounce = Scanner gaat door een FTP-server om de bron van de scan te verbergen. Deze techniek is zeer moeilijk om tegen te houden en op te sporen, maar het is ook zeer traag.
-\end{itemize}
-
-\chapter{Port scanning als bedreiging}
-
-
-
-\chapter{Port scanning als hulpmiddel}
 
 
 \chapter{Conclusie}
