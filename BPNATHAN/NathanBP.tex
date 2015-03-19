@@ -211,6 +211,8 @@ Port scanning is een bekende manier om iemand zijn netwerk in kaart te brengen e
 
 \subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
 
+Het spreekt voor zich dat, wanneer er zich een aanval voordoet of heeft voorgedaan, dat je als netwerkbeheerder dit direct of toch zo snel mogelijk wilt te weten komen. Als er een aanval gaande is dan is het belangrijk dat je dit snel weet en dat je snel de oorzaak vindt en weet wat er precies aan het gebeuren is. Hetzelfde geldt voor wanener er een aanval heeft plaatsgevonden in de geschiedenis. Als administrator is het jouw taak om dit makkelijk op te sporen en ervoor te zorgen dat dit in de toekomst niet meer gebeurd.
+
 \chapter{Methodologie}
 \label{ch:methodologie}
 
@@ -231,16 +233,16 @@ Deze lectuur gaf mij een degelijke basis om mijn onderzoek te starten. In de bib
 Natuurlijk was voorgaande oefening enorm simpel, maar deze was dan ook voor de techniek onder de knie te krijgen. Nu is het tijd voor een iets moeilijkere oefening.
 
 \subsection{Opzetten testomgeving}
-Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{Baele.be}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik als subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Dan ben ik naar de website gegaan van Microsoft om SQL server 2012 te downloaden en te installeren. Ook heb ik de rol IIS 8 geïnstalleerd en heb ik een kleine lokale website gemaakt met een ASP.NET-applicatie op, deze is te bereiken via "\textit{baele.be}". Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. Deze zaken moeten zich allemaal op de server bevinden zodat ik mijn onderzoeksvraag goed kan beantwoorden. \newline
+Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{Baele.be}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik als subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Dan ben ik naar de website gegaan van Microsoft om SQL server 2012 te downloaden en te installeren. Ook heb ik de rol IIS 8 geïnstalleerd en heb ik een kleine lokale website gemaakt met een ASP.NET-applicatie op, deze is te bereiken via "\textit{baele.be}". Deze applicatie heb ik gemaakt via Microsoft Visual studio en heeft ook een SQL-databank in de backend. Op de startpagina worden namen weergegeven die in een tabel in de databank zitten. Je kan je ook inloggen via een naam en wahtwoord die zich in de databank bevinden. Als je bent ingelogged dan kan je een speciale pagina "member" bekijken en als je niet ingelogged bent dan lukt dit niet. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. Deze zaken moeten zich allemaal op de server bevinden zodat ik mijn onderzoeksvraag goed kan beantwoorden. \newline
 
 Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe te voegen aan het domein. Ik heb 3 Windows hosts opgezet met de IP-adressen 192.168.1.31 - 192.168.1.32 - 192.168.1.33 en naam WS1 - WS2 - WS3. WS1 is een Windows 8.1-machine, WS2 is een Windows 7-machine en WS1 is een Windows Vista-machine. Tot slot heb ik een kali virtuele machine gemaakt om in het netwerk binnen te dringen. Met deze 5 virtuele machines kan ik verschillende soorten software en technologieën testen die ervoor zorgen dat ik mijn onderzoeksvragen zo nauwkeurig en correct mogelijk kan beantwoorden. 
 
 \subsection{}
-\chapter{Test}
-
 %% TODO: de structuur en titel van deze hoofdstukken hangen af van je
 % eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
 
+\chapter{Vastlopen van de server}
+Het vastlopen van een server kan op verschillende manieren. De eerste manier die ik heb geprobeerd om de webserver te laten vastlopen is \textit{sockstress}. Dit is een methode die wordt gebruikt om servers over het internet aan te vallen gebruik makende van TCP. Deze methode zorgt ervoor dat het lokale geheugen zoveel aanvragen moet behandelen dat deze langzaam maar zeker helemaal volloopt totdat de server is vastgelopen en de server is gecrashed. Je kan dit ook een DOS (Denial of Service)-aanval noemen.
 
 
 \chapter{Conclusie}
