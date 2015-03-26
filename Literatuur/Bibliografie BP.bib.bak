@@ -14,14 +14,14 @@
 }
 
 @Manual{,
-  Title                    = {Sockstress},
-  Author                   = {Sam Browne},
-  Month                    = {Januari},
-  Year                     = {2013},
+  Title                    = {Penetration Testing : Hacking Windows Using Metaploit and Meterpreter},
+  Author                   = {Shashwat Chaudhary},
+  Month                    = {Februari},
+  Year                     = {2014},
 
   Owner                    = {nathan},
-  Timestamp                = {2015.03.19},
-  Url                      = {https://samsclass.info/123/proj10/sockstress.htm#5}
+  Timestamp                = {2015.03.17},
+  Url                      = {http://www.kalitutorials.net/2014/02/penetration-testing-hacking-windows.html}
 }
 
 @Manual{,
@@ -34,17 +34,6 @@
   Owner                    = {nathan},
   Timestamp                = {2015.03.17},
   Url                      = {http://www.kalitutorials.net/2014/02/penetration-testing-hacking-xp.html}
-}
-
-@Manual{,
-  Title                    = {Penetration Testing : Hacking Windows Using Metaploit and Meterpreter},
-  Author                   = {Shashwat Chaudhary},
-  Month                    = {Februari},
-  Year                     = {2014},
-
-  Owner                    = {nathan},
-  Timestamp                = {2015.03.17},
-  Url                      = {http://www.kalitutorials.net/2014/02/penetration-testing-hacking-windows.html}
 }
 
 @Book{,
@@ -67,16 +56,5 @@
 
   Owner                    = {nathan},
   Timestamp                = {2015.03.04}
-}
-
-@Manual{,
-  Title                    = {Create ASP.Net web app and SQL server database},
-  Author                   = {Jeff Nuckolls},
-  Month                    = {Januari},
-  Year                     = {2011},
-
-  Owner                    = {nathan},
-  Timestamp                = {2015.03.19},
-  Url                      = {https://www.youtube.com/watch?v=_gqpBLNo7wo}
 }
 
