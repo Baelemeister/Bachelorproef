@@ -226,16 +226,40 @@ Het spreekt voor zich dat, wanneer er zich een aanval voordoet of heeft voorgeda
 % op deze manier te werk gegaan bent. Je moet kunnen aantonen dat je de best
 % mogelijke manier toegepast hebt om een antwoord te vinden op de
 % onderzoeksvraag.
-\section{Voorbereiding}
-\subsection{Onderzoek}
-Om een goed antwoord te kunnen geven op deze onderzoeksvraag moet ik eerst een goede kennis hebben over het onderwerp. Dit heb ik gedaan door het verzamelen van lectuur over de volgende zaken:
-\begin{itemize}
-	\item Ethisch hacken
-	\item Beveiligen van Windows Server 2012 R2-netwerk best practices
-\end{itemize}
-Deze lectuur gaf mij een degelijke basis om mijn onderzoek te starten. In de bibliografie is te zien welke lectuur ik hier specifiek voor heb gebruikt. Natuurlijk kan je met te lezen niet alles leren dus heb ik ook enkele zaken moeten oefenen. Ik ben begonnen bij het begin en heb eerst een oude Windows XP-machine zonder enkele patch en firewall proberen te hacken. In theorie is dit niet moeilijk, maar je moet ergens beginnen. Ik heb mijn Kali-machine opgestart en heb eerst een port scan uitgevoerd om te kijken welke poorten er open waren. Nadat ik dit wist heb ik gezocht naar een exploit, heb ik deze gevonden en ben ik via deze exploit binnen geraakt in de opdrachtprompt van de Windows XP-machine met administrator rechten. Door deze kleine oefening leerde ik de methodiek die wordt gebruikt om in werkstations en servers binnen te dringen. \newline \newline
 
-Natuurlijk was voorgaande oefening enorm simpel, maar deze was dan ook voor de techniek onder de knie te krijgen. Nu is het tijd voor een iets moeilijkere oefening.
+Dit onderzoek bestaat uit de volgende methodiek:
+\begin{enumerate}
+	\item Een dergelijke basiskennis is vereist dus het verrichten van onderzoek en lezen van lectuur is een essentiële eerste stap.
+	\item Opzetten van een goede testomgeving met één Windows Server 2012 R2 webserver met ASP.net-applicatie draaiende als slachtoffer, één Kali Linux-machine als aanvaller en één Windows 8.1-machine die als client fungeert. De twee Windows-machines moeten geconfigureerd worden volgens best practice-beveilging.
+	\item Met behulp van penetration testing tools beveiligingsproblemen zoeken en uitbuiten. Hier wordt er vanuit gegaan dat er geen fysieke toegang is tot de server dus het betreft een externe aanval. Er wordt een lijst gemaakt met welke aanvallen er gaan gedaan worden en welke succesvol worden uitgevoerd en welke falen. Indien een aanvaal succesvol wordt uitgevoerd, dan zullen de best practices moeten aangevuld worden.
+	\item Het uitvoeren van een post-mortem om sporen van inbraak bloot te leggen en kijken waar het probleem zich bevindt.
+\end{enumerate}
+
+\section{Voorkennis en onderzoek}
+Voordat er kan worden begonnen aan dit onderzoek, is er een goede tot zeer goede kennis vereist over de volgende onderwerpen:
+\begin{itemize}
+	%Nog eens nakijken of wel alle rollen genoemd zijn
+	\item Het installeren en configureren van Windows Server 2012 R2 met de volgende rollen aanwezig: Active Directory Domain Services, DHCP, DNS, IIS, ...
+	\item Het opzetten van een ASP.net applicatie in IIS 8 met een achterliggende databank.
+	\item Basiskennis over Microsoft SQL Manager of een andere databank software.
+	\item Kennis over Kali Linux.
+	\item Kunnen werken met Linux en Windows command prompt.
+	\item Degelijke kennis over security met in het bijzondere penetratietestingtools zoals ..... 
+	\item Controle overnemen van pc zonder firewall.
+\end{itemize}
+In de bibliografie staat een uitgebreide lijst met schriftelijke en digitale boeken en talrijke websites die gebruikt zijn bij het schrijven van dit onderzoek en dan ook ervoor zorgen dat bovenstaande vereisten voldaan zijn voordat er wordt begonnen aan het echte werk.
+
+\section{Opzetten testomgeving}
+\subsection{Installatie + configuratie server}
+De Windows Server 2012 R2-virtuele machine is de eerste die moet worden opgezet. Er wordt gebruik gemaakt van VMWare Workstation en hierin wordt er een nieuwe virtuele machine aangemaakt met 60GB ruimte die dynamisch gealloceerd wordt en twee netwerkadapters. Nadat Windows Server 2012 R2 is geïnstalleerd wordt de naam van de server verandert naar "WebServer" en deze zal hierdoor ook aangesproken worden in het verdere onderzoek. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de WebServer domeincontroller gemaakt in het fictieve domein "Baele.be". \newline \newline 
+
+Op de server zijn twee netwerkadapters aanwezig, één die is verbonden met het internet (Internetadapter) en een andere die is verbonden met het LAN (LANadapter). De internetadapter staat geconfigureerd als NAT en de IP -en DNS-informatie worden alletwee automatisch aangewezen. Bij de LANadapter zijn de instellingen anders, hier staat deze configureerd als "Custom: specific virtual network" en wordt er gekozen om het virtuele network de naam \textit{VMnet0} mee te geven. Hierdoor moeten de IP -en DNS-instellingen handmatig geconfigureerd worden. De server krijgt al IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline \newline
+
+Het volgende dat moet gebeuren is het installeren en configureren van de DNS-rol. Dit is vrij simpel en neemt niet veel tijd in beslag. In het scherm "DNS-beheer" wordt er in het tabblad "Zones voor reverse lookup" een zone aangemaakt met de naam "1.168.192.in-addr.arpa" en daarna wordt er een PTR-record aangemaakt die verwijst naar de net geconfigureerde LANadapter met het juiste IP-adres. Hierna wordt de DHCP-rol geïnstalleerd en wordt er een nieuwe scope aangemaakt met de naam "TestScope". Het eerste IP-adres in het bereik is 192.168.1.1 en het laatste 192.168.1.254. De adressen van 192.168.1.1 tot 192.168.1.20 worden uitgesloten voor distributie. De router is de server zelf dus het IP-adres is 192.168.1.2 net als de DNS-server. Tot slot wordt de scope geactiveerd. \newline \newline
+
+Aangezien deze server een webserver is, zal de IIS-rol met al zijn features ook worden geïnstalleerd. ........
+
+
 
 \subsection{Opzetten testomgeving}
 Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{Baele.be}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik als subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Dan ben ik naar de website gegaan van Microsoft om SQL server 2012 te downloaden en te installeren. Ook heb ik de rol IIS 8 geïnstalleerd en heb ik een kleine lokale website gemaakt met een ASP.NET-applicatie op, deze is te bereiken via "\textit{baele.be}". Deze applicatie heb ik gemaakt via Microsoft Visual studio en heeft ook een SQL-databank in de backend. Op de startpagina worden namen weergegeven die in een tabel in de databank zitten. Je kan je ook inloggen via een naam en wachtwoord die zich in de databank bevinden. Als je bent ingelogged dan kan je een speciale pagina "member" bekijken en als je niet ingelogged bent dan lukt dit niet. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. Deze zaken moeten zich allemaal op de server bevinden zodat ik mijn onderzoeksvraag goed kan beantwoorden. \newline
@@ -246,13 +270,15 @@ Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe 
 %% TODO: de structuur en titel van deze hoofdstukken hangen af van je
 % eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
 \chapter{Opzetten server met best practises beveiliging}
-Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
+´%Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
+
+Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam "Administrator" en een eigen administrator login maken en deze dan toevoegen aan de groep "Administrators" zodat deze dezelfde rechten heeft als het net uitgeschakelde account. De reden voor deze maatregel is om brute force aanvallen tegen te gaan. Elke IT'er kent het "Administrator-account" en deze is dan kwetsbaar voor aanvallen die proberen om het wachtwoord te kraken. Als het account is uitgeschakeld dan moet er al een accountnaam geweten zijn voordat er brute force aanvallen kunnen plaatsvinden.
 
 \chapter{Aanvallen webserver}
-Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.
+%Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.
 
-\chapter{Terugvinden aanval}
-Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
+\chapter{Post mortem}
+%Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
 
 
 \chapter{Notities}
