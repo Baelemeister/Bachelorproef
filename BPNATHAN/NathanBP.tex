@@ -272,7 +272,29 @@ Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe 
 \chapter{Opzetten server met best practises beveiliging}
 ´%Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
 
-Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam "Administrator" en een eigen administrator login maken en deze dan toevoegen aan de groep "Administrators" zodat deze dezelfde rechten heeft als het net uitgeschakelde account. De reden voor deze maatregel is om brute force aanvallen tegen te gaan. Elke IT'er kent het "Administrator-account" en deze is dan kwetsbaar voor aanvallen die proberen om het wachtwoord te kraken. Als het account is uitgeschakeld dan moet er al een accountnaam geweten zijn voordat er brute force aanvallen kunnen plaatsvinden.
+\section{Inloggen}
+Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam "Administrator" en een eigen administrator login maken en deze dan toevoegen aan de groep "Administrators" zodat deze dezelfde rechten heeft als het net uitgeschakelde account. De reden voor deze maatregel is om brute force aanvallen tegen te gaan. Elke IT'er kent het "Administrator-account" en deze is dan kwetsbaar voor aanvallen die proberen om het wachtwoord te kraken. Als het account is uitgeschakeld dan moet er al een accountnaam geweten zijn voordat er brute force aanvallen kunnen plaatsvinden. In dit geval is er een account aangemaakt genaamd "BaeleAdministrator" en is deze lid geworden van de groepen \textit{Administrators, Domeinadministrators en domeinconctrollers}.
+
+\section{Updates}
+Nog een belangrijke onderdeel van een server met best practice beveiliging, is het constant downloaden en installeren van updates. Het is dan ook aanbevolen dat je de updates automatisch laat uitvoeren. Dit zorgt ervoor dat de server continu is voorzien van de beste beveiliging en dat alle bugs die er op die moment aanwezig zijn, zijn verdwenen. 
+
+\section{Firewall}
+Default is de firewall al vrij goed beveiligd tegen de meeste zaken. Er is echter één aanpassing die in de praktijk veel wordt toegepast en die ook door velen wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit doe je door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "blokkeren" te zetten. Standaard staat dit geconfigureerd als "toestaan". Voor de rest zijn er geen algemene best practices te vinden voor de Firewall.
+
+\section{IIS}
+\subsection{Modules}
+In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn. In de IIS manager kan er in het modulescherm van de geselecteerde website bepaalde modules op inactief gezet worden. In de lijst moet er beslist worden welke modules nodig zijn en de welke overbodig zijn. De overbodige modules kunnen dan worden uitgeschakeld door deze uit de lijst te verwijderen. 
+
+\subsection{Opties methode uitschakelen}
+De opties methode geeft een lijst van methodes weer die worden ondersteund door de webserver. Dit kan waardevolle informatie opleveren voor een hacker. Het is dan ook een best practice om deze methode uit te schakelen en dit gebeurd door het woord 'OPTIONS' uit te sluiten van de \textit{HTTP Verb request filtering rules} in IIS. Dit wordt gedaan door de website te selecteren in de IIS-manager en dan dubbel te klikken op "aanvraagfiltering" en naar het tabblad "HTTP-termen" te gaan. Hier wordt als actie gekozen "Term weigeren..." en wordt "OPTIONS" ingevuld en op OK gedrukt. Nu staat deze regel als enigste in de lijst en is deze best practice in orde gebracht.
+
+\subsection{Dynamische IP restricties}
+Het inschakelen van dynamic IP restrictions module zorgt ervoor dat IP-adressen die een bepaald aantal requests hebben verzonden worden geblokkeerd. Hierdoor worden \textit{Denial of Service-aanvallen} voorkomen. Deze module inspecteert het IP-adres van elke request en zal deze requests filteren om de Ip-adressen met slechte bedoelingen tijdelijk te blokkeren. Dit kan gedaan worden door naar de IIS-manager te gaan en de naam van de website te selecteren en te dubbelklikken op 'beperkingen voor IP-adressen en domeinen'. In het actie paneel wordt er geklikt op '
+instellingen voor dynamische beperking bewerken..' en kunnen er restricties ingevoerd worden. De eerste twee vakjes van de drie moeten worden aangevinkt en de waarden kunnen naar keuze ingevuld worden, in dit geval is'5-20-200' ingevuld. 
+
+\subsection{Request Filtering Rules}
+Het is altijd een goed idee om de verschillende types van HTTP-request die worden verwerkt door IIS te beperken. Door het instellen van uitsluitingen en regels kunnen potentieel gevaarlijke request er nooit doorkomen.
+
 
 \chapter{Aanvallen webserver}
 %Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.

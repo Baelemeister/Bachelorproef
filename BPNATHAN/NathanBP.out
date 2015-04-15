@@ -9,10 +9,18 @@
 \BOOKMARK [2][-]{subsection.2.2.2}{Opzetten testomgeving}{section.2.2}% 9
 \BOOKMARK [2][-]{subsection.2.2.3}{}{section.2.2}% 10
 \BOOKMARK [0][-]{chapter.3}{Opzetten server met best practises beveiliging}{}% 11
-\BOOKMARK [0][-]{chapter.4}{Aanvallen webserver}{}% 12
-\BOOKMARK [0][-]{chapter.5}{Post mortem}{}% 13
-\BOOKMARK [0][-]{chapter.6}{Notities}{}% 14
-\BOOKMARK [1][-]{section.6.1}{Sockstress DDOS-aanval}{chapter.6}% 15
-\BOOKMARK [2][-]{subsection.6.1.1}{Uitvoering en schade}{section.6.1}% 16
-\BOOKMARK [2][-]{subsection.6.1.2}{Bescherming en preventie}{section.6.1}% 17
-\BOOKMARK [0][-]{chapter.7}{Conclusie}{}% 18
+\BOOKMARK [1][-]{section.3.1}{Inloggen}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.2}{Updates}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.3}{Firewall}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.4}{IIS}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.4.1}{Modules}{section.3.4}% 16
+\BOOKMARK [2][-]{subsection.3.4.2}{Opties methode uitschakelen}{section.3.4}% 17
+\BOOKMARK [2][-]{subsection.3.4.3}{Dynamische IP restricties}{section.3.4}% 18
+\BOOKMARK [2][-]{subsection.3.4.4}{Request Filtering Rules}{section.3.4}% 19
+\BOOKMARK [0][-]{chapter.4}{Aanvallen webserver}{}% 20
+\BOOKMARK [0][-]{chapter.5}{Post mortem}{}% 21
+\BOOKMARK [0][-]{chapter.6}{Notities}{}% 22
+\BOOKMARK [1][-]{section.6.1}{Sockstress DDOS-aanval}{chapter.6}% 23
+\BOOKMARK [2][-]{subsection.6.1.1}{Uitvoering en schade}{section.6.1}% 24
+\BOOKMARK [2][-]{subsection.6.1.2}{Bescherming en preventie}{section.6.1}% 25
+\BOOKMARK [0][-]{chapter.7}{Conclusie}{}% 26

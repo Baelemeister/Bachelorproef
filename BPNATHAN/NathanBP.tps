@@ -17,8 +17,8 @@ Class=LaTeXView
 Document=NathanBP.tex
 
 [Frame0_View0,0]
-TopLine=329
-Cursor=19955
+TopLine=373
+Cursor=22799
 
 [SessionInfo]
 FrameCount=1
