@@ -11,14 +11,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
-NormalPos.right=795
-NormalPos.bottom=731
+NormalPos.right=1953
+NormalPos.bottom=970
 Class=LaTeXView
 Document=NathanBP.tex
 
 [Frame0_View0,0]
-TopLine=519
-Cursor=21889
+TopLine=355
+Cursor=23097
 
 [SessionInfo]
 FrameCount=1

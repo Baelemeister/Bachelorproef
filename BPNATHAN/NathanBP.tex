@@ -259,9 +259,12 @@ Het volgende dat moet gebeuren is het installeren en configureren van de DNS-rol
 
 Aangezien deze server een webserver is, zal de IIS-rol met al zijn features ook worden geïnstalleerd. ........
 
+\subsection{Installatie + configuratie aanvallersmachine}
+De tweede virtuele machine die nodig is in dit onderzoek is ........
 
 
-\subsection{Opzetten testomgeving}
+
+\subsection{Opzetten testomgeving OVERBODIG}
 Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{Baele.be}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik als subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Dan ben ik naar de website gegaan van Microsoft om SQL server 2012 te downloaden en te installeren. Ook heb ik de rol IIS 8 geïnstalleerd en heb ik een kleine lokale website gemaakt met een ASP.NET-applicatie op, deze is te bereiken via "\textit{baele.be}". Deze applicatie heb ik gemaakt via Microsoft Visual studio en heeft ook een SQL-databank in de backend. Op de startpagina worden namen weergegeven die in een tabel in de databank zitten. Je kan je ook inloggen via een naam en wachtwoord die zich in de databank bevinden. Als je bent ingelogged dan kan je een speciale pagina "member" bekijken en als je niet ingelogged bent dan lukt dit niet. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. Deze zaken moeten zich allemaal op de server bevinden zodat ik mijn onderzoeksvraag goed kan beantwoorden. \newline
 
 Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe te voegen aan het domein. Ik heb 3 Windows hosts opgezet met de IP-adressen 192.168.1.31 - 192.168.1.32 - 192.168.1.33 en naam WS1 - WS2 - WS3. WS1 is een Windows 8.1-machine, WS2 is een Windows 7-machine en WS1 is een Windows Vista-machine. Tot slot heb ik een kali virtuele machine gemaakt om in het netwerk binnen te dringen. Met deze 5 virtuele machines kan ik verschillende soorten software en technologieën testen die ervoor zorgen dat ik mijn onderzoeksvragen zo nauwkeurig en correct mogelijk kan beantwoorden. 
@@ -278,6 +281,9 @@ Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam 
 \section{Updates}
 Nog een belangrijke onderdeel van een server met best practice beveiliging, is het constant downloaden en installeren van updates. Het is dan ook aanbevolen dat je de updates automatisch laat uitvoeren. Dit zorgt ervoor dat de server continu is voorzien van de beste beveiliging en dat alle bugs die er op die moment aanwezig zijn, zijn verdwenen. 
 
+\section{Backup}
+Het maken van geautomatiseerde backups is essentieel voor een server binnen een netwerk. Een fout, probleem of aanval kan elke moment van de dag gebeuren en als dit gebeurd moet het mogelijk zijn om het systeem terug te zetten van een eerder gemaakte backup. In de Windows Server Backup-wizard kan dit worden ingesteld voor elke ahrde schijf. In dit geval wordt er enkel elke nacht om 03:00u een backup genomen van de C-schijf. 
+
 \section{Firewall}
 Default is de firewall al vrij goed beveiligd tegen de meeste zaken. Er is echter één aanpassing die in de praktijk veel wordt toegepast en die ook door velen wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit doe je door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "blokkeren" te zetten. Standaard staat dit geconfigureerd als "toestaan". Voor de rest zijn er geen algemene best practices te vinden voor de Firewall.
 
@@ -293,11 +299,24 @@ Het inschakelen van dynamic IP restrictions module zorgt ervoor dat IP-adressen 
 instellingen voor dynamische beperking bewerken..' en kunnen er restricties ingevoerd worden. De eerste twee vakjes van de drie moeten worden aangevinkt en de waarden kunnen naar keuze ingevuld worden, in dit geval is'5-20-200' ingevuld. 
 
 \subsection{Request Filtering Rules}
-Het is altijd een goed idee om de verschillende types van HTTP-request die worden verwerkt door IIS te beperken. Door het instellen van uitsluitingen en regels kunnen potentieel gevaarlijke request er nooit doorkomen. Dit gebeurd in de IIS Manager waar de jusite website wordt gekozen en waarna er dubbel wordt geklikt op 'R
+Het is altijd een goed idee om de verschillende types van HTTP-request die worden verwerkt door IIS te beperken. Door het instellen van uitsluitingen en regels kunnen potentieel gevaarlijke request er nooit doorkomen. Dit gebeurd in de IIS Manager waar de juiste website wordt gekozen en waarna er dubbel wordt geklikt op 'Requestfilters'. Hier wordt er gegaan naar het tabblad 'regels' en kunnen verschillende filterregels toegevoegd worden.
+
+\subsection{Inschakkelen logs}
+Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-request gelogged. Indien er problemen voordoen dan kan er hier gekeken worden om een betere kennis te vergaren over het probleem. Dit kan vrij snel en simpel ingeschakeld worden door te gaan naar de IIS manager en daar de gewenste website te slecteren en op logging te klikken. Best wordt er gekozen om een nieuw bestand aan te maken want deze bestanden groeien vrij snel.
 
 
 \chapter{Aanvallen webserver}
 %Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.
+\section{Sockstress DDOS-aanval}
+\subsection{Uitvoering en schade}
+Een fysieke machine kan onbruikbaar gemaakt worden door een simpele aanval genaamd "sockstress". Deze aanval heeft de laatste tijd enorm gewonnen aan populariteit in het hackersmilieu en dus ook in de kringen van netwerkbeveiligers. Deze methode wordt gebruikt om servers aan te vallen over het internet door middel van TCP. Deze methode zorgt ervoor dat het lokale geheugen zoveel aanvragen moet behandelen dat deze langzaam maar zeker volloopt zodat de server vastloopt en onbruikbaar wordt. Dit wordt ook wel een DOS (Denial Of Service)-aanval genoemd. \newline \newline
+
+Op de aanvallersmachine, in dit geval de eerder geconfigureerde Kali Linux-machine, worden er twee verschillende 'command lines (cmd)' geopend. In de eerste cmd wordt er \textit{'nmap <ipadres slachtoffer>'} getyped om te kijken welke poorten van het slachtoffer die open zijn. De open poorten worden dan ergens genoteerd want deze zijn later nog nodig. Nadat deze zijn genoteerd, wordt er een script genaamd \textit{"./arppoi"} geopend in dit terminalvenster. Dit scriptje is te vinden op het internet en de code is te zien in de appendix. De bedoeling van dit script is ARP spoofing. ARP spoofing is een techniek die door veel hackers wordt gebruikt en waar er vermomde ARP-berichten in een lokaal netwerk worden verzonden. De bedoeling is om het MAC-adres van de aanvaller te associëren met het IP-adres van een host, bijvoorbeeld een default gateway of server, zodat al het verkeer dat bedoelt is voor dat specifieke adres naar de aanvaller wordt verzonden. \newline \newline
+
+Nu dat scriptje draait in het ene terminalvenster, hoeft er in het andere venster maar één lijntje ingevuld worden. \textit{"./sockstress -A -C -1 -d <IP van target> -m -1 -Ms -p <alle opgeschreven poorten> -r 100000 -s 172.16.246.0/25 -vv"}. Dit werkt ook alleen maar als sockstress is gedownload en als je navigeert naar de sockstress-map. Nu kan er gekeken worden naar de server en is er te zien dat het RAM-geheugen dat in gebruik is op de server exponentieel aan het stijgen is. Als dit de maximume waarde bereikt dan zal de server vastlopen en kan er niets meer op gedaan worden. De engiste manier om de server terug aan de praat te krijgen is door manueel de uit-knop in te drukken en hem dan weer op te starten. Het spreekt voor zich dat dit een netwerk veel schade kan toebrengen en tijdelijk offline kan halen.
+
+\subsection{Bescherming en preventie}
+De best practices die op de server zijn geïmplementeerd zijn in dit geval niet voldoende en dus moet er een oplossing gevonden worden. De oplossing in dit geval is vrij simpel. Dit kan gedaan worden door het blokkeren van een IP-adres als het meer dan 10 connecties met een poort maakt in minder dan 30 seconden. Dit wordt gedaan door een simpel lijntje in te typen in de router command line \textit{'iptables -I INPUT -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 -j DROP'}. Aangezien de server enkel handmatig kan worden afgesloten, is de kans reeël dat er gegevensverlies is. Daarvoor is het belangrijk dat dit direct wordt bekeken nadat de server opnieuw is opgestart zodat er direct een restore kan plaatsvinden als dit nodig is. Hiervoor zijn de best practices wat betreft back-ups wel voldoende. 
 
 \chapter{Post mortem}
 %Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
@@ -306,16 +325,7 @@ Het is altijd een goed idee om de verschillende types van HTTP-request die worde
 \chapter{Notities}
 Hier hou ik de zaken bij die ik al heb uitgetest, maar die ik nog niet bij 1 van de 3 hoofdstukken heb geplaatst. Dit is mijn tijdelijke "dump" waar ik test zaken schrijf voor de bij de echte hoofdstukken terecht komen.
 \newpage
-\section{Sockstress DDOS-aanval}
-\subsection{Uitvoering en schade}
-Het vastlopen van een server kan op verschillende manieren. De eerste manier die ik heb geprobeerd om de webserver te laten vastlopen is \textit{sockstress}. Dit is een methode die wordt gebruikt om servers over het internet aan te vallen gebruik makende van TCP. Deze methode zorgt ervoor dat het lokale geheugen zoveel aanvragen moet behandelen dat deze langzaam maar zeker helemaal volloopt totdat de server is vastgelopen en de server is gecrashed. Je kan dit ook een DOS (Denial of Service)-aanval noemen. De manier om dit uit te testen is door twee virtuele machines erbij te nemen. Langs de ene kant nemen we de slachtoffermachine, namelijk de Windows Server 2012 R2 webserver-virtuele machine genaamd ADServer, en langs de andere kant de aanvaller, de Kali Linux-machine. De ADServer heeft een standaard Firewall die geen extra configuratie heeft gekregen. \newline \newline 
-
-Op de aanvallersmachine gaan we naar de command line en geven we deze lijn code in \textit{'nmap <ipadres slachtoffer>'} en we schrijven alle poorten op die we te zien krijgen. Wat er hier gebeurd is dat we kijken welke poorten er open zijn en kunnen worden aangevallen. Daarna openen we een apart terminalvenster en laten we daar een gedownload script draaien genaamd \textit{"./arppoi"}. In dat scriptje hoef je het geschreven MAC-adres enkel te veranderen naar het MAC-adres van de aanvaller en daarna kan je het scriptje uitvoeren dat zorgt voor ARP spoofing. Nadat dit is gedaan hoef je enkel in het andere terminalvenster dit lijntje in te voeren: \textit{"./sockstress -A -C -1 -d <IP van target> -m -1 -Ms -p <alle opgeschreven poorten> -r 100000 -s 172.16.246.0/25 -vv"} om de aanval te starten. Als je deze zaken hebt uitgevoerd, dan kan je kijken naar hoeveel RAM er wordt gebruikt op de server en dan zie je dat dit exponentieel aan het stijgen is tot dat deze het maximum bereikt en de server is vastgelopen. Daarna kan je de server enkel nog aan de praat krijgen door deze manueel uit te zetten via de aan/uit-knop en dan weer op te starten. Dit zorgt ervoor dat de server onbereikbaar is tot dit gebeurd en dat de bijhorende webserver onbeschikbaar is tot er een reboot komt. Het spreekt voor zich dat deze aanval.
-
-\subsection{Bescherming en preventie}
-Op papier heb ik al 1 oplossing, maar ik moet uitdokteren hoe ik dit kan testen en ik moet nog research doen naar meerdere mogelijkheden.
-
-
+Post mortem kan opgedeeld worden in manueel en automatisch. Bij automatisch worden logs aangemaakt als er een regel is overschreden.
 
 
 \chapter{Conclusie}

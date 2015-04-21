@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.3.9)  15 APR 2015 09:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.3.9)  21 APR 2015 11:06
 entering extended mode
 **NathanBP.tex
 (C:\Users\nathan\Documents\GitHub\Bachelorproef\BPNATHAN\NathanBP.tex
@@ -1096,38 +1096,48 @@ Underfull \hbox (badness 10000) in paragraph at lines 258--259
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 265--266
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 268--269
 
  []
 
-[8] [9]
+[9]
 Hoofdstuk 3.
 [10
 
 ] [11] [12]
 Hoofdstuk 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--313
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--313
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
+
+ []
+
 [13
 
-]
+] [14]
 Hoofdstuk 5.
-[14
-
-]
-Hoofdstuk 6.
 [15
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 311--312
+Hoofdstuk 6.
+[16
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 311--312
-
- []
-
-[16]
+]
 Hoofdstuk 7.
 [17
 
@@ -1144,14 +1154,14 @@ No file NathanBP.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 339.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 349.
 [20
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 339.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 349.
  (C:\Users\nathan\Documents\GitHub\Bachelorproef\BPNATHAN\NathanBP.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 339.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 339.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 349.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 349.
 
 
 Package rerunfilecheck Warning: File `NathanBP.out' has changed.
@@ -1159,27 +1169,41 @@ Package rerunfilecheck Warning: File `NathanBP.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `NathanBP.out':
-(rerunfilecheck)             Before: 6FB7318234B942BF0E60DC315ABFE67B;1814
-(rerunfilecheck)             After:  EAFB4608B63FD5DE8046915A10916DE3;1830.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 339.
+(rerunfilecheck)             Before: EAFB4608B63FD5DE8046915A10916DE3;1830
+(rerunfilecheck)             After:  92E582142F80DDAE63765CBFA1A67876;2065.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 349.
  ) 
 Here is how much of TeX's memory you used:
- 9952 strings out of 493921
- 140703 string characters out of 3144874
- 323382 words of memory out of 3000000
- 13010 multiletter control sequences out of 15000+200000
+ 9963 strings out of 493921
+ 140866 string characters out of 3144874
+ 322382 words of memory out of 3000000
+ 13011 multiletter control sequences out of 15000+200000
  48462 words of font info for 45 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 29i,11n,43p,1367b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm
-/lm-ec.enc}{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/
-type1/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmss12.pfb><C:/Program Files (x86)/Mi
-KTeX 2.9/fonts/type1/public/lm/lmss8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Progr
-am Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmsso12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lms
-y10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb>
-Output written on NathanBP.pdf (24 pages, 265044 bytes).
+ 29i,11n,43p,1360b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{subsection.6.1.2} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.6.1.1} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.6.1} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.3.4.4} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.3.4.3} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.3.4.2} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.3.4.1} has been referenced but does not exist, replaced by a fixed one
+
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/l
+m-ec.enc}{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
+pe1/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmss12.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/lm/lmss8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmsso12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmsy1
+0.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb>
+Output written on NathanBP.pdf (24 pages, 268808 bytes).
 PDF statistics:
- 292 PDF objects out of 1000 (max. 8388607)
- 55 named destinations out of 1000 (max. 500000)
+ 303 PDF objects out of 1000 (max. 8388607)
+ 65 named destinations out of 1000 (max. 500000)
  214 words of extra memory for PDF output out of 10000 (max. 10000000)
 
