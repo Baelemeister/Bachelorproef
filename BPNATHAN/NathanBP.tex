@@ -318,6 +318,10 @@ Nu dat scriptje draait in het ene terminalvenster, hoeft er in het andere venste
 \subsection{Bescherming en preventie}
 De best practices die op de server zijn geïmplementeerd zijn in dit geval niet voldoende en dus moet er een oplossing gevonden worden. De oplossing in dit geval is vrij simpel. Dit kan gedaan worden door het blokkeren van een IP-adres als het meer dan 10 connecties met een poort maakt in minder dan 30 seconden. Dit wordt gedaan door een simpel lijntje in te typen in de router command line \textit{'iptables -I INPUT -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 -j DROP'}. Aangezien de server enkel handmatig kan worden afgesloten, is de kans reeël dat er gegevensverlies is. Daarvoor is het belangrijk dat dit direct wordt bekeken nadat de server opnieuw is opgestart zodat er direct een restore kan plaatsvinden als dit nodig is. Hiervoor zijn de best practices wat betreft back-ups wel voldoende. 
 
+\section{Brute force Hydra-aanval}
+\subsection{Uitvoering en schade}
+Hydra is een zeer gekende tool die wordt gebruikt op een Kali-machine. Met deze tool kan een persoon wachtwoorden kraken.
+
 \chapter{Post mortem}
 %Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
 
