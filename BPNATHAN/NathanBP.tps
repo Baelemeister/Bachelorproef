@@ -11,14 +11,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
-NormalPos.right=1773
-NormalPos.bottom=749
+NormalPos.right=938
+NormalPos.bottom=731
 Class=LaTeXView
 Document=NathanBP.tex
 
 [Frame0_View0,0]
-TopLine=415
-Cursor=27499
+TopLine=615
+Cursor=31097
 
 [Frame1]
 Flags=0
@@ -29,8 +29,8 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
-NormalPos.right=1773
-NormalPos.bottom=749
+NormalPos.right=938
+NormalPos.bottom=731
 Class=BibTeXView
 Document=bibliografie BP.bib
 
@@ -41,4 +41,7 @@ Cursor=356
 [SessionInfo]
 FrameCount=2
 ActiveFrame=0
+
+[Bookmarks]
+NathanBP.tex=355 
 

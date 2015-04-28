@@ -211,6 +211,7 @@ Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backsla
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
 \subsection{Zijn de 'best practices' voldoende als beveiliging tegen een externe of interne aanval?}
 
+% TEKST AANPASSEN
 Port scanning is een bekende manier om iemand zijn netwerk in kaart te brengen en te kijken naar een manier hoe je er binnen kan geraken. Port scanning is kan jouw netwerk in gevaar brengen, maar kan er ook voor zorgen dat jouw netwerk beter beveiligd is als je weet hoe je het moet gebruiken en hoe je jezelf ertegen moet beschermen. De vraag die hier wordt gesteld is hoe dat je port scanning als ethische hacker kan gebruiken om jouw netwerk beter te beveiligen tegen mensen die port scannen gebruiken voor niet zo ethische doelstellingen.
 
 \subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
@@ -219,7 +220,6 @@ Het spreekt voor zich dat, wanneer er zich een aanval voordoet of heeft voorgeda
 
 \chapter{Methodologie}
 \label{ch:methodologie}
-\newpage
 
 % TODO: Hoe ben je te werk gegaan? Verdeel je onderzoek in grote fasen, en
 % licht in elke fase toe welke stappen je gevolgd hebt. Verantwoord waarom je
@@ -251,7 +251,7 @@ In de bibliografie staat een uitgebreide lijst met schriftelijke en digitale boe
 
 \section{Opzetten testomgeving}
 \subsection{Installatie + configuratie server}
-De Windows Server 2012 R2-virtuele machine is de eerste die moet worden opgezet. Er wordt gebruik gemaakt van VMWare Workstation en hierin wordt er een nieuwe virtuele machine aangemaakt met 60GB ruimte die dynamisch gealloceerd wordt en twee netwerkadapters. Nadat Windows Server 2012 R2 is geïnstalleerd wordt de naam van de server verandert naar "WebServer" en deze zal hierdoor ook aangesproken worden in het verdere onderzoek. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de WebServer domeincontroller gemaakt in het fictieve domein "Baele.be". \newline \newline 
+De Windows Server 2012 R2-virtuele machine is de eerste die moet worden opgezet. Er wordt gebruik gemaakt van VMWare Workstation en hierin wordt er een nieuwe virtuele machine aangemaakt met 60GB ruimte die dynamisch gealloceerd wordt en twee netwerkadapters. Nadat Windows Server 2012 R2 is geïnstalleerd wordt de naam van de server veranderd naar "WebServer"  en deze zal hierdoor ook aangesproken worden in het verdere onderzoek. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de WebServer domeincontroller gemaakt in het fictieve domein "Baele.be". \newline \newline 
 
 Op de server zijn twee netwerkadapters aanwezig, één die is verbonden met het internet (Internetadapter) en een andere die is verbonden met het LAN (LANadapter). De internetadapter staat geconfigureerd als NAT en de IP -en DNS-informatie worden alletwee automatisch aangewezen. Bij de LANadapter zijn de instellingen anders, hier staat deze configureerd als "Custom: specific virtual network" en wordt er gekozen om het virtuele network de naam \textit{VMnet0} mee te geven. Hierdoor moeten de IP -en DNS-instellingen handmatig geconfigureerd worden. De server krijgt al IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline \newline
 
