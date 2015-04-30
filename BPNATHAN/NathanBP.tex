@@ -23,6 +23,9 @@
 \usepackage{lmodern}
 \usepackage{textcomp}
 
+\usepackage[parfill]{parskip}
+\usepackage{fancyhdr}
+
 \usepackage{lipsum}          % Voor vultekst (lorem ipsum)
 
 % \usepackage[parfill]{parskip}
@@ -80,7 +83,7 @@
 \newcommand{\instelling}{---}
 
 % De titel van het rapport/bachelorproef
-\newcommand{\titel}{Beveiliging van een Windows Server 2012 R2 webserver met ASP.NET applicatie...............}
+\newcommand{\titel}{Beveiliging van een Windows Server 2012 R2 webserver met ASP.NET applicatie}
 
 % Datum van indienen
 \newcommand{\datum}{29 mei 2015}
@@ -194,7 +197,6 @@ Deze scriptie zou niet to stand gekomen zijn zonder de hulp van mijn stagementor
 
 \chapter{Inleiding}
 \label{ch:inleiding}
-\newpage
 
 De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \citep{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek). \newline \newline
 
@@ -211,8 +213,7 @@ Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backsla
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
 \subsection{Zijn de 'best practices' voldoende als beveiliging tegen een externe of interne aanval?}
 
-% TEKST AANPASSEN
-Port scanning is een bekende manier om iemand zijn netwerk in kaart te brengen en te kijken naar een manier hoe je er binnen kan geraken. Port scanning is kan jouw netwerk in gevaar brengen, maar kan er ook voor zorgen dat jouw netwerk beter beveiligd is als je weet hoe je het moet gebruiken en hoe je jezelf ertegen moet beschermen. De vraag die hier wordt gesteld is hoe dat je port scanning als ethische hacker kan gebruiken om jouw netwerk beter te beveiligen tegen mensen die port scannen gebruiken voor niet zo ethische doelstellingen.
+
 
 \subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
 
@@ -235,41 +236,27 @@ Dit onderzoek bestaat uit de volgende methodiek:
 	\item Het uitvoeren van een post-mortem om sporen van inbraak bloot te leggen en kijken waar het probleem zich bevindt.
 \end{enumerate}
 
-\section{Voorkennis en onderzoek}
-Voordat er kan worden begonnen aan dit onderzoek, is er een goede tot zeer goede kennis vereist over de volgende onderwerpen:
-\begin{itemize}
-	%Nog eens nakijken of wel alle rollen genoemd zijn
-	\item Het installeren en configureren van Windows Server 2012 R2 met de volgende rollen aanwezig: Active Directory Domain Services, DHCP, DNS, IIS, ...
-	\item Het opzetten van een ASP.net applicatie in IIS 8 met een achterliggende databank.
-	\item Basiskennis over Microsoft SQL Manager of een andere databank software.
-	\item Kennis over Kali Linux.
-	\item Kunnen werken met Linux en Windows command prompt.
-	\item Degelijke kennis over security met in het bijzondere penetratietestingtools zoals ..... 
-	\item Controle overnemen van pc zonder firewall.
-\end{itemize}
-In de bibliografie staat een uitgebreide lijst met schriftelijke en digitale boeken en talrijke websites die gebruikt zijn bij het schrijven van dit onderzoek en dan ook ervoor zorgen dat bovenstaande vereisten voldaan zijn voordat er wordt begonnen aan het echte werk.
-
 \section{Opzetten testomgeving}
-\subsection{Installatie + configuratie server}
-De Windows Server 2012 R2-virtuele machine is de eerste die moet worden opgezet. Er wordt gebruik gemaakt van VMWare Workstation en hierin wordt er een nieuwe virtuele machine aangemaakt met 60GB ruimte die dynamisch gealloceerd wordt en twee netwerkadapters. Nadat Windows Server 2012 R2 is geïnstalleerd wordt de naam van de server veranderd naar "WebServer"  en deze zal hierdoor ook aangesproken worden in het verdere onderzoek. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de WebServer domeincontroller gemaakt in het fictieve domein "Baele.be". \newline \newline 
+\subsection{Situering}
+\begin{center}
+\includegraphics{img/Situatie}
+\end{center}
 
-Op de server zijn twee netwerkadapters aanwezig, één die is verbonden met het internet (Internetadapter) en een andere die is verbonden met het LAN (LANadapter). De internetadapter staat geconfigureerd als NAT en de IP -en DNS-informatie worden alletwee automatisch aangewezen. Bij de LANadapter zijn de instellingen anders, hier staat deze configureerd als "Custom: specific virtual network" en wordt er gekozen om het virtuele network de naam \textit{VMnet0} mee te geven. Hierdoor moeten de IP -en DNS-instellingen handmatig geconfigureerd worden. De server krijgt al IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline \newline
+In de afbeelding is te zien welke machines allemaal nodig zijn om dit onderzoek tot een goed einde te brengen. Ten eerste is er een Active Directory-server nodig die ook domeincontroller is in het domein en deze server is ook nog DNS-server ook. Dan is er de webserver die lid is van hetzelfde domein als de ADServer natuurlijk. Deze zijn aangesloten aan een switch en een router. Ten slotte is er ook nog een aanvallersmachine om te proberen de server te hacken. Deze is ook aangesloten aan een router op een andere locatie. Tot slot wordt er gebruik gemaakt van VMWare Workstation om al deze virtuele machines te maken met elkaar te verbinden.
 
-Het volgende dat moet gebeuren is het installeren en configureren van de DNS-rol. Dit is vrij simpel en neemt niet veel tijd in beslag. In het scherm "DNS-beheer" wordt er in het tabblad "Zones voor reverse lookup" een zone aangemaakt met de naam "1.168.192.in-addr.arpa" en daarna wordt er een PTR-record aangemaakt die verwijst naar de net geconfigureerde LANadapter met het juiste IP-adres. Hierna wordt de DHCP-rol geïnstalleerd en wordt er een nieuwe scope aangemaakt met de naam "TestScope". Het eerste IP-adres in het bereik is 192.168.1.1 en het laatste 192.168.1.254. De adressen van 192.168.1.1 tot 192.168.1.20 worden uitgesloten voor distributie. De router is de server zelf dus het IP-adres is 192.168.1.2 net als de DNS-server. Tot slot wordt de scope geactiveerd. \newline \newline
+\subsection{Installatie + configuratie ADServer}
+De Windows Server 2012 R2-virtuele machine genaamd 'ADServer' is de eerste die moet worden opgezet. In VMWAre Workstation wordt er 60GB geheugen gealloceerd voor deze virtuele machine samen met twee netwerkadapters en 2GB aan RAM-geheugen. Nadat Windows Server 2012 R2 is geïnstalleerd op deze virtuele machine, krijgt deze de naam 'ADServer' en wordt deze heropgestart. Daarna kan er begonnen worden met het installeren van de nodige rollen. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de ADServer opgewaardeerd naar domeincontroller in het fictieve domein "Baele.be". \newline 
 
-Aangezien deze server een webserver is, zal de IIS-rol met al zijn features ook worden geïnstalleerd. ........
+Op de server zijn twee netwerkadapters aanwezig, één die is verbonden met het internet (Internetadapter) en een andere die is verbonden met het LAN (LANadapter). De internetadapter staat geconfigureerd als NAT en de IP -en DNS-informatie worden alletwee automatisch aangewezen. Bij de LANadapter zijn de instellingen anders, hier staat deze configureerd als "Custom: specific virtual network" en wordt er gekozen om het virtuele network de naam \textit{VMnet0} mee te geven. Hierdoor moeten de IP -en DNS-instellingen handmatig geconfigureerd worden. De server krijgt al IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline
+
+Het volgende dat moet gebeuren is het installeren en configureren van de DNS-rol. Dit is vrij simpel en neemt niet veel tijd in beslag. In het scherm "DNS-beheer" wordt er in het tabblad "Zones voor reverse lookup" een zone aangemaakt met de naam "1.168.192.in-addr.arpa" en daarna wordt er een PTR-record aangemaakt die verwijst naar de net geconfigureerde LANadapter met het juiste IP-adres. Hierna wordt de DHCP-rol geïnstalleerd en wordt er een nieuwe scope aangemaakt met de naam "TestScope". Het eerste IP-adres in het bereik is 192.168.1.1 en het laatste 192.168.1.254. De adressen van 192.168.1.1 tot 192.168.1.20 worden uitgesloten voor distributie. De router is de server zelf dus het IP-adres is 192.168.1.2 net als de DNS-server. Tot slot wordt de scope geactiveerd. \newline
+
+\subsection{Installatie + configuratie WebServer}
+De installatie start op dezelfde manier als de voorgaande machine, maar in dit geval wordt de machine 'WebServer' genoemd.
 
 \subsection{Installatie + configuratie aanvallersmachine}
-De tweede virtuele machine die nodig is in dit onderzoek is ........
+De derde en laatste virtuele machine die nodig is in dit onderzoek is de Kali Linux-aanvallersmachine. Deze is vrij makkelijk te installeren en heeft ook niet zo hoge systeemvereisten. Voor deze machine is er maar 20Gb aan gealloceerd geheugen nodig samen met 1 netwerkadapter en 512MB aan RAM-geheugen. Bij het starten van de installatie is het gemakkelijk dat er gekozen wordt voor 'graphical install'. De meeste stappen zijn voor de hand liggend, maar bij partition disks wordt er 'guided-use entire disk' het best geselecteerd. Voor de rest zijn de overige stappen niet zo belangrijk en is de installatie zo afgerond.
 
-
-
-\subsection{Opzetten testomgeving OVERBODIG}
-Om zelf wat ervaring op te doen met port scanning ben ik gestart met een virtuele machine te maken waarop Windows Server 2012 R2 op geïnstalleerd staat en deze heb ik de naam \textbf{ADServer} genoemd. Als eerste heb ik deze domeincontroller gemaakt in het fictieve domein \textit{Baele.be}. Verder heb ik ook de rollen DNS, DHCP en Externe toegang geïnstalleerd en heb ik als subnet gekozen voor 192.168.1.0/24 waar ik de range 192.168.1.1 tot 192.168.1.30 heb ik uitgesloten voor distributie. Dan ben ik naar de website gegaan van Microsoft om SQL server 2012 te downloaden en te installeren. Ook heb ik de rol IIS 8 geïnstalleerd en heb ik een kleine lokale website gemaakt met een ASP.NET-applicatie op, deze is te bereiken via "\textit{baele.be}". Deze applicatie heb ik gemaakt via Microsoft Visual studio en heeft ook een SQL-databank in de backend. Op de startpagina worden namen weergegeven die in een tabel in de databank zitten. Je kan je ook inloggen via een naam en wachtwoord die zich in de databank bevinden. Als je bent ingelogged dan kan je een speciale pagina "member" bekijken en als je niet ingelogged bent dan lukt dit niet. Tot slot heb ik de server het IP-adres 192.168.1.2 gegeven. Deze zaken moeten zich allemaal op de server bevinden zodat ik mijn onderzoeksvraag goed kan beantwoorden. \newline
-
-Nu dat er 1 server opstaat is het tijd om enkele hosts op te zetten en deze toe te voegen aan het domein. Ik heb 3 Windows hosts opgezet met de IP-adressen 192.168.1.31 - 192.168.1.32 - 192.168.1.33 en naam WS1 - WS2 - WS3. WS1 is een Windows 8.1-machine, WS2 is een Windows 7-machine en WS1 is een Windows Vista-machine. Tot slot heb ik een kali virtuele machine gemaakt om in het netwerk binnen te dringen. Met deze 5 virtuele machines kan ik verschillende soorten software en technologieën testen die ervoor zorgen dat ik mijn onderzoeksvragen zo nauwkeurig en correct mogelijk kan beantwoorden. 
-
-\subsection{}
 %% TODO: de structuur en titel van deze hoofdstukken hangen af van je
 % eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
 \chapter{Opzetten server met best practises beveiliging}
@@ -307,29 +294,41 @@ Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-reques
 
 \chapter{Aanvallen webserver}
 %Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.
-\section{Sockstress DDOS-aanval}
-\subsection{Uitvoering en schade}
-Een fysieke machine kan onbruikbaar gemaakt worden door een simpele aanval genaamd "sockstress". Deze aanval heeft de laatste tijd enorm gewonnen aan populariteit in het hackersmilieu en dus ook in de kringen van netwerkbeveiligers. Deze methode wordt gebruikt om servers aan te vallen over het internet door middel van TCP. Deze methode zorgt ervoor dat het lokale geheugen zoveel aanvragen moet behandelen dat deze langzaam maar zeker volloopt zodat de server vastloopt en onbruikbaar wordt. Dit wordt ook wel een DOS (Denial Of Service)-aanval genoemd. \newline \newline
+\section{Applicatie laag}
+\subsection{Sockstress DDOS-aanval}
+\subsubsection{Risico-analyse}
+Een sockstress-aanval heeft maar één doel en dat is 
 
-Op de aanvallersmachine, in dit geval de eerder geconfigureerde Kali Linux-machine, worden er twee verschillende 'command lines (cmd)' geopend. In de eerste cmd wordt er \textit{'nmap <ipadres slachtoffer>'} getyped om te kijken welke poorten van het slachtoffer die open zijn. De open poorten worden dan ergens genoteerd want deze zijn later nog nodig. Nadat deze zijn genoteerd, wordt er een script genaamd \textit{"./arppoi"} geopend in dit terminalvenster. Dit scriptje is te vinden op het internet en de code is te zien in de appendix. De bedoeling van dit script is ARP spoofing. ARP spoofing is een techniek die door veel hackers wordt gebruikt en waar er vermomde ARP-berichten in een lokaal netwerk worden verzonden. De bedoeling is om het MAC-adres van de aanvaller te associëren met het IP-adres van een host, bijvoorbeeld een default gateway of server, zodat al het verkeer dat bedoelt is voor dat specifieke adres naar de aanvaller wordt verzonden. \newline \newline
+\subsubsection{Uitvoering}
+Een fysieke machine kan onbruikbaar gemaakt worden door een simpele aanval genaamd "sockstress". Deze aanval heeft de laatste tijd enorm gewonnen aan populariteit in het hackersmilieu en dus ook in de kringen van netwerkbeveiligers. Deze methode wordt gebruikt om servers aan te vallen over het internet door middel van TCP. Deze methode zorgt ervoor dat het lokale geheugen zoveel aanvragen moet behandelen dat deze langzaam maar zeker volloopt zodat de server vastloopt en onbruikbaar wordt. Dit wordt ook wel een DOS (Denial Of Service)-aanval genoemd. \newline 
 
-Nu dat scriptje draait in het ene terminalvenster, hoeft er in het andere venster maar één lijntje ingevuld worden. \textit{"./sockstress -A -C -1 -d <IP van target> -m -1 -Ms -p <alle opgeschreven poorten> -r 100000 -s 172.16.246.0/25 -vv"}. Dit werkt ook alleen maar als sockstress is gedownload en als je navigeert naar de sockstress-map. Nu kan er gekeken worden naar de server en is er te zien dat het RAM-geheugen dat in gebruik is op de server exponentieel aan het stijgen is. Als dit de maximume waarde bereikt dan zal de server vastlopen en kan er niets meer op gedaan worden. De engiste manier om de server terug aan de praat te krijgen is door manueel de uit-knop in te drukken en hem dan weer op te starten. Het spreekt voor zich dat dit een netwerk veel schade kan toebrengen en tijdelijk offline kan halen.
+Op de aanvallersmachine, in dit geval de eerder geconfigureerde Kali Linux-machine, worden er twee verschillende 'command lines (cmd)' geopend. In de eerste cmd wordt er \textit{'nmap <ipadres slachtoffer>'} getyped om te kijken welke poorten van het slachtoffer die open zijn. De open poorten worden dan ergens genoteerd want deze zijn later nog nodig. Nadat deze zijn genoteerd, wordt er een script genaamd \textit{"./arppoi"} geopend in dit terminalvenster. Dit scriptje is te vinden op het internet en de code is te zien in de appendix. De bedoeling van dit script is ARP spoofing. ARP spoofing is een techniek die door veel hackers wordt gebruikt en waar er vermomde ARP-berichten in een lokaal netwerk worden verzonden. De bedoeling is om het MAC-adres van de aanvaller te associëren met het IP-adres van een host, bijvoorbeeld een default gateway of server, zodat al het verkeer dat bedoelt is voor dat specifieke adres naar de aanvaller wordt verzonden. \newline 
 
-\subsection{Bescherming en preventie}
+Nu dat scriptje draait in het een terminalvenster, hoeft er in het andere venster maar één lijntje ingevuld worden. \textit{"./sockstress -A -C -1 -d <IP van target> -m -1 -Ms -p <alle opgeschreven poorten> -r 100000 -s 172.16.246.0/25 -vv"}. Dit werkt ook alleen maar als sockstress is gedownload en als je navigeert naar de sockstress-map. Nu kan er gekeken worden naar de server en is er te zien dat het RAM-geheugen dat in gebruik is op de server exponentieel aan het stijgen is. Als dit de maximume waarde bereikt dan zal de server vastlopen en kan er niets meer op gedaan worden. De engiste manier om de server terug aan de praat te krijgen is door manueel de uit-knop in te drukken en hem dan weer op te starten.
+
+\subsubsection{Bescherming en preventie}
 De best practices die op de server zijn geïmplementeerd zijn in dit geval niet voldoende en dus moet er een oplossing gevonden worden. De oplossing in dit geval is vrij simpel. Dit kan gedaan worden door het blokkeren van een IP-adres als het meer dan 10 connecties met een poort maakt in minder dan 30 seconden. Dit wordt gedaan door een simpel lijntje in te typen in de router command line \textit{'iptables -I INPUT -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 -j DROP'}. Aangezien de server enkel handmatig kan worden afgesloten, is de kans reeël dat er gegevensverlies is. Daarvoor is het belangrijk dat dit direct wordt bekeken nadat de server opnieuw is opgestart zodat er direct een restore kan plaatsvinden als dit nodig is. Hiervoor zijn de best practices wat betreft back-ups wel voldoende. 
 
-\section{Brute force Hydra-aanval}
-\subsection{Uitvoering en schade}
-Hydra is een zeer gekende tool die wordt gebruikt op een Kali-machine. Met deze tool kan een persoon wachtwoorden kraken. Het principe is vrij simpel, de enige benodigheden zijn een Kali-machine, het ip-adres van het slachtoffer en een woordlijst die zelf kan gemaakt worden of die van het internet kan gehaald worden. In deze aanval wordt de naam van een administrator-account meegegeven en een lijst van verschillende worden of wachtwoorden die één voor één worden uitgeprobeerd. \newline \newline
+\subsection{Brute force Hydra-aanval}
+\subsubsection{Uitvoering en schade}
+Hydra is een zeer gekende tool die wordt gebruikt op een Kali-machine. Met deze tool kan een persoon wachtwoorden kraken. Het principe is vrij simpel, de enige benodigheden zijn een Kali-machine, het ip-adres van het slachtoffer en een woordlijst die zelf kan gemaakt worden of die van het internet kan gehaald worden. In deze aanval wordt de naam van een administrator-account meegegeven en een lijst van verschillende worden of wachtwoorden die één voor één worden uitgeprobeerd. \newline 
 
-Voordat deze aanval kan uitgevoerd worden moet de aanvaller eerst de naam van het administrator-account weten. Standaard is dit "Administrator" en als netwerkbeheerders dit niet aangepast hebben dan is het zeer makkelijk om met deze aanval binnen te dringen. In dit geval beschikt de aanvaller over het eigen gemaakte account met de naam "BaeleAdministrator". In de aanvallersmachine wordt er allereerst een woordenlijst gedownload of aangemaakt. In dit geval wordt er een zelfgemaakte woordenlijst gebruikt aangezien zo een internetlijst 100 000'en verschillende combinaties hebben die zeer lang duren om helemaal door te lopen. In dit geval bevat de zelfgemaakte woordenlijst 5 woorden: "test, test123, Baele123, groen, bos". In dit geval is Baele123 het echte wachtwoord. Daarna wordt er in het terminalvenster dit lijntje ingetyped: "\textit{hydra -t 1 -l BaeleAdministrator -P /root/woordenlijst.txt. -vV <IP-ADRES slachtoffer> ftp}". Daarna wordt elk woord in de lijst apart uitgeprobeerd totdat er een juiste combinatie is of tot de lijst doorlopen is. \newline \newline
+Voordat deze aanval kan uitgevoerd worden moet de aanvaller eerst de naam van het administrator-account weten. Standaard is dit "Administrator" en als netwerkbeheerders dit niet aangepast hebben dan is het zeer makkelijk om met deze aanval binnen te dringen. In dit geval beschikt de aanvaller over het eigen gemaakte account met de naam "BaeleAdministrator". In de aanvallersmachine wordt er allereerst een woordenlijst gedownload of aangemaakt. In dit geval wordt er een zelfgemaakte woordenlijst gebruikt aangezien zo een internetlijst 100 000'en verschillende combinaties hebben die zeer lang duren om helemaal door te lopen. In dit geval bevat de zelfgemaakte woordenlijst 5 woorden: "test, test123, Baele123, groen, bos". In dit geval is Baele123 het echte wachtwoord. Daarna wordt er in het terminalvenster dit lijntje ingetyped: "\textit{hydra -t 1 -l BaeleAdministrator -P /root/woordenlijst.txt. -vV <IP-ADRES slachtoffer> ftp}". Daarna wordt elk woord in de lijst apart uitgeprobeerd totdat er een juiste combinatie is of tot de lijst doorlopen is. \newline 
 
 De schade die deze aanval aan kan richten is immens. Bij een succesvolle aanval weet de aanvaller het wachtwoord van een account met administrator rechten. Hiermee kan hij zich aanmelden via o.a. verbinding met extern bureaublad en kan de aanvaller aan alles wat zich op een server bevindt. Het spreekt voor zich dat dit niet goed is en dat dit ervoor kan zorgen dat er geheime bestanden worden gestolen of dat het netwerk wordt platgegooid en noem maar op.
 
-\subsection{Bescherming en preventie}
-De best practices die eerder besproken zijn, zouden voldoende moeten zijn om de aanval af te weren. Hoe complexer een wachtwoord is, hoe kleiner de kans is dat het wachtwoord zich in de woordenlijst zal bevinden. Er bestaan natuurlijk gigantisch grote woordenlijsten waar bijna alle mogelijke combinaties in gebruikt worden, maar deze duren veel langer om uit te voeren. Hoe complexer het wachtwoord, hoe langer de aanval ook moet duren dus hoe meer kans er is dat de aanval wordt opgemerkt of wordt onderbroken. \newline \newline
+\subsubsection{Bescherming en preventie}
+De best practices die eerder besproken zijn, zouden voldoende moeten zijn om de aanval af te weren. Hoe complexer een wachtwoord is, hoe kleiner de kans is dat het wachtwoord zich in de woordenlijst zal bevinden. Er bestaan natuurlijk gigantisch grote woordenlijsten waar bijna alle mogelijke combinaties in gebruikt worden, maar deze duren veel langer om uit te voeren. Hoe complexer het wachtwoord, hoe langer de aanval ook moet duren dus hoe meer kans er is dat de aanval wordt opgemerkt of wordt onderbroken. \newline 
 
 Ook een best practice is om het default account "Administrator" uit te schakelen en een zelfgemaakt account te maken. Als dit wordt gedaan dan moet een aanvaller al kennis hebben over het netwerk en de server om te weten welk account er kan gekraakt worden. Als het default account wordt gebruikt dan kan iedereen op elke plaats in de wereld binnen breken zonder dat de persoon iets weet van een server. 
+
+\section{Transportlaag}
+
+\section{Internetlaag}
+
+\section{Netwerklaag}
+
+
 
 \textbf{LOGS}
 
@@ -350,7 +349,7 @@ Post mortem kan opgedeeld worden in manueel en automatisch. Bij automatisch word
 % onderzoeksvra(a)g(en). Reflecteer kritisch over het resultaat. Zijn er
 % zaken die nog niet duidelijk zijn? Heeft het ondezoek geleid tot nieuwe
 % vragen die uitnodigen tot verder onderzoek?
-\lipsum[76-80]
+
 
 
 \bibliographystyle{apa}

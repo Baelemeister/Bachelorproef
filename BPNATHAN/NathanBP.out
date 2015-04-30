@@ -5,10 +5,10 @@
 \BOOKMARK [0][-]{chapter.2}{Methodologie}{}% 5
 \BOOKMARK [1][-]{section.2.1}{Voorkennis en onderzoek}{chapter.2}% 6
 \BOOKMARK [1][-]{section.2.2}{Opzetten testomgeving}{chapter.2}% 7
-\BOOKMARK [2][-]{subsection.2.2.1}{Installatie + configuratie server}{section.2.2}% 8
-\BOOKMARK [2][-]{subsection.2.2.2}{Installatie + configuratie aanvallersmachine}{section.2.2}% 9
-\BOOKMARK [2][-]{subsection.2.2.3}{Opzetten testomgeving OVERBODIG}{section.2.2}% 10
-\BOOKMARK [2][-]{subsection.2.2.4}{}{section.2.2}% 11
+\BOOKMARK [2][-]{subsection.2.2.1}{Situering}{section.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.2}{Installatie + configuratie ADServer}{section.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.3}{Installatie + configuratie WebServer}{section.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.4}{Installatie + configuratie aanvallersmachine}{section.2.2}% 11
 \BOOKMARK [0][-]{chapter.3}{Opzetten server met best practises beveiliging}{}% 12
 \BOOKMARK [1][-]{section.3.1}{Inloggen}{chapter.3}% 13
 \BOOKMARK [1][-]{section.3.2}{Updates}{chapter.3}% 14
@@ -21,12 +21,12 @@
 \BOOKMARK [2][-]{subsection.3.5.4}{Request Filtering Rules}{section.3.5}% 21
 \BOOKMARK [2][-]{subsection.3.5.5}{Inschakkelen logs}{section.3.5}% 22
 \BOOKMARK [0][-]{chapter.4}{Aanvallen webserver}{}% 23
-\BOOKMARK [1][-]{section.4.1}{Sockstress DDOS-aanval}{chapter.4}% 24
-\BOOKMARK [2][-]{subsection.4.1.1}{Uitvoering en schade}{section.4.1}% 25
-\BOOKMARK [2][-]{subsection.4.1.2}{Bescherming en preventie}{section.4.1}% 26
-\BOOKMARK [1][-]{section.4.2}{Brute force Hydra-aanval}{chapter.4}% 27
-\BOOKMARK [2][-]{subsection.4.2.1}{Uitvoering en schade}{section.4.2}% 28
-\BOOKMARK [2][-]{subsection.4.2.2}{Bescherming en preventie}{section.4.2}% 29
+\BOOKMARK [1][-]{section.4.1}{Applicatie laag}{chapter.4}% 24
+\BOOKMARK [2][-]{subsection.4.1.1}{Sockstress DDOS-aanval}{section.4.1}% 25
+\BOOKMARK [2][-]{subsection.4.1.2}{Brute force Hydra-aanval}{section.4.1}% 26
+\BOOKMARK [1][-]{section.4.2}{Transportlaag}{chapter.4}% 27
+\BOOKMARK [1][-]{section.4.3}{Internetlaag}{chapter.4}% 28
+\BOOKMARK [1][-]{section.4.4}{Netwerklaag}{chapter.4}% 29
 \BOOKMARK [0][-]{chapter.5}{Post mortem}{}% 30
 \BOOKMARK [0][-]{chapter.6}{Notities}{}% 31
 \BOOKMARK [0][-]{chapter.7}{Conclusie}{}% 32
