@@ -27,5 +27,9 @@
 \BOOKMARK [1][-]{section.4.3}{Internetlaag}{chapter.4}% 27
 \BOOKMARK [1][-]{section.4.4}{Netwerklaag}{chapter.4}% 28
 \BOOKMARK [0][-]{chapter.5}{Post mortem}{}% 29
-\BOOKMARK [0][-]{chapter.6}{Notities}{}% 30
-\BOOKMARK [0][-]{chapter.7}{Conclusie}{}% 31
+\BOOKMARK [1][-]{section.5.1}{Manueel}{chapter.5}% 30
+\BOOKMARK [2][-]{subsection.5.1.1}{RAM-geheugen}{section.5.1}% 31
+\BOOKMARK [1][-]{section.5.2}{Automatisch}{chapter.5}% 32
+\BOOKMARK [2][-]{subsection.5.2.1}{Prestatiemeter}{section.5.2}% 33
+\BOOKMARK [0][-]{chapter.6}{Notities}{}% 34
+\BOOKMARK [0][-]{chapter.7}{Conclusie}{}% 35

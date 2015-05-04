@@ -336,17 +336,22 @@ Ook een best practice is om het default account "Administrator" uit te schakelen
 %Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
 \section{Manueel}
 \subsection{RAM-geheugen}
-Manueel kan er makkelijk gekeken worden naar het RAM-geheugen dat wordt gebruikt door 'ctrl+alt+del' in te drukken of door met de rechtermuisknop te drukken op het Windows-logo linksonder op het scherm en 'Taakbeheer' te selecteren. Hierin zijn er verschillende tabbladen en het RAM-geheugen kan gevonden worden in het tabblad 'Prestaties' waarna er kan geklikt worden op 'Geheugen' in de linkerkolom. In dit venster is het geheugengebruik voor de laatste 60 seconden zichtbaar en wordt deze elke seconden ververst. Als de curve per seconde omhoog gaat dan kan er sprake zijn van een Sockstress DDOS-aanval en kan er tijdig gehandeld worden. Het manueel bekijken van het RAM-geheugen kan handig zijn als de server opeens trager begint te werken om te kijken of het probleem niet hier ligt.
+Manueel kan er makkelijk gekeken worden naar het RAM-geheugen dat wordt gebruikt door "`ctrl+alt+del"' in te drukken of door met de rechtermuisknop te drukken op het Windows-logo linksonder op het scherm en "`Taakbeheer"' te selecteren. Hierin zijn er verschillende tabbladen en het RAM-geheugen kan gevonden worden in het tabblad "`Prestaties"' waarna er kan geklikt worden op "`Geheugen"' in de linkerkolom. In dit venster is het geheugengebruik voor de laatste 60 seconden zichtbaar en wordt deze elke seconden ververst. Als de curve per seconde omhoog gaat dan kan er sprake zijn van een Sockstress DDOS-aanval en kan er tijdig gehandeld worden. Het manueel bekijken van het RAM-geheugen kan handig zijn als de server opeens trager begint te werken om te kijken of het probleem niet hier ligt.
 
 \section{Automatisch}
+\subsection{Prestatiemeter}
+Met behulp van de prestatiemeter-tool kunnen bepaalde zaken makkelijk in de gaten gehouden worden. In de prestatiemeter kunnen er gegevensverzamelaarset aangemaakt worden naar persoonlijke voorkeur die het mogelijk maken om elk aspect apart onder de loep te nemen en deze in log files op de slaan.
 
+\subsubsection{RAM-geheugen}
+De eerste gegevensverzamelaarset die zeer handig is om te maken is één die het gebruik van het RAM-geheugen in de gaten houdt. Deze kan worden ingesteld door allereerst naar de tool "`prestatiemeter"' te gaan en te rechterklikken op "`Prestatiemeter"' onder het tabblad "`controlehulpprogramma's"'. Daarna moet er onder de keuze "`Nieuw"' gekozen worden voor "`gegevensverzamelaarset"'. Nu kan er een gepaste naam gekozen worden voor deze set, in dit geval is "`RAMGeheugen"' een goede naam aangezien we hier het RAM-geheugen gaan bekijken. Bij de volgende keuzes mag er 2x op "`volgende"' gedrukt worden. \newline
 
+Nu is de set aangemaakt en is deze terug te vinden onder het tabblad "`Gedefinieerd door de gebruiker"' en moet er hier op gedubelklikt worden tot "`Logboek voor Systeemmonitor"' zichtbaar is en dan moet er hier op gedubbelklikt worden. Nu zijn de eigenschappen van de set zichtbaar en kunnen er via "`Toevoegen"' specifieke paramters toegevoegd worden. In dit geval is het handig om naar "`Geheugen"' te gaan en daar te kiezen voor "`Beschikbare megabytes"' en "`Percentage toegewezen bytes in gebruik"'.	Nadat deze zaken zijn toegevoegd kan er 2x geklikt worden op de OK-knop. Nu moet er met de rechtermuisknop op de juist aangemaakt set geklikt worden om dan op "`starten"' te klikken, dit een 10-tal minuten te laten lopen en daarna op "`stoppen"' te drukken. Nu kan er gekeken worden naar het tabblad "`rapporten"' en "`gedefinieerd door de gebruiker"' naar wat deze actie juist heeft opgebracht. In dit scherm is er een bestand zichtbaar (met de bijhorende datum) die bij het dubbeklikken alle paramters laat zien met de bijhorende tijd in een mooie grafiek. Hier is duidelijk wanneer precies er pieken zijn in het gebruik van het RAM-geheugen en wanneer deze precies een bepaalde grens overschrijdt.
 
 POLYMON IS EEN IDEE.
 
 
 \chapter{Notities}
-Hier hou ik de zaken bij die ik al heb uitgetest, maar die ik nog niet bij 1 van de 3 hoofdstukken heb geplaatst. Dit is mijn tijdelijke "dump" waar ik test zaken schrijf voor de bij de echte hoofdstukken terecht komen.
+Hier hou ik de zaken bij die ik al heb uitgetest, maar die ik nog niet bij 1 van de 3 hoofdstukken heb geplaatst. Dit is mijn tijdelijke "dump" waar ik test zaken schrijf voor deze bij de echte hoofdstukken terecht komen.
 \newpage
 Post mortem kan opgedeeld worden in manueel en automatisch. Bij automatisch worden logs aangemaakt als er een regel is overschreden.
 
