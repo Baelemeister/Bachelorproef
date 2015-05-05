@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: NathanBP.aux
+The style file: apa.bst
+Database file #1: NathanBP.bib
+Warning--I didn't find a database entry for "Pollefliet2011"
+Warning--I didn't find a database entry for "Knuth1998"
+Warning--I didn't find a database entry for "Creeger2009"
+You've used 1 entry,
+            1940 wiz_defined-function locations,
+            483 strings with 3834 characters,
+and the built_in function-call counts, 274 in all, are:
+= -- 23
+> -- 7
+< -- 1
++ -- 2
+- -- 2
+* -- 19
+:= -- 54
+add.period$ -- 2
+call.type$ -- 1
+change.case$ -- 5
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 13
+empty$ -- 21
+format.name$ -- 3
+if$ -- 48
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 7
+num.names$ -- 3
+pop$ -- 6
+preamble$ -- 1
+purify$ -- 6
+quote$ -- 0
+skip$ -- 12
+stack$ -- 0
+substring$ -- 12
+swap$ -- 3
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 6
+warning$ -- 0
+while$ -- 2
+width$ -- 0
+write$ -- 12
+(There were 3 warnings)
