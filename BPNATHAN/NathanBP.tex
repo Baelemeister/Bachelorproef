@@ -213,7 +213,7 @@ Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backsla
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
 \subsection{Zijn de "`best practices"' voldoende als beveiliging tegen een externe of interne aanval?}
 
-
+Er circuleren talrijke zogenaamde "`best practices"' om een webserver te beveiligen tegen interne en externe bedreigingen. Deze "`best practices worden geïmplementeerd op een webserver en daarna wordt deze aangevallen door enkele veelgebruikte en bekende interne en externe aanvallen om te testen of deze best practices voldoende zijn.
 
 \subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
 
@@ -299,8 +299,18 @@ definitie van een risico-analyse en waarom deze nodig is en hoe deze wordt uitge
 Met behulp van een netwerkscanner, in dit geval nmap, kan er gekeken worden welke poorten kunnen geëxploit worden. Hackers gebruiken dit om te zoeken naar open poorten waardoor ze binnen een computer of netwerk kunnen breken m.b.v. een exploit. Op de webserver zullen er meer poorten open zijn dan op de ADServer die ook domeincontroller is. Bijvoorbeeld poorten 80 en 443 zijn specifiek voor een webserver. In het geval dat er poorten open zijn die niet open moeten staan, dan kunnen deze worden gesloten door naar het takenbeheer te gaan en te kijken welke service er bij deze poort hoort. Hoort deze service niet thuis op het netwerk of op de computer, dan kan deze verwijderd worden. Dankzij het uitvoeren van een port scan kan er gekeken worden of er op een server poorten open staan die vatbaar zijn voor een aanval. Indien deze tijdig worden gevonden kan een potentiële aanval afgewend zijn.
 
 \section{Kwestbaarheidscanner}
-RedSeal SRM
+Nessus is volgens \cite{Jackson2010} een populaire kwetsbaarheidscanner die zoekt naar zwakke plekken in besturingssystemen, netwerkapparaten en applicaties. Deze scans gebeuren via een database zodat alle nieuwste bedreigingen direct kunnen gevonden worden. Daarom is het ook belangrijk dat Nessus wekelijks of dagelijks wordt geupdate zodat elke scan zo efficiënt mogelijk kan gebeuren. Deze soort scan is een uitgebreidere versie van de nmap-scan. \newline
 
+Allereerst moeten er policies ingesteld worden die zullen gebruikt worden om het netwerk in te schatten. In deze sectie worden ook plugins ingesteld die het hart van Nessus voorstellen. Er kunnen duizenden plugins worden ingesteld, maar om de snelheid van de scan te verbeteren is het gebruikelijk om enkel de plugins te pakken die van toepassing zijn om het te onderzoeken netwerk. Nadat deze zijn ingesteld kan er één of meerdere IP-adressen ingegeven worden om de bijhorende apparaten te scannen. Voor elke host die is gescannend komt er een lijst met alle zwaktes op een overzichtsscherm. Deze zwaktes worden gecatalogiseerd naargelang de grootte. (Afbeelding 4-1)
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.60]{img/Nessus1}
+\end{center}
+\caption{Voorbeeld Nessus-scan}
+\end{figure}
+
+Bij het klikken op een specifieke bedreiging is er een gedetailleerde uitleg zichtbaar. Deze uitleg bevat o.a. een voorgestelde oplossing op het probleem en hyperlinks die verwijzen naar technische documenten die het probleem toelichten. Dit is enkel een simpel gebruik van de Nessus-tool, deze kan nog veel uitgebreider gebruikt worden, maar dit is in dit geval niet aan de orde. \citep{Jackson2010}
 
  
 
