@@ -236,11 +236,12 @@ Dit onderzoek bestaat uit de volgende methodiek:
 	\item Het uitvoeren van een post-mortem om sporen van inbraak bloot te leggen en kijken waar het probleem zich bevindt.
 \end{enumerate}
 
-\section{Opzetten testomgeving}
-\subsection{Situering}
+\begin{figure}[h!]
 \begin{center}
 \includegraphics{img/Situatie}
 \end{center}
+\caption{Proefopstelling}
+\end{figure}
 
 In de afbeelding is te zien welke machines allemaal nodig zijn om dit onderzoek tot een goed einde te brengen. Ten eerste is er een Active Directory-server nodig die ook domeincontroller is in het domein en deze server is ook nog DNS-server ook. Dan is er de webserver die lid is van hetzelfde domein als de ADServer natuurlijk. Deze zijn aangesloten aan een switch en een router. Ten slotte is er ook nog een aanvallersmachine om te proberen de server te hacken. Deze is ook aangesloten aan een router op een andere locatie. Tot slot wordt er gebruik gemaakt van VMWare Workstation om al deze virtuele machines te maken met elkaar te verbinden.
 
@@ -272,9 +273,18 @@ Nog een belangrijke onderdeel van een server met best practice beveiliging, is h
 Het maken van geautomatiseerde backups is essentieel voor een server binnen een netwerk. Een fout, probleem of aanval kan elke moment van de dag gebeuren en als dit gebeurd moet het mogelijk zijn om het systeem terug te zetten van een eerder gemaakte backup. In de Windows Server Backup-wizard kan dit worden ingesteld voor elke ahrde schijf. In dit geval wordt er enkel elke nacht om 03:00u een backup genomen van de C-schijf. 
 
 \section{Firewall}
-Default is de firewall al vrij goed beveiligd tegen de meeste zaken. Er is echter één aanpassing die in de praktijk veel wordt toegepast en die ook door velen wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit doe je door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "`blokkeren"' te zetten. Standaard staat dit geconfigureerd als "`toestaan"'. Voor de rest zijn er geen algemene best practices te vinden voor de Firewall.
+De firewall is enorm belangrijk en heeft vooraf al een configuratie meegekregen. Er is echter één aanpassing van de configuratie die in de praktijk veel wordt toegepast en die ook door \cite{Nabors2013} wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit wordt gedaan door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "`blokkeren"' te zetten. Standaard staat dit geconfigureerd als "`toestaan"'. Hierna kunnen er eigen inkomende en uitgaande regels geconfigureerd worden naargelang de applicaties die op de server komen te staan en welke poorten open of dicht moeten zijn.
+
+\section{Anti-virus}
+Een degelijke anti-virus is enorm belangrijk om een server, computer of ander online apparaat te beschermen. Bij het gebruiken van een desktop of laptop voor persoonlijk gebruik, is een gratis versie van een bepaalde anti-virus-software voldoen. Voor in een bedrijfsomgeving is het beter dat er een betaalde versie wordt genomen aangezien deze veel meer functies en opties hebben. Het is ook belangrijk dat de software dagelijks wordt geupdate zodat er geen nieuwe bedreigingen ongezien binnen geraken. Best wordt er 's nachts, als niemand de server gebruikt, automatisch een anti-virus scan gedaan om te kijken of alles nog steeds veilig is.
 
 \section{IIS}
+\subsection{Plaatsing}
+De plaatsing van IIS is belangrijk. Het is volgens \cite{Microsoft2013} gebruikelijk om de webserver apart van de domeincontroller te doen. Dit heeft als reden dat er geen lokale accounts zijn op een domeincontroller en deze lokale accounts zijn belangrijk voor een veilige IIS-server. Het samenplaatsen van een DC en een webserver beperkt de beveiligingsmogelijkeden enorm. Bijvoorbeeld een nieuwe exploit die door een hacker wordt gebruikt zal zo niet alleen de webserver aantasten, maar ook het hele netwerk. Daarom zijn deze twee dus het best gescheiden, zoals in deze opstelling het geval is.
+
+\subsection{Inetpub}
+De inetpub-map wordt bij elke installatie van IIS aangemaakt en standaard wordt die geplaatst op de C-schijf. Aangezien dit dezelfde schijf is waar het besturingssysteem opstaat, is het gebruikelijk om deze map op een aparte schijf te zetten zodat de toegang tot deze schijf beter kan beschermt worden. De schijf waar het besturingssysteem opstaat kan nooit zo goed beschermt worden als een aparte schijf. \citep{Microsoft2013}
+
 \subsection{Modules}
 In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn. In de IIS manager kan er in het modulescherm van de geselecteerde website bepaalde modules op inactief gezet worden. In de lijst moet er beslist worden welke modules nodig zijn en de welke overbodig zijn. De overbodige modules kunnen dan worden uitgeschakeld door deze uit de lijst te verwijderen. 
 
@@ -323,7 +333,7 @@ Bij het klikken op een specifieke bedreiging is er een gedetailleerde uitleg zic
 \subsubsection{Uitvoering en schade}
 Hydra is één van de bekendste en meest gebruikte tools die Kali Linux te bieden heeft en deze is makkelijk terug te vinden op de aanvallersmachine aangezien deze tool bij de top 10 van meest gebruikte tools staat. Met Hydra kan een persoon wachtwoorden kraken van desktops of servers. Het principe is vrij simpel, de enige benodigheden zijn een Kali-machine, het ip-adres van het slachtoffer en een woordlijst die zelf kan gemaakt worden of die van het internet kan gehaald worden. In deze aanval wordt de naam van een administrator-account meegegeven en een lijst van verschillende woorden of wachtwoorden die één voor één worden uitgeprobeerd. Om deze lijst nog efficiënter te maken, kan een hacker gebruik maken van social engineering waar hij persoonlijk informatie over een gebruiker opzoekt, hetgeen zeer makkelijk is via facebook, en deze informatie dan gebruikt om wachtwoorden te vormen. Dit kan variëren van geboorteplaats tot de namen van kinderen of ouders. Al deze informatie wordt in lijsten gestoken met verschillende soorten combinaties om een groter succesratio te kennen. \citep{Wilde2013} \newline 
 
-Voordat deze aanval kan uitgevoerd worden moet de aanvaller eerst de naam van het administrator-account weten. Standaard is dit "`Administrator"' en als netwerkbeheerders dit niet aangepast hebben dan is het zeer makkelijk om met deze aanval binnen te dringen. In dit geval beschikt de aanvaller over het eigen gemaakte account met de naam "`BaeleAdministrator"'. In de aanvallersmachine wordt er allereerst een woordenlijst gedownload of aangemaakt. In dit geval wordt er een zelfgemaakte woordenlijst gebruikt aangezien zo een internetlijst 100 000'en verschillende combinaties hebben die zeer lang duren om helemaal door te lopen. In dit geval bevat de zelfgemaakte woordenlijst 5 woorden: "`test, test123, Baele123, groen, bos"'. In dit geval is Baele123 het echte wachtwoord. Daarna wordt er in het terminalvenster dit lijntje ingetyped: "`\textit{hydra -t 1 -l BaeleAdministrator -P /root/woordenlijst.txt. -vV <IP-ADRES slachtoffer> ftp}"'. Daarna wordt elk woord in de lijst apart uitgeprobeerd totdat er een juiste combinatie is of tot de lijst doorlopen is. \newline 
+Voordat deze aanval kan uitgevoerd worden moet de aanvaller eerst de naam van het administrator-account weten. Standaard is dit "`Administrator"' en als netwerkbeheerders dit niet aangepast hebben dan is het zeer makkelijk om met deze aanval binnen te dringen. In dit geval beschikt de aanvaller over het eigen gemaakte account met de naam "`BaeleAdministrator"'. In de aanvallersmachine wordt er allereerst een woordenlijst gedownload of aangemaakt. In dit geval wordt er een zelfgemaakte woordenlijst gebruikt aangezien zo een internetlijst 100 000'en verschillende combinaties hebben die zeer lang duren om helemaal door te lopen. In dit geval bevat de zelfgemaakte woordenlijst 5 woorden: "`test, test123, Baele123, groen, bos"'. In dit geval is Baele123 het echte wachtwoord. Daarna wordt er in het terminalvenster dit lijntje ingetyped: "`\textit{hydra -t 1 -l BaeleAdministrator -P /root/woordenlijst.txt. -vV <IP-ADRES slachtoffer> ftp}"'. Daarna wordt elk woord in de lijst apart uitgeprobeerd totdat er een juiste combinatie is of tot de lijst doorlopen is. \citep{MoonMei} \newline 
 
 De schade die deze aanval aan kan richten is immens. Bij een succesvolle aanval weet de aanvaller het wachtwoord van een account met administrator rechten. Hiermee kan hij zich aanmelden via o.a. verbinding met extern bureaublad en kan de aanvaller aan alles wat zich op een server bevindt. Het spreekt voor zich dat dit niet goed is en dat dit ervoor kan zorgen dat er geheime bestanden worden gestolen of dat het netwerk wordt platgegooid en noem maar op.
 
@@ -331,6 +341,9 @@ De schade die deze aanval aan kan richten is immens. Bij een succesvolle aanval 
 De best practices die eerder besproken zijn, zijn voldoende om deze aanval af te weren. Hoe complexer een wachtwoord is, hoe kleiner de kans is dat het wachtwoord zich in de woordenlijst zal bevinden. Er bestaan natuurlijk gigantisch grote woordenlijsten waar bijna alle mogelijke combinaties in gebruikt worden, maar deze duren veel langer om uit te voeren. Hoe complexer het wachtwoord, hoe langer de aanval ook moet duren dus hoe meer kans er is dat de aanval wordt opgemerkt of wordt onderbroken. \newline 
 
 Ook een best practice is om het default account "`Administrator"' uit te schakelen en een zelfgemaakt account te maken. Als dit wordt gedaan dan moet een aanvaller al kennis hebben over het netwerk en de server om te weten welk account er kan gekraakt worden. Als het default account wordt gebruikt dan kan iedereen op elke plaats in de wereld binnen breken zonder dat de persoon iets weet van een server. Dit in combinatie met een groepsbeleidobject die het account blokkeert na 3 foutieve pogingen zorgt ervoor dat deze aanval geen schijn van kans heeft.
+
+\subsection{SQL injection}
+Nog uitwerken
 
 \section{Transportlaag}
 \subsection{Sockstress DDOS-aanval}
@@ -353,6 +366,20 @@ Malware is een afkorting van "`malicious software"' en betreft alle software die
 
 Door het typen van de volgende tekst in een kladblokbestand kan er een virus aangemaakt worden: "`@echo off :A start virus.bat start notepad.ext goto A"' en sla dit bestand op als "`virus.bat"'. Dit simpel virus zorgt ervoor dat het RAM-geheugen van een computer of server binnen de minuut helemaal volloopt. Het programma start elke keer een commandprompt op en elke keer als dit gebeurd wordt er ook een nieuwe kladblokapplicatie geopend. Dit gebeurd oneindig veel keer tot het RAM-geheugen vol zit en de server of computer vastloopt. Hierna kan een apparaat enkel manueel worden afgesloten om het weer aan de praat te krijgen.
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.60]{img/MalwareVoorbeeld}
+\end{center}
+\caption{Voorbeeld Malware-aanval}
+\end{figure}
+
+\subsubsection{Bescherming en preventie}
+Het spreekt voor zich dat de best practice voor een anti-virus die eerder al besproken is in 99\% genoeg. Als de anti-virus software up-to-date is en dagelijks wordt geupdate, dan is er zo goed als geen risico dat er bedreigingen op de computer komen. Indien er toch een bedreiging door de anti-virus geraakt, is het aan de persoon in kwestie om verstandig te zijn in wat deze precies open doet en downloadt van het internet. Een veilige extra best practice kan zijn om gebruikers niet de permissie geven om programma's te installeren op de computer. Zo zal er altijd een administrator nodig zijn die zijn toestemming moet geven of een specifiek stukje software mag geïnstalleerd worden.
+
+\subsection{Keylogger}
+Nog uitwerken
+
+
 
 \textbf{LOGS}
 
@@ -361,6 +388,12 @@ Door het typen van de volgende tekst in een kladblokbestand kan er een virus aan
 \section{Manueel}
 \subsection{RAM-geheugen}
 Manueel kan er makkelijk gekeken worden naar het RAM-geheugen dat wordt gebruikt door "`ctrl+alt+del"' in te drukken of door met de rechtermuisknop te drukken op het Windows-logo linksonder op het scherm en "`Taakbeheer"' te selecteren. Hierin zijn er verschillende tabbladen en het RAM-geheugen kan gevonden worden in het tabblad "`Prestaties"' waarna er kan geklikt worden op "`Geheugen"' in de linkerkolom. In dit venster is het geheugengebruik voor de laatste 60 seconden zichtbaar en wordt deze elke seconden ververst. Als de curve per seconde omhoog gaat dan kan er sprake zijn van een Sockstress DDOS-aanval en kan er tijdig gehandeld worden. Het manueel bekijken van het RAM-geheugen kan handig zijn als de server opeens trager begint te werken om te kijken of het probleem niet hier ligt.
+
+\subsection{Geblokkeerde accounts}
+uitwerken
+
+\subsection{Malware}
+uitwerken
 
 \section{Automatisch}
 \subsection{Prestatiemeter}
@@ -371,13 +404,11 @@ De eerste gegevensverzamelaarset die zeer handig is om te maken is één die het
 
 Nu is de set aangemaakt en is deze terug te vinden onder het tabblad "`Gedefinieerd door de gebruiker"' en moet er hier op gedubelklikt worden tot "`Logboek voor Systeemmonitor"' zichtbaar is en dan moet er hier op gedubbelklikt worden. Nu zijn de eigenschappen van de set zichtbaar en kunnen er via "`Toevoegen"' specifieke paramters toegevoegd worden. In dit geval is het handig om naar "`Geheugen"' te gaan en daar te kiezen voor "`Beschikbare megabytes"' en "`Percentage toegewezen bytes in gebruik"'.	Nadat deze zaken zijn toegevoegd kan er 2x geklikt worden op de OK-knop. Nu moet er met de rechtermuisknop op de juist aangemaakt set geklikt worden om dan op "`starten"' te klikken, dit een 10-tal minuten te laten lopen en daarna op "`stoppen"' te drukken. Nu kan er gekeken worden naar het tabblad "`rapporten"' en "`gedefinieerd door de gebruiker"' naar wat deze actie juist heeft opgebracht. In dit scherm is er een bestand zichtbaar (met de bijhorende datum) die bij het dubbeklikken alle paramters laat zien met de bijhorende tijd in een mooie grafiek. Hier is duidelijk wanneer precies er pieken zijn in het gebruik van het RAM-geheugen en wanneer deze precies een bepaalde grens overschrijdt.
 
-POLYMON IS EEN IDEE.
+\subsubsection{foutieve inlogpogingen}
+nog uitwerken
 
-
-\chapter{Notities}
-Hier hou ik de zaken bij die ik al heb uitgetest, maar die ik nog niet bij 1 van de 3 hoofdstukken heb geplaatst. Dit is mijn tijdelijke "dump" waar ik test zaken schrijf voor deze bij de echte hoofdstukken terecht komen.
-\newpage
-Post mortem kan opgedeeld worden in manueel en automatisch. Bij automatisch worden logs aangemaakt als er een regel is overschreden.
+\subsection{Polymon}
+Nog uitwerken
 
 
 \chapter{Conclusie}
