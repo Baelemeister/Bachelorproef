@@ -343,7 +343,19 @@ De best practices die eerder besproken zijn, zijn voldoende om deze aanval af te
 Ook een best practice is om het default account "`Administrator"' uit te schakelen en een zelfgemaakt account te maken. Als dit wordt gedaan dan moet een aanvaller al kennis hebben over het netwerk en de server om te weten welk account er kan gekraakt worden. Als het default account wordt gebruikt dan kan iedereen op elke plaats in de wereld binnen breken zonder dat de persoon iets weet van een server. Dit in combinatie met een groepsbeleidobject die het account blokkeert na 3 foutieve pogingen zorgt ervoor dat deze aanval geen schijn van kans heeft.
 
 \subsection{SQL injection}
-Nog uitwerken
+\subsubsection{Uitvoering en schade}
+Bij een SQL-injectie worden er SQl-statements die een slechte validatie hebben gebruikt om een website binnen te dringen. Deze aanval is zo gevaarlijke en destructief dat deze in 2013 volgens \cite{Cisco2013} zelfs op de eerste plaats stond van meest gevaarlijke bedreigingen voor web applicaties. Via een SQL-injectie kan een aanval o.a. de volgende zaken doen:
+\begin{itemize}
+	\item Authenticatie omzeilen om zo in te loggen op de applicatie met administrator bevoegdheden.
+	\item Gevoelige/geheime informatie in een database bekijken en gebruiken.
+	\item Malware plaatsen in de database of op de website.
+	\item Cruciale gegevens verwijderen.
+\end{itemize}
+
+Op de Kali-aanvallersmachine wordt er voor deze aanval gebruik gemaakt van sqlmap. Er zijn meerdere tools om een SQL-injectie uit te voeren, maar in dit voorbeeld wordt deze tool gebruikt. Allereerst moet de naam van de database gekend zijn en dit kan makkelijk gevonden worden door "`sqlmap -u www.baele.be --dbs"' in te typen. Nu dat de naam van de database bekend is, moeten de tabellen gekend zijn en dit gebeurd via "`sqlmap -u www.baele.be -D TestDatabase --tables"' waar "`TestDatabase"' de naam van de database voorstelt. Nu is er een hele lijst aan tabellen zichtbaar en kan er een willekeurige tabel geselecteerd worden. In dit geval wordt de tabel "`Gebruikers"' genomen. Hierna wordt er een willekeurige kolom genomen uit deze tabel via "`sqlmap -u www.baele.be -D TestDatabase -T Gebruikers --columns"'. Nu is er de mogelijkheid om de hele tabel te "`dumpen"' of enkele velden in een lokale map. Dit wordt gedaan via "'sqlmap -u www.baele.be -D TestDatabase -T Gebruikers --dump"'. Nu kan er gebrowsed worden naar de locatie die staat beschreven in het terminalvenster om te kijken wat er allemaal opgeslaan is en daar is te zien dat de hele tabel aanwezig is.
+
+\subsubsection{Bescherming en preventie}
+Het spreekt voor zich dat deze soort aanval veel schade kan toebrengen. Gelukkig is het ook mogelijk om 
 
 \section{Transportlaag}
 \subsection{Sockstress DDOS-aanval}
@@ -356,8 +368,6 @@ Nu dat scriptje draait in het een terminalvenster, hoeft er in het andere venste
 
 \subsubsection{Bescherming en preventie}
 De best practices die op de server zijn geïmplementeerd zijn in dit geval niet voldoende en dus moet er een oplossing gevonden worden. De oplossing in dit geval is vrij simpel. Dit kan gedaan worden door het blokkeren van een IP-adres als het meer dan 10 connecties met een poort maakt in minder dan 30 seconden. Dit wordt gedaan door een simpel lijntje in te typen in de router command line \textit{"`iptables -I INPUT -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 -j DROP"'}. Aangezien de server enkel handmatig kan worden afgesloten, is de kans reeël dat er gegevensverlies is. Daarvoor is het belangrijk dat dit direct wordt bekeken nadat de server opnieuw is opgestart zodat er direct een restore kan plaatsvinden als dit nodig is. Hiervoor zijn de best practices wat betreft back-ups wel voldoende. 
-
-\section{Internetlaag}
 
 \section{Netwerklaag}
 \subsection{Malware applicaties}
@@ -390,10 +400,10 @@ Nog uitwerken
 Manueel kan er makkelijk gekeken worden naar het RAM-geheugen dat wordt gebruikt door "`ctrl+alt+del"' in te drukken of door met de rechtermuisknop te drukken op het Windows-logo linksonder op het scherm en "`Taakbeheer"' te selecteren. Hierin zijn er verschillende tabbladen en het RAM-geheugen kan gevonden worden in het tabblad "`Prestaties"' waarna er kan geklikt worden op "`Geheugen"' in de linkerkolom. In dit venster is het geheugengebruik voor de laatste 60 seconden zichtbaar en wordt deze elke seconden ververst. Als de curve per seconde omhoog gaat dan kan er sprake zijn van een Sockstress DDOS-aanval en kan er tijdig gehandeld worden. Het manueel bekijken van het RAM-geheugen kan handig zijn als de server opeens trager begint te werken om te kijken of het probleem niet hier ligt.
 
 \subsection{Geblokkeerde accounts}
-uitwerken
+http://www.windowsnetworking.com/kbase/WindowsTips/WindowsNT/AdminTips/TroubleShooting/FindAllLocked-OutAccounts.html
 
 \subsection{Malware}
-uitwerken
+Om manueel te kijken of er malware aanwezig is op de server is er anti-virus-software nodig. Er zijn honderden verschillende keuzes en bij elke keuze kan er manueel een scan gestart worden en kan er manueel gekeken worden welke bedreigingen er gevonden zijn en welke risico's er aanwezig zijn. Deze kunnen dan manueel verwijderd of in quarantaine geplaatst worden. 
 
 \section{Automatisch}
 \subsection{Prestatiemeter}
