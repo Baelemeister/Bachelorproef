@@ -172,21 +172,24 @@
 % thesis) synthese van het document. In ons geval beschrijf je kort de
 % probleemstelling en de context, de onderzoeksvragen, de aanpak en de
 % resultaten.
-Vandaag de dag hoor je regelmatig eens in het nieuws dat er een bedrijf is opgelicht door professionele hackers, oplichters die zijn binnen gedrongen in hun netwerk en gevoelige informatie hebben gebruikt om zaken te verkrijgen. Dit probleem groeit even snel als de groei van netwerken in het bedrijfsleven. Daarom is het belangrijk om een zeer goed beveiligd netwerk te hebben tegen bedreigingen van zowel binnen als buiten het bedrijf. \newline \newline
+Vandaag de dag komt cybercrime meer en meer voor in de bedrijfswereld. Professionele hackers en oplichters proberen binnen te dringen in een netwerk van een bedrijf om gevoelige informatie te gebruiken om zaken te verkrijgen of om het bedrijf op te lichten. Dit probleem groeit even snel als de groei van netwerken in het bedrijfsleven. Daarom is het belangrijk om een zeer goed beveiligd netwerk te hebben tegen bedreigingen van zowel binnen als buiten het bedrijf. \newline 
 
-Mijn grootste doelstelling is om een overzicht te voorzien van welke soorten maatregelen er zeker moeten getroffen worden om een netwerk optimaal te beveiligen. Dit gaande van de router tot de switch tot de server. Ik wil zelf ook zo een beveiligd netwerk/server kunnen opzetten en zelf kunnen testen dat er geen enkele vorm van bekende bedreigingen binnen kan. Tot slot wil ik te weten komen of er in het bedrijfsleven wel nood en budget is voor zulke hevige beveiligingen. \newline \newline
+De doelstelling van dit onderzoek is om een duidelijk overzicht te geven van welke beveilgings best practices er zeker aanwezig moeten zijn op een webserver in een netwerk om beschermd te zijn tegen enkele van de bekendste aanvallen. Na het lezen van deze scriptie zou het mogelijk moeten zijn om zelf een beveilgde webserver op te zetten die voorzien is van deze best practices. \newline
 
-Om dit probleem te onderzoeken heb ik op voorhand enkele onderzoeksvragen vastgesteld. Wat zijn de bekendste soorten van externe en interne bedreigingen en hoe worden deze het efficiëntst opgelost? Hoe word je router en switch zo optimaal mogelijk beveiligd? Hoe wordt de server zo goed mogelijk beveiligd? Wat zijn de voor -en nadelen van bepaalde beveiligingstechnieken? \newline 
-
-
-\textbf{Zijn de 'best practices' voldoende als beveiliging tegen een externe of interne aanval? Wat is de beste manier om als administrator sporen terug te vinden van een aanval?
-} (KAN NOG VERANDEREN)
+Om dit probleem te onderzoeken heb ik op voorhand enkele onderzoeksvragen vastgesteld. Wat zijn de bekendste soorten van externe en interne bedreigingen en hoe worden deze het efficiëntst opgelost? Hoe word de webserver zo optimaal mogelijk beveiligd? Waar kan een administrator aanvallen terugvinden in de logs?
 \end{abstract}
 
 \chapter*{Voorwoord}
 \label{ch:voorwoord}
-Deze scriptie zou niet to stand gekomen zijn zonder de hulp van mijn stagementor en co-promotor Selami Top. Ik mocht gebruik maken van zijn huidig netwerk en ik mocht enkele zaken uitproberen op zijn nieuw netwerk. Hierdoor kon ik de zaken die ik onderzocht en opgezocht had uit proberen in een echte omgeving en kreeg ik een betere kijk op een realistische beveiliging. Verder wil ik ook mijn promotor Bert Van Vreckem bedanken die mij heeft geholpen om deze bachelorproef tot stand te brengen. Zijn tips en technische kennis waren een enorme hulp om dit resultaat te bekomen. (NOG WAT TOEVOEGEN). Tot slot wil ik alle auteurs bedanken van de lectuur die ik heb gebruikt om deze scriptie te maken (LIJST VAN ALLE AUTEURS?)
 % TODO: Vergeet ook niet te bedankten wie je geholpen/gesteund/... heeft
+Deze scriptie zou niet tot stand gekomen zijn zonder de hulp van mijn stagementor en co-promotor Selami Top. Bij het uittesten en onderzoeken van de onderzoeksvragen werd gebruik gemaakt van het netwerk van Hardo bvba, het bedrijf waar Selami Top zaakvoerder van is. Dit zorgde ervoor dat alle conclusies en antwoorden bedrijfsecht zijn en gaf mij een betere kijk op een realistische beveiliging. \newline
+
+Verder wil ik ook mijn promotor Bert Van Vreckem bedanken die mij enorm heeft geholpen met deze bachelorproef tot stand te brengen. Zijn structurele en inhoudelijke tips brachten deze scriptie naar een hoger niveau. Het delen van zijn kennis zorgde er ook voor dat dit onderzoek een betere kwaliteit heeft. \newline
+
+Mijn ouders Johan Baele en Kathleen van Wassenhove zijn ook een grote hulp geweest. Deze hebben mij enorm gesteund tijdens het onderzoeken van dit onderwerp en hebben mij geholpen met het nalezen van de eindtekst en het verbeteren van enkele taal -en layoutfouten. \newline
+
+Tot slot wil ik alle auteurs bedanken van de boeken, websites, handleidingen, videolessen, ... die ik heb gelezen. Dankzij hun bijdrage is de kwaliteit van deze scriptie en mijn kennis enorm verbeterd. 
+
 
 \tableofcontents
 
@@ -197,6 +200,9 @@ Deze scriptie zou niet to stand gekomen zijn zonder de hulp van mijn stagementor
 
 \chapter{Inleiding}
 \label{ch:inleiding}
+In deze scriptie zal een fictief netwerk opgezet worden dat een domeincontroller en een webserver zal bevatten. Deze webserver is uiteraard lid van hetzelfde netwel als de domeincontroller en beiden zijn verbonden aan dezelfde switch en deze switch is op zich dan verbonden met een router die dan op zijn beurt verbonden is met het internet. \newline
+
+Het is de bedoeling dat er met een hackermachine zal geprobeerd worden om de webserver te kraken op een paar manieren en deze webserver moet deze aanvallen overleven. De bekendste en meest voorkomende aanvallen zullen uitgevoerd worden tegen deze webserver en het is de bedoeling dat de eerder geïmplementeerde best practices voldoende zijn om de server te beschermen tegen deze aanvallen. Is dit niet het geval dan zullen de best practices moeten aangevuld worden. \newline
 
 De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \citep{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek). \newline \newline
 
