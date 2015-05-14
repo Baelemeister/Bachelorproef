@@ -22,6 +22,7 @@
 \usepackage[T1]{fontenc}     % Ivm lettertypes
 \usepackage{lmodern}
 \usepackage{textcomp}
+\usepackage{float}
 
 \usepackage[parfill]{parskip}
 \usepackage{fancyhdr}
@@ -204,12 +205,7 @@ In deze scriptie zal een fictief netwerk opgezet worden dat een domeincontroller
 
 Het is de bedoeling dat er met een hackermachine zal geprobeerd worden om de webserver te kraken op een paar manieren en deze webserver moet deze aanvallen overleven. De bekendste en meest voorkomende aanvallen zullen uitgevoerd worden tegen deze webserver en het is de bedoeling dat de eerder geïmplementeerde best practices voldoende zijn om de server te beschermen tegen deze aanvallen. Is dit niet het geval dan zullen de best practices moeten aangevuld worden. \newline
 
-De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \citep{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek). \newline \newline
-
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz. naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${cite\{\}}} of \texttt{$\backslash${citep\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\TeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin, gebruik je \texttt{$\backslash${}cite\{\}}.
-Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backslash${}citep\{\}}. Hieronder een voorbeeld van elk.
-
-\cite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\citep{Creeger2009}.
+Enkele van de meest voorkomende aanvallen zoals SQL-injectie en brute force hacking volgens \cite{Siddharth2006} en DDoS, port scans en social engineering volgens \cite{Gibson2011} zullen aan bod komen. Er zijn enorm veel verschillende aanvallen die mogelijk zijn, dus deze scriptie zal zich beperken tot deze soorten aangezien deze het meest voorkomen in de IT-wereld. 
 
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
@@ -252,17 +248,17 @@ Dit onderzoek bestaat uit de volgende methodiek:
 
 In de afbeelding is te zien welke machines allemaal nodig zijn om dit onderzoek tot een goed einde te brengen. Ten eerste is er een Active Directory-server nodig die ook domeincontroller is in het domein en deze server is ook nog DNS-server ook. Dan is er de webserver die lid is van hetzelfde domein als de ADServer natuurlijk. Deze zijn aangesloten aan een switch en een router. Ten slotte is er ook nog een aanvallersmachine om te proberen de server te hacken. Deze is ook aangesloten aan een router op een andere locatie. Tot slot wordt er gebruik gemaakt van VMWare Workstation om al deze virtuele machines te maken met elkaar te verbinden.
 
-\subsection{Installatie + configuratie ADServer}
+\section{Installatie + configuratie ADServer}
 De Windows Server 2012 R2-virtuele machine genaamd "`ADServer"' is de eerste die moet worden opgezet. In VMWAre Workstation wordt er 60GB geheugen gealloceerd voor deze virtuele machine samen met twee netwerkadapters en 2GB aan RAM-geheugen. Nadat Windows Server 2012 R2 is geïnstalleerd op deze virtuele machine, krijgt deze de naam "`ADServer"' en wordt deze heropgestart. Daarna kan er begonnen worden met het installeren van de nodige rollen. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de ADServer opgewaardeerd naar domeincontroller in het fictieve domein "`Baele.be"'. \newline 
 
 Op de server zijn twee netwerkadapters aanwezig, één die is verbonden met het internet (Internetadapter) en een andere die is verbonden met het LAN (LANadapter). De internetadapter staat geconfigureerd als NAT en de IP -en DNS-informatie worden alletwee automatisch aangewezen. Bij de LANadapter zijn de instellingen anders, hier staat deze configureerd als "`Custom: specific virtual network"' en wordt er gekozen om het virtuele network de naam \textit{VMnet0} mee te geven. Hierdoor moeten de IP -en DNS-instellingen handmatig geconfigureerd worden. De server krijgt al IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline
 
 Het volgende dat moet gebeuren is het installeren en configureren van de DNS-rol. Dit is vrij simpel en neemt niet veel tijd in beslag. In het scherm "`DNS-beheer"' wordt er in het tabblad "`Zones voor reverse lookup"' een zone aangemaakt met de naam "`1.168.192.in-addr.arpa"' en daarna wordt er een PTR-record aangemaakt die verwijst naar de net geconfigureerde LANadapter met het juiste IP-adres. Hierna wordt de DHCP-rol geïnstalleerd en wordt er een nieuwe scope aangemaakt met de naam "`TestScope"'. Het eerste IP-adres in het bereik is 192.168.1.1 en het laatste 192.168.1.254. De adressen van 192.168.1.1 tot 192.168.1.20 worden uitgesloten voor distributie. De router is de server zelf dus het IP-adres is 192.168.1.2 net als de DNS-server. Tot slot wordt de scope geactiveerd. \newline
 
-\subsection{Installatie + configuratie WebServer}
-De installatie start op dezelfde manier als de voorgaande machine, maar in dit geval wordt de machine "`WebServer"' genoemd. Deze server wordt ook lid gemaakt van het domein "`Baele.be"'. Op deze server is het belangrijk dat de rol ....
+\section{Installatie + configuratie WebServer}
+De installatie start op dezelfde manier als de voorgaande machine, maar in dit geval wordt de machine "`WebServer"' genoemd. Deze server wordt ook lid gemaakt van het domein "`Baele.be"'. Op deze server is het belangrijk dat de rol "`Internet Information Service 8"' (IIS8) is geïnstalleerd. Verder is de installatie van databanksoftware ook nodig. In dit geval wordt er gebruik gemaakt van Microsoft SQL Server 2014 en wordt er een testdatabase aangemaakt met de naam "`TestDatabase"'. Dan wordt er op het internet een basis ASP.net applicatie gezocht en gedownload om deze dan onder de naam van "`baele.be"' in IIS 8 te importeren. Als er in een webbrowser dan voorgaand adres wordt ingetyped, dan zou de ASP.net applicatie zichtbaar moeten zijn. 
 
-\subsection{Installatie + configuratie aanvallersmachine}
+\section{Installatie + configuratie aanvallersmachine}
 De derde en laatste virtuele machine die nodig is in dit onderzoek is de Kali Linux-aanvallersmachine. Deze is vrij makkelijk te installeren en heeft ook niet zo hoge systeemvereisten. Voor deze machine is er maar 20Gb aan gealloceerd geheugen nodig samen met 1 netwerkadapter en 512MB aan RAM-geheugen. Bij het starten van de installatie is het gemakkelijk dat er gekozen wordt voor "`graphical install"'. De meeste stappen zijn voor de hand liggend, maar bij partition disks wordt er 'guided-use entire disk' het best geselecteerd. Voor de rest zijn de overige stappen niet zo belangrijk en is de installatie zo afgerond.
 
 %% TODO: de structuur en titel van deze hoofdstukken hangen af van je
@@ -318,19 +314,41 @@ Met behulp van een netwerkscanner, in dit geval nmap, kan er gekeken worden welk
 \section{Kwestbaarheidscanner}
 Nessus is volgens \cite{Jackson2010} een populaire kwetsbaarheidscanner die zoekt naar zwakke plekken in besturingssystemen, netwerkapparaten en applicaties. Deze scans gebeuren via een database zodat alle nieuwste bedreigingen direct kunnen gevonden worden. Daarom is het ook belangrijk dat Nessus wekelijks of dagelijks wordt geupdate zodat elke scan zo efficiënt mogelijk kan gebeuren. Deze soort scan is een uitgebreidere versie van de nmap-scan. \newline
 
-Allereerst moeten er policies ingesteld worden die zullen gebruikt worden om het netwerk in te schatten. In deze sectie worden ook plugins ingesteld die het hart van Nessus voorstellen. Er kunnen duizenden plugins worden ingesteld, maar om de snelheid van de scan te verbeteren is het gebruikelijk om enkel de plugins te pakken die van toepassing zijn om het te onderzoeken netwerk. Nadat deze zijn ingesteld kan er één of meerdere IP-adressen ingegeven worden om de bijhorende apparaten te scannen. Voor elke host die is gescannend komt er een lijst met alle zwaktes op een overzichtsscherm. Deze zwaktes worden gecatalogiseerd naargelang de grootte. (Afbeelding 4-1)
+Allereerst moeten er policies ingesteld worden die zullen gebruikt worden om het netwerk in te schatten. In deze sectie worden ook plugins ingesteld die het hart van Nessus voorstellen. Er kunnen duizenden plugins worden ingesteld, maar om de snelheid van de scan te verbeteren is het gebruikelijk om enkel de plugins te pakken die van toepassing zijn om het te onderzoeken netwerk. \newline
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.60]{img/Nessus1}
 \end{center}
-\caption{Voorbeeld Nessus-scan}
+\caption{Voorbeeld Nessus-scan (Bron: http://soft365.vn)}
 \end{figure}
+
+Nadat deze zijn ingesteld kan er één of meerdere IP-adressen ingegeven worden om de bijhorende apparaten te scannen. Voor elke host die is gescannend komt er een lijst met alle zwaktes op een overzichtsscherm. Deze zwaktes worden gecatalogiseerd naargelang de grootte. (Afbeelding 4-1) \newline
 
 Bij het klikken op een specifieke bedreiging is er een gedetailleerde uitleg zichtbaar. Deze uitleg bevat o.a. een voorgestelde oplossing op het probleem en hyperlinks die verwijzen naar technische documenten die het probleem toelichten. Dit is enkel een simpel gebruik van de Nessus-tool, deze kan nog veel uitgebreider gebruikt worden, maar dit is in dit geval niet aan de orde. \citep{Jackson2010}
 
- 
+\section{Packet capture tools}
+Bij het uitvoeren van een risico-analyse mag er niet vanuit gegaan worden dat de IPS en Firewall zomaar werken zonder problemen. Deze zaken moeten grondig getest worden en dit kan gedaan worden via een packet capture tool. Volgens \cite{Jackson2010} is Wireshark hiervoor de meest geschikte tool die elke persoon die een risico-analyse uitvoerd moet kunnen gebruiken. \newline
 
+Wireshark slaat live verkeer op van de kabels, leest verkeer van een opgeslagen bericht en vertaald honderden protocollen. Zijn gebruikersvriendelijke GUI zorgt ervoor dat het makkelijker te gebruiken is dan zijn concurrenten en geven ook een mooi overzicht van wat er al gedaan is en wat er nog moet gebeuren. Bij het opstarten van de applicatie kan er een direct een interface gekozen worden waar het verkeer van moet worden onderzocht. Bij het klikken op de startknop wordt er direct begonnen met de scan, maar in het "`capture options"'-scherm kan er verder gespecifieerd worden welk verkeer er precies moet worden bekeken.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.50]{img/Wireshark1}
+\end{center}
+\caption{Voorbeeld van Wireshark-opties}
+\end{figure}
+
+Bij het drukken op start komt er een scherm tevoorschijn waar er alle specifieke pakketten waar naar zijn gevraagd zichtbaar worden. In dit geval is er gekozen om alle IP-pakketten van de wifi te onderzoeken. De kleurcode van de pakketten is ook belangrijk. Zo zijn groene pakketten TCP-verkeer, de blauwe zijn DNS, licht blauw is UPD-verkeer en zwart zijn TCP-pakketten met problemen. Deze kleuren kunnen natuurlijk naar eigen voorkeur ingesteld worden. \citep{Hoffm2014}
+ 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.40]{img/Wireshark2}
+\end{center}
+\caption{Voorbeeld van Wireshark-scan op wifi}
+\end{figure}
+
+Voor een auditor is dit zeer handig omdat er specifieke "`captures"' kunnen opgeslagen en bekeken worden. Deze captures kunnen ook opnieuw worden gedraaid door een netwerkinterface op bijvoorbeeld een willekeurige laptop om beveiligingstesten uit te voeren. Zo kan er gekeken worden per applicatie, per specifieke soort pakketten waar er eventuele beveiligingsproblemen zijn. Bij het dubbelklikken op een pakket kan er ook gekeken worden naar verdere details. 
 
 \chapter{Penetration Testing}
 %Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en 
