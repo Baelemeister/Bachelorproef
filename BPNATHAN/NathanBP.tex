@@ -278,24 +278,30 @@ De derde en laatste virtuele machine die nodig is in dit onderzoek is de Kali Li
 \chapter{Opzetten server met best practises beveiliging}
 ´%Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
 
-\section{Inloggen}
+\section{Windows Server}
+\subsection{Wachtwoordbeleid}
+https://technet.microsoft.com/en-us/magazine/ff741764.aspx
+
+\citep{Stanek2009}
+
+\subsection{Inloggen}
 Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam "Administrator" en een eigen administrator login maken en deze dan toevoegen aan de groep "`Administrators"' zodat deze dezelfde rechten heeft als het net uitgeschakelde account. De reden voor deze maatregel is om brute force aanvallen tegen te gaan. Elke IT'er kent het "`Administrator-account"' en deze is dan kwetsbaar voor aanvallen die proberen om het wachtwoord te kraken. Als het account is uitgeschakeld dan moet er al een accountnaam geweten zijn voordat er brute force aanvallen kunnen plaatsvinden. In dit geval is er een account aangemaakt genaamd "`BaeleAdministrator"' en is deze lid geworden van de groepen \textit{Administrators, Domeinadministrators en domeincontrollers}. Ook is het gebruikelijk dat er een complex wachtwoord wordt gebruik voor dit account. Er wordt aangeraden om hoofdletters, kleine letters, cijfers en speciale tekens te gebruiken in het wachtwoord. Een andere best practice is om het wachtwoord regelmatig, maandelijks of half jaarlijks, eens te wijzigen. Ten slotte is het ook een best practice dat er bij de groepsbeleidsobjecten wordt ingesteld dat een account wordt geblokkeerd nadat er 3x verkeerd is ingelogged. 
 
-\section{Updates}
-Nog een belangrijke onderdeel van een server met best practice beveiliging, is het regelmatig downloaden en installeren van updates. Het is dan ook aanbevolen dat de updates automatisch worden uitvoerd. Dit zorgt ervoor dat de server continu is voorzien van de beste beveiliging en dat alle bugs die er op die moment aanwezig zijn worden opgelost. 
+\subsection{Updates}
+Nog een belangrijke onderdeel van een server met best practice beveiliging, is het regelmatig downloaden en installeren van updates. Bij het vinden van een nieuw zwak punt of exploit in software, wordt dit al binnen enkele uren op het internet geplaatst en wordt er dus ook gewerkt aan een oplossing. Als de server en applicaties continue worden geupdate, dan is de kans veel kleiner dat er een exploit zal uitgebuit worden. \citep{Cott2012}. Automatische updates worden echter zo goed als nooit gedaan. De voorgestelde updates worden best door de administrator gedownload en uitgetest in een virtuele testomgeving zodat er zekerheid is dat deze update geen problemen met zich meebrengt. Nadat deze test is geslaagd, kan de update op de webserver geïnstalleerd worden.
 
-\section{Backup}
+\subsection{Backup}
 Het maken van geautomatiseerde backups is essentieel voor een server binnen een netwerk. Een fout, probleem of aanval kan elke moment van de dag gebeuren en als dit gebeurd moet het mogelijk zijn om het systeem terug te zetten van een eerder gemaakte backup. In de Windows Server Backup-wizard kan dit worden ingesteld voor elke harde schijf. In dit geval wordt er enkel elke nacht om 03:00u een back-up genomen van de C-schijf, maar dit varieert van bedrijf tot bedrijf en hangt af van hoeveel geheugen er beschikbaar is voor back-ups en welke dataschijven het belangrijkste zijn. 
 
-\section{Firewall}
+\subsection{Firewall}
 De firewall is enorm belangrijk en heeft vooraf al een configuratie meegekregen. Er is echter één aanpassing van de configuratie die in de praktijk veel wordt toegepast en die ook door \cite{Nabors2013} wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit wordt gedaan door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "`blokkeren"' te zetten. Standaard staat dit geconfigureerd als "`toestaan"'. Hierna kunnen er eigen inkomende en uitgaande regels geconfigureerd worden naargelang de applicaties die op de server komen te staan en welke poorten open of dicht moeten zijn.
 
-\section{Anti-virus}
+\subsection{Anti-virus}
 Een degelijke anti-virus is enorm belangrijk om een server, computer of ander online apparaat te beschermen. Bij het gebruiken van een desktop of laptop voor persoonlijk gebruik, is een gratis versie van een bepaalde anti-virus-software voldoen. Voor in een bedrijfsomgeving is het beter dat er een betaalde versie wordt genomen aangezien deze veel meer functies en opties hebben. Het is ook belangrijk dat de software dagelijks wordt geupdate zodat er geen nieuwe bedreigingen ongezien binnen geraken. Best wordt er 's nachts, als niemand de server gebruikt, automatisch een anti-virus scan gedaan om te kijken of alles nog steeds veilig is.
 
 \section{IIS}
-\subsection{Plaatsing}
-De plaatsing van IIS is belangrijk. Het is volgens \cite{Microsoft2013} gebruikelijk om de webserver apart van de domeincontroller te doen. Dit heeft als reden dat er geen lokale accounts zijn op een domeincontroller en deze lokale accounts zijn belangrijk voor een veilige IIS-server. Het samenplaatsen van een DC en een webserver beperkt de beveiligingsmogelijkeden enorm. Bijvoorbeeld een nieuwe exploit die door een hacker wordt gebruikt zal zo niet alleen de webserver aantasten, maar ook het hele netwerk. Daarom zijn deze twee dus het best gescheiden, zoals in deze opstelling het geval is.
+\subsection{Dedicated server}
+Het is zeer belangrijk dat IIS een dedicated server is. Het is volgens \cite{Microsoft2013} gebruikelijk om de webserver apart van de domeincontroller te doen. Dit heeft als reden dat er geen lokale accounts zijn op een domeincontroller en deze lokale accounts zijn belangrijk voor een veilige IIS-server. Het samenplaatsen van een DC en een webserver beperkt de beveiligingsmogelijkeden enorm. Bijvoorbeeld een nieuwe exploit die door een hacker wordt gebruikt zal zo niet alleen de webserver aantasten, maar ook het hele netwerk. Daarom zijn deze twee dus het best gescheiden, zoals in deze opstelling het geval is.
 
 \subsection{Inetpub}
 De inetpub-map wordt bij elke installatie van IIS aangemaakt en standaard wordt die geplaatst op de C-schijf. Aangezien dit dezelfde schijf is waar het besturingssysteem opstaat, is het gebruikelijk om deze map op een aparte schijf te zetten zodat de toegang tot deze schijf beter kan beschermt worden. De schijf waar het besturingssysteem opstaat kan nooit zo goed beschermt worden als een aparte schijf. \citep{Microsoft2013}
@@ -304,7 +310,7 @@ De inetpub-map wordt bij elke installatie van IIS aangemaakt en standaard wordt 
 In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn. In de IIS manager kan er in het modulescherm van de geselecteerde website bepaalde modules op inactief gezet worden. In de lijst moet er beslist worden welke modules nodig zijn en de welke overbodig zijn. De overbodige modules kunnen dan worden uitgeschakeld door deze uit de lijst te verwijderen. 
 
 \subsection{Opties methode uitschakelen}
-De opties methode geeft een lijst van methodes weer die worden ondersteund door de webserver. Dit kan waardevolle informatie opleveren voor een hacker. Het is dan ook een best practice om deze methode uit te schakelen en dit gebeurd door het woord "`OPTIONS"' uit te sluiten van de \textit{HTTP Verb request filtering rules} in IIS. Dit wordt gedaan door de website te selecteren in de IIS-manager en dan dubbel te klikken op "`aanvraagfiltering"' en naar het tabblad "`HTTP-termen"' te gaan. Hier wordt als actie gekozen "`Term weigeren..."' en wordt "`OPTIONS"' ingevuld en op "`OK"' gedrukt. Nu staat deze regel als enigste in de lijst en is deze best practice in orde gebracht.
+De opties methode geeft een lijst van methodes weer die worden ondersteund door de webserver. Dit kan waardevolle informatie opleveren voor een hacker. Het is dan ook een best practice om deze methode uit te schakelen en dit gebeurd door het woord "`OPTIONS"' uit te sluiten van de \textit{HTTP Verb request filtering rules} in IIS. Dit wordt gedaan door de website te selecteren in de IIS-manager en dan dubbel te klikken op "`aanvraagfiltering"' en naar het tabblad "`HTTP-termen"' te gaan. Hier wordt als actie gekozen "`Term weigeren..."' en wordt "`OPTIONS"' ingevuld en op "`OK"' gedrukt. Nu staat deze regel als enige in de lijst en is deze best practice in orde gebracht.
 
 \subsection{Dynamische IP restricties}
 Het inschakelen van dynamic IP restrictions module zorgt ervoor dat IP-adressen die een bepaald aantal requests hebben verzonden worden geblokkeerd. Hierdoor worden \textit{Denial of Service-aanvallen} voorkomen. Deze module inspecteert het IP-adres van elke request en zal deze requests filteren om de Ip-adressen met slechte bedoelingen tijdelijk te blokkeren. Dit kan gedaan worden door naar de IIS-manager te gaan en de naam van de website te selecteren en te dubbelklikken op "`beperkingen voor IP-adressen en domeinen"'. In het actie paneel wordt er geklikt op "`instellingen voor dynamische beperking bewerken.."' en kunnen er restricties ingevoerd worden. De eerste twee vakjes van de drie moeten worden aangevinkt en de waarden kunnen naar keuze ingevuld worden, in dit geval is "`5-20-200"' ingevuld. 
@@ -314,6 +320,8 @@ Het is altijd een goed idee om de verschillende types van HTTP-request die worde
 
 \subsection{Inschakkelen logs}
 Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-request gelogged. Indien er problemen voordoen dan kan er hier gekeken worden om een betere kennis te vergaren over het probleem. Dit kan vrij snel en simpel ingeschakeld worden door te gaan naar de IIS manager en daar de gewenste website te slecteren en op logging te klikken. Best wordt er gekozen om een nieuw bestand aan te maken want deze bestanden groeien vrij snel.
+
+\section{SQL Server}
 
 \chapter{Risico-analyse}
 Bij een risico-analyse wordt een netwerk helemaal onder de loep genomen en wordt er gekeken en gezocht naar alle mogelijke gevaren die een netwerk kan ondergaan van zowel mensen als de natuur en zowel intern als extern. Voordat een nieuw geplaatst netwerk in het bedrijf wordt gebruikt, is het best dat er eerst een risico-analyse plaats vindt om te kijken waardat er nog problemen kunnen zijn en waar dat er nog wat verscherping van de beveiling nodig is.
