@@ -241,8 +241,8 @@ Dit onderzoek bestaat uit de volgende methodiek:
 \begin{enumerate}
 	\item Een dergelijke basiskennis is vereist dus het verrichten van onderzoek en lezen van lectuur is een essentiële eerste stap.
 	\item Opzetten van een goede testomgeving met één Windows Server 2012 R2 domeincontroller, één Windows Server 2012 R2 webserver met ASP.net-applicatie draaiende als slachtoffer en één Kali Linux-machine als aanvaller. De Webserver zal geconfigureerd worden volgens de best practices.
-	\item Een risicoanalyse uitvoeren en kijken waar er eventuele gaten zijn in het netwerk en deze dan dichten. 
-	\item Met behulp van penetration testing tools beveiligingsproblemen zoeken en uitbuiten. Hier wordt er vanuit gegaan dat er wel en geen fysieke toegang is tot de server dus het betreft zowel interne als externe aanvallen. Er wordt een lijst gemaakt met welke aanvallen er gaan gedaan worden en welke succesvol worden uitgevoerd en welke falen. Indien een aanval succesvol wordt uitgevoerd, dan zullen de best practices moeten aangevuld worden.
+	\item Een risicoanalyse uitvoeren en kijken wat de belangrijkste bedreigingen zijn voor dit type systemen.
+	\item Met behulp van penetration testing tools beveiligingsproblemen zoeken en uitbuiten. Hier wordt er vanuit gegaan dat er geen fysieke toegang is tot de server dus een boot-cd insteken, rebooten en het administrator wachtwoord wijzigen zal niet lukken. Er wordt een lijst gemaakt met welke aanvallen er gaan gedaan worden en welke succesvol worden uitgevoerd en welke falen. Indien een aanval succesvol wordt uitgevoerd, dan zullen de best practices moeten aangevuld worden.
 	\item Het uitvoeren van een post-mortem om sporen van inbraak bloot te leggen en kijken waar het probleem zich bevindt.
 \end{enumerate}
 
@@ -256,6 +256,10 @@ Dit onderzoek bestaat uit de volgende methodiek:
 
 In figuur~\ref{img:situatie} is te zien welke machines allemaal nodig zijn om dit onderzoek tot een goed einde te brengen. Ten eerste is er een Active Directory-server nodig die ook domeincontroller is in het domein en deze server is ook nog DNS-server ook. Dan is er de webserver die lid is van hetzelfde domein als de ADServer natuurlijk. Deze zijn aangesloten aan een switch en een router. Ten slotte is er ook nog een aanvallersmachine om te proberen de server te hacken. Deze is ook aangesloten aan een router op een andere locatie. Tot slot wordt er gebruik gemaakt van VMWare Workstation om al deze virtuele machines te maken met elkaar te verbinden.
 
+%% TODO: de structuur en titel van deze hoofdstukken hangen af van je
+% eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
+\chapter{Opzetten servers met best practises beveiliging}
+%Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
 \section{Installatie + configuratie ADServer}
 De Windows Server 2012 R2-virtuele machine genaamd "`ADServer"' is de eerste die moet worden opgezet. In VMWare Workstation wordt er 60GB geheugen gealloceerd voor deze virtuele machine samen met één netwerkadapter en 2GB aan RAM-geheugen. Nadat Windows Server 2012 R2 is geïnstalleerd op deze virtuele machine, krijgt deze de naam "`ADServer"' en wordt deze heropgestart. Daarna kan er begonnen worden met het installeren van de nodige rollen. De eerste rol die wordt geïnstalleerd is de rol textit{Active Directory Domain Services}. Daarna wordt de ADServer opgewaardeerd naar domeincontroller in het fictieve domein "`Baele.be"'. Op de server is één netwerkadapters aanwezig en deze wordt handmatig ingesteld. De server krijgt als IP-adres 192.168.1.2 mee, als subnetmask 255.255.255.0, als default gateway 192.168.1.2 en als DNS-server 127.0.0.1. \newline
 
@@ -266,23 +270,34 @@ De installatie start op dezelfde manier als de voorgaande machine, maar in dit g
 
 Deze server wordt ook lid gemaakt van het domein \textit{Baele.be}. Verder wordt er ook de rol \textit{Externe Toegang} toegevoegd. Deze stellen we zo in dat de netwerkadapter waar het internet van komt wordt gebruikt voor andere hosts die verbonden zijn met het netwerk en die op het internet moeten. De WebServer wordt dus zo een router. \newline
 
-Op deze server is het belangrijk dat de rol \textit{Internet Information Service 8} (IIS8) is geïnstalleerd. Deze is al automatisch geïnstalleerd bij het installeren van de rol \textit{Externe Toegang}. Verder is de installatie van databanksoftware ook nodig. In dit geval wordt er gebruik gemaakt van Microsoft SQL Management Studio 2014. Bij de installatie is het aangeraden om \textit{Use Microsoft Update to check for updates} aan te vinken. Na de installatie wordt er een testdatabase aangemaakt met de naam \textit{TestDatabase}. \newline
+Op deze server is het belangrijk dat de rol \textit{Internet Information Service 8} (IIS8) is geïnstalleerd. Deze is al automatisch geïnstalleerd bij het installeren van de rol \textit{Externe Toegang}. Verder is de installatie van databanksoftware ook nodig. In dit geval wordt er gebruik gemaakt van Microsoft SQL Management Studio 2014. Bij de installatie is het aangeraden om \textit{Use Microsoft Update to check for updates} aan te vinken. Na de installatie wordt er een testdatabase aangemaakt met de naam \textit{TestDatabase} en in deze database wordt er een tabel aangemaakt met de naam \textit{People} met de rijen \textit{PeopleID, Fname, Lname} en steek twee willekeurige waarden in deze tabel. Tot slot wordt er nog een nieuwe stored procedure aangemaakt met de volgende inhoud:
+\begin{verbatim}
+Create Procedure Test_GetPeople
+AS
+Select * from People;
+\end{verbatim}
 
 De volgende stap is om een basis ASP.net-applicatie te maken en dit wordt gedaan met de hulp van \cite{Nuckolls2011}. Met behulp van deze persoon zijn tutorial, de link is te vinden in de bibliografie, is er direct een ASP.net-applicatie met een achterliggende database toegevoegd. \newline
 
 \section{Installatie + configuratie aanvallersmachine}
 De derde en laatste virtuele machine die nodig is in dit onderzoek is de Kali Linux-aanvallersmachine. Deze is vrij makkelijk te installeren en heeft ook niet zo hoge systeemvereisten. Voor deze machine is er maar 20Gb aan gealloceerd geheugen nodig samen met 1 netwerkadapter die op \textit{VMnet0} staat en 512MB aan RAM-geheugen. Bij het starten van de installatie moet er gekozen worden voor \textit{graphical install}. De meeste stappen zijn voor de hand liggend, maar bij partition disks wordt er \textit{guided-use entire disk} het best geselecteerd. De naam van de machine wordt ingesteld op \textit{KaliAanvaller}. Op het moment dat er wordt gevraagd van welk netwerk deze computer deel uit maakt, wordt er \textit{baele.be} gekozen. Voor de rest zijn de overige stappen niet zo belangrijk en is de installatie zo afgerond.
 
-%% TODO: de structuur en titel van deze hoofdstukken hangen af van je
-% eigen onderzoek. Elke fase in je onderzoek kan een eigen hoofdstuk krijgen. Kies telkens een gepaste titel. ``Corpus'' is *GEEN* gepaste titel
-\chapter{Opzetten server met best practises beveiliging}
-´%Hier ga ik schrijven over wat de best practises zijn om een webserver te beveiligen en ga ik zeggen hoe je deze moet configureren/implementeren
-
-\section{Windows Server}
+\section{Besturingssysteem best practices WebServer}
+Nu dat de webserver is geïnstalleerd, kan er begonnen worden aan het toepassen van de best practices. Het is zeer belangrijk dat dit eerst wordt gedaan voordat de server wordt opgenomen in het netwerk. In dit deel worden alle best practices van het besturingssysteem besproken van een sterk wachtwoordbeleid tot het regelmatig updaten van de server.
 \subsection{Wachtwoordbeleid}
-https://technet.microsoft.com/en-us/magazine/ff741764.aspx
+\subsubsection{Wachtwoord geschiedenis afdwingen}
+Dit is een policy die ervoor zorgt dat gebruikers, als ze van wachtwoord moeten veranderen, ze niet kunnen wisselen tussen altijd dezelfde wachtwoorden. Er kunnen in totaal tot wel 24 wachtwoorden opgeslaan worden in de wachtwoordgeschiedenis dus zo is de kans klein dat gebruikers blijven wisselen tussen dezelfde wachtwoorden. Als een gebruiker slim is kan hij zijn wachtwoord gewoon 24 keer na elkaar wijzigen om dan terug zijn oude antwoord te gebruiken. Dit kan ook voorkomen worden door een \textit{Minimum Password Age Policy} in te stellen zodat een wachtwoord bijvoorbeeld maar om de 2 dagen kan veranderd worden. \citep{Stanek2009} \newline
 
-\citep{Stanek2009}
+Dit kan geïmplementeerd worden door naar het \textit{Lokaal beveiligingsbeleid} te gaan en daar te klikken op het \textit{Wachtwoordbeleid}. Er is te zien dat de \textit{Minimale wachtwoordduur} default staat ingesteld als 1 dag en de wachtwoordgeschiedenis op 24 wachtwoorden dus dit mag zo gelaten worden als best practice.
+
+\subsubsection{Wachtwoord regelmatig wijzigen}
+Een andere best practice is om het wachtwoord regelmatig eens te veranderen. Dit kan mondeling gebeuren, maar het meest efficiënte is om dit ook te doen a.d.h.v. een policy. Er kan terug gegaan worden naar de voorgaande locatie en daar kan er gekozen worden voor \textit{Maximale wachtwoordduur}. Deze staat default op 42 dagen dit is een goede waarde voor netwerken waar beveiliging zeer belangrijk is want daar wordt er meestal gekozen voor een waarde tussen de 30-90 dagen. Bij netwerken waar de beveiliging niet zo belangrijk is kan dit eerder 120-180 dagen zijn. \citep{Stanek2009}
+
+\subsubsection{Minimale wachtwoordlengte}
+Deze policy, die ook te vinden is op dezelfde plek als de vorige policies, zorgt ervoor dat een gebruiker zijn wachtwoord minimaal een bepaalde lengte moet hebben. Dit heeft als bedoeling om het brute force kraken van wachtwoorden moeilijker tot onmogelijk te maken. Default staat deze policiy op 7 dagen maar \cite{Stanek2009} raadt aan om deze policy in te stellen op een lengte van minstens 14 tekens. Dit heeft als reden dat een wachtwoord van 7-8 tekens vandaag de dag op een korte tijd wordt gekraakt door het toepassen van brute force wachtwoord kraken met mdoerne hardware.
+
+\subsubsection{Complexiteit van het wachtwoord}
+Het spreekt voor zich dat een wachtwoord zoals \textit{123456} niet acceptabel is. Daarom is het belangrijk dat er een policy is die de complexiteit van een wachtwoord verzekerd. Dit kan alweer gevonden worden op voorgaande locatie waar de policy \textit{Wachtwoorden moeten voldoen aan complexiteitsvereisten} kan worden ingeschakeld. Dit zorgt ervoor dat de wachtwoorden minstens 6 tekens moeten hebben, er kunngen geen gebruikersnamen of gewone namen in voorkomen en wachtwoorden moeten minstens 3 van de 4 verschillende soorten karaktertypes bevatten (normale letters, hoofdletters, nummers en symbolen). 
 
 \subsection{Inloggen}
 Eén van de eerste zaken dat moet gebeuren is het uitschakelen van de inlognaam "Administrator" en een eigen administrator login maken en deze dan toevoegen aan de groep "`Administrators"' zodat deze dezelfde rechten heeft als het net uitgeschakelde account. De reden voor deze maatregel is om brute force aanvallen tegen te gaan. Elke IT'er kent het "`Administrator-account"' en deze is dan kwetsbaar voor aanvallen die proberen om het wachtwoord te kraken. Als het account is uitgeschakeld dan moet er al een accountnaam geweten zijn voordat er brute force aanvallen kunnen plaatsvinden. In dit geval is er een account aangemaakt genaamd "`BaeleAdministrator"' en is deze lid geworden van de groepen \textit{Administrators, Domeinadministrators en domeincontrollers}. Ook is het gebruikelijk dat er een complex wachtwoord wordt gebruik voor dit account. Er wordt aangeraden om hoofdletters, kleine letters, cijfers en speciale tekens te gebruiken in het wachtwoord. Een andere best practice is om het wachtwoord regelmatig, maandelijks of half jaarlijks, eens te wijzigen. Ten slotte is het ook een best practice dat er bij de groepsbeleidsobjecten wordt ingesteld dat een account wordt geblokkeerd nadat er 3x verkeerd is ingelogged. 
@@ -299,7 +314,7 @@ De firewall is enorm belangrijk en heeft vooraf al een configuratie meegekregen.
 \subsection{Anti-virus}
 Een degelijke anti-virus is enorm belangrijk om een server, computer of ander online apparaat te beschermen. Bij het gebruiken van een desktop of laptop voor persoonlijk gebruik, is een gratis versie van een bepaalde anti-virus-software voldoen. Voor in een bedrijfsomgeving is het beter dat er een betaalde versie wordt genomen aangezien deze veel meer functies en opties hebben. Het is ook belangrijk dat de software dagelijks wordt geupdate zodat er geen nieuwe bedreigingen ongezien binnen geraken. Best wordt er 's nachts, als niemand de server gebruikt, automatisch een anti-virus scan gedaan om te kijken of alles nog steeds veilig is.
 
-\section{IIS}
+\section{IIS best practices WebServer}
 \subsection{Dedicated server}
 Het is zeer belangrijk dat IIS een dedicated server is. Het is volgens \cite{Microsoft2013} gebruikelijk om de webserver apart van de domeincontroller te doen. Dit heeft als reden dat er geen lokale accounts zijn op een domeincontroller en deze lokale accounts zijn belangrijk voor een veilige IIS-server. Het samenplaatsen van een DC en een webserver beperkt de beveiligingsmogelijkeden enorm. Bijvoorbeeld een nieuwe exploit die door een hacker wordt gebruikt zal zo niet alleen de webserver aantasten, maar ook het hele netwerk. Daarom zijn deze twee dus het best gescheiden, zoals in deze opstelling het geval is.
 
@@ -321,7 +336,7 @@ Het is altijd een goed idee om de verschillende types van HTTP-request die worde
 \subsection{Inschakkelen logs}
 Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-request gelogged. Indien er problemen voordoen dan kan er hier gekeken worden om een betere kennis te vergaren over het probleem. Dit kan vrij snel en simpel ingeschakeld worden door te gaan naar de IIS manager en daar de gewenste website te slecteren en op logging te klikken. Best wordt er gekozen om een nieuw bestand aan te maken want deze bestanden groeien vrij snel.
 
-\section{SQL Server}
+\section{SQL Server best practices WebServer}
 
 \chapter{Risico-analyse}
 Het uitvoeren van een risico-analyse kan in verschillende stappen onderverdeeld worden. Allereerst moet er een opsomming zijn van alles \textit{assets} die zullen onderzocht worden in de risico-analyse. Dan kan er gebrainstormed worden om te kijken welke soort bedreigingen er voor de specifieke server zijn, in dit geval een webserver. Tot slot wordt er m.b.v. enkele tools en wat opzoekwerk gekeken naar welk van deze bedreigingen het belangrijkste zijn. Dit wil zeggen dat er wordt gekeken naar de kans dat deze voorvalt en de mogelijke schade die deze kan toebrengen en zo worden de bedreigingen dan gecatalogiseerd op het vlak van belang.
