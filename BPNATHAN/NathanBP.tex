@@ -324,7 +324,42 @@ Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-reques
 \section{SQL Server}
 
 \chapter{Risico-analyse}
-Bij een risico-analyse wordt een netwerk helemaal onder de loep genomen en wordt er gekeken en gezocht naar alle mogelijke gevaren die een netwerk kan ondergaan van zowel mensen als de natuur en zowel intern als extern. Voordat een nieuw geplaatst netwerk in het bedrijf wordt gebruikt, is het best dat er eerst een risico-analyse plaats vindt om te kijken waardat er nog problemen kunnen zijn en waar dat er nog wat verscherping van de beveiling nodig is.
+Het uitvoeren van een risico-analyse kan in verschillende stappen onderverdeeld worden. Allereerst moet er een opsomming zijn van alles \textit{assets} die zullen onderzocht worden in de risico-analyse. Dan kan er gebrainstormed worden om te kijken welke soort bedreigingen er voor de specifieke server zijn, in dit geval een webserver. Tot slot wordt er m.b.v. enkele tools en wat opzoekwerk gekeken naar welk van deze bedreigingen het belangrijkste zijn. Dit wil zeggen dat er wordt gekeken naar de kans dat deze voorvalt en de mogelijke schade die deze kan toebrengen en zo worden de bedreigingen dan gecatalogiseerd op het vlak van belang.
+
+\section{Assets}
+In dit geval wordt er gewerkt met een webserver waarop de recenste versie van Windows Server 2012 R2 staat geïnstalleerd met de volgende rollen/programma's bijkomend:
+\begin{itemize}
+	\item Internet Information Services 8
+	\item Externe toegang, routering
+	\item Microsoft SQL Server Expres 2014 
+\end{itemize}
+
+\section{Mogelijke bedreigingen}
+De soorten bedreigingen kunnen ingedeeld worden per laag van het OSI-model. Hierdoor kan er structureel gekeken worden naar elke laag om zo te kijken welke bedreigingen er aanwezig zijn voordat er wordt verder gekeken. Deze werkwijze zorgt er ook voor dat er minder snel een bedreiging over het hoofd wordt gezien.
+
+\subsection{Applicatielaag}
+applicatie services enz
+
+Applicatie laag DDOS-aanvallen $https://conference.apnic.net/data/37/l7ddos_apricot_1393257782.pdf$
+$https://www.youtube.com/watch?v=BYKnBki2WTc$
+
+layer 4 ddos = 100 gebruikers leggen 1 site plat (veel gebruikers met 1 doelwit) al de bandbreedte wordt gebruikt. low orbit ion canon, 
+layer 7 dos = 1 gebruiker legt site plat
+
+vb. R-U-Dead-Yet, niet complete dingen sturen naar IIS, maakt de server unavailble
+Keep-alive DoS, 
+Keep-dead DoS, gebruikt CPU
+XerXes DOs, lokale host maakt aanvalt en is anoniem en geen firewall kan beveiligen
+link-local dos
+
+\subsection{Transportlaag}
+TCP en UDP werken hier
+\subsection{Internetlaag}
+IP protocol werkt hier, zorgt voor netwerkadressen en routering
+\subsection{Netwerklaag}
+Ethernet, token-ring, individuele netwerk protocollen 
+\subsection{Fysieke laag}
+hardware
 
 \section{Netwerkscanner}
 \cite{Jackson2010} schreef dat nmap de netwerk -en scanningtool is die de meeste beveiligingsexperts gebruiken. Deze is gratis, open source applicatie is beschikbaar op alle Windows besturingssystemen. In deze situatie wordt er ook gebruik gemaakt van deze bekende tool. Nmap kan gebruikt worden om een netwerk van alle grotes te scannen. Deze tool werkt vrij simpel, als je nmap voorziet van een IP-adres dan kan je alle "`open deuren"' of poorten te zien krijgen van een specifiek IP-apparaat of een range van IP-apparaten. Dit gebeurt door een ping sweep die de hosts zal identificeren die acief zijn op een netwerk en voor deze actieve hosts zal er gekeken worden welke services er antwoorden. \citep{Messer2007}. \newline
