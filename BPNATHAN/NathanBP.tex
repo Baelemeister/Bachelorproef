@@ -107,11 +107,19 @@
 %  - tweede zit = 3e examenperiode
 \newcommand{\examenperiode}{Tweede examenperiode}
 
+\newcommand*{\captionsource}[2]{%
+  \caption[{#1}]{%
+    #1%
+    \\\hspace{\linewidth}%
+    Bron: #2%
+  }%
+}
+
 %%========================================================================
 %% Inhoud document
 %%========================================================================
 
-\begin{document}
+\begin{document} \sloppy
 
 %%---------- Front matter ------------------------------------------------
 %% Het voorblad - Hier moet je in principe niets wijzigen.
@@ -251,8 +259,8 @@ Dit onderzoek bestaat uit de volgende methodiek:
 \begin{center}
 \includegraphics{img/Situatie}
 \end{center}
-\label{img:situatie}
 \caption{Proefopstelling}
+\label{img:situatie}
 \end{figure}
 
 In figuur~\ref{img:situatie} is te zien welke machines allemaal nodig zijn om dit onderzoek tot een goed einde te brengen. Ten eerste is er een Active Directory-server nodig die ook domeincontroller is in het domein en deze server is ook nog DNS-server ook. Dan is er de webserver die lid is van hetzelfde domein als de ADServer natuurlijk. Deze zijn aangesloten aan een switch en een router. Ten slotte is er ook nog een aanvallersmachine om te proberen de server te hacken. Deze is ook aangesloten aan een router op een andere locatie. Tot slot wordt er gebruik gemaakt van VMWare Workstation om al deze virtuele machines te maken met elkaar te verbinden.
@@ -322,8 +330,8 @@ Dit wordt gedaan door naar de eigenschappen te gaan en daar in alledrie de profi
 \begin{center}
 \includegraphics[scale=0.45]{img/FirewallUitgaand}
 \end{center}
-\label{img:FirewallUitgaand}
 \caption{Alle toegestane uitgaande verbindingen}
+\label{img:FirewallUitgaand}
 \end{figure}
 
 \subsection{Anti-virus}
@@ -336,8 +344,8 @@ Allereerst moet er gegaan worden naar de website van Microsoft Security Essentia
 \begin{center}
 \includegraphics[scale=0.60]{img/AntiVirus}
 \end{center}
-\label{img:AntiVirus}
 \caption{Voorbeeld van succesvolle scan met volgende geplande scan}
+\label{img:AntiVirus}
 \end{figure}
 
 \subsubsection{Regelmatig scannen en updaten}
@@ -357,8 +365,8 @@ In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn
 \begin{center}
 \includegraphics[scale=0.60]{img/IIS_Modules}
 \end{center}
-\label{img:IISModules}
 \caption{Alle modules die geactiveerd blijven}
+\label{img:IISModules}
 \end{figure}
 
 \subsection{Opties methode uitschakelen}
@@ -368,8 +376,8 @@ De opties methode geeft een lijst van methodes weer die worden ondersteund door 
 \begin{center}
 \includegraphics[scale=0.60]{img/IIS_Options}
 \end{center}
-\label{img:IISOptions}
 \caption{De term OPTIONS wordt niet toegestaan}
+\label{img:IISOptions}
 \end{figure}
 
 \subsection{Dynamische IP restricties}
@@ -416,8 +424,8 @@ De waarde die aan deze assets wordt meegegeven, wordt verklaard in het volgende 
 De soorten bedreigingen kunnen ingedeeld worden per laag van het OSI-model. Hierdoor kan er structureel gekeken worden naar elke laag om zo te kijken welke bedreigingen er aanwezig zijn voordat er wordt verder gekeken. Deze werkwijze zorgt er ook voor dat er minder snel een bedreiging over het hoofd wordt gezien. Er wordt ook gekeken naar wat de mogelijkheid is dat deze aanvallen op een webserver zullen plaatsvinden en wat de mogelijke schade kan zijn en zo wordt er een cijfer meegegeven aan een aanval om te kijken hoe belangrijk deze is. Hoe hoger cijfer, hoe belangrijker het is om de server te beschermen tegen deze aanval. Het berekenen van dit cijfer gebeurt door deze formule: "`schade van de aanval x kans op een aanval"'. Beide factoren krijgen een cijfer van 1 tot 10 mee waar 10 de hoogste factor (meeste schade of grootste kans op een aanval) voorsteld en 1 dus het omgekeerde. \citep{Sim2005}
 
 \subsection{Applicatielaag}
-applicatie services enz
-\subsubsection{DoS-aanvallen}
+applicatie services, samenvoeging van applicatie, presentatie en sessielaag.
+\subsubsection{Laag 7 DoS-aanvallen}
 Een DoS-aanval (of Denial of Service-aanval) die zich afspeelt in de applicatielaag kan een hele server doen crashen. Dit kan gedaan worden door één gebruiker. Indien er meerdere personen samenwerken om een netwerk/server plat te leggen dan wordt er gesproken van een DDoS-aanval (of Distributed Denial of Service-aanval). Een voordeel van DDoS-aanvallen zijn dat deze moeilijker zijn om na te trekken aangezien er verschillende mensen op hetzelfde moment aanvallen i.p.v. één persoon bij een DoS-aanval. \citep{Blagov2014} Er zijn verschillende soorten applicatielaag DoS-aanvallen zoals RUDY (R-U-Dead-Yet) waar IIS 8 het slachtoffer wordt en XerXes waar de server via een TCP-connectie het slachtoffer wordt. \newline
 
 De kans dat deze soort aanvallen zullen uitgevoerd worden is zeer groot aangezien het hier gaat over een webserver en die zijn een makkelijk doelwit voor zulke aanvallen. De factor \textit{kans op een aanval} krijgt dus een 9 mee. De schade die een DoS-aanval kan veroorzaken is niet mis, deze kan een server of webapplicatie helemaal offline halen zolang de aanval duurt. Het spreekt voor zich dat dit vrij irritant is, maar er is geen mogelijkheid tot diefstal van gegevens zoals kredietkaartgegevens of inloggegevens en er kan niets op de server of webapplicatie zelf worden veranderd dus de factor \textit{schade van de aanval} krijgt een 6 mee. Als dan de formule wordt uitgevoerd dan krijgt deze aanval de waarde \textbf{54} mee.
@@ -447,55 +455,54 @@ Deze aanval is een soort van DOS-aanval waar de aanvaller de bekende \textit{thr
 \includegraphics{img/ThreeWayHandshake}
 \end{center}
 \label{img:ThreeWayHandshake}
-\caption{ThreeWayHandshake Bron: http://blogs.ixiacom.com/ixia-blog/tcp-portals-the-handshakes-a-lie/}
+\captionsource{ThreeWayHandshake}{http://blogs.ixiacom.com/ixia-blog/tcp-portals-the-handshakes-a-lie/}
 \end{figure}
 
 Dit is een aanval die veel kan voorkomen en die ook door gerespecteerd lid van de security community \cite{Bown2013} als zeer gevaarlijk wordt beschouwd. Het feit dat de webserver rechtreeks in verbinding staat met het internet, wilt zeggen dat de kans zeer groot is dat deze aanval zal plaatsvinden dus daarom is de factor \textit{kans op aanval} een 9. Een succesvolle aanval kan een server doen vastlopen en ook al wordt de aanval gestopt, de server kan alleen maar terug werken nadat deze handmatig opnieuw is opgestart. Dit zorgt ervoor dat de webserver onbereikbaar is tot dat er iemand naar de locatie gaat en op de shutdown-knop drukt en de server weer laat rebooten. Deze aanval kan geen gevoelige gegevens wissen of stelen, maar kan wel voor een lange downtime zorgen van een website/server. Daarom krijgt deze aanval een 7 mee bij de factor \textit{schade van de aanval}. Hierdoor komt de waarde van deze aanval op \textbf{63} te staan.
 
 \subsection{Internetlaag}
-Beetje uitleg, IP protocol werkt hier, zorgt voor netwerkadressen en routering
+Beetje uitleg, IP protocol werkt hier, zorgt voor netwerkadressen en routering, is de netwerklaag in OSI-model.
 
 \subsubsection{Ping flood}
 Een Ping flood is eigenlijk de oudste en meest primitieve vorm van een DOS-aanval want iedereen kan het doen en het is extreem gemakkelijk. Als een server een Ping flood-aanval te verduren krijgt, dan krijgt deze server zoveel ping requests dat deze het niet meer aankan omdat er teveel CPU-resources gebruikt worden. De aanvaller stuurt dan pings, via ICMP-pakketten, zonder te wachten op een antwoord. Hierdoor kan de server niet tijdig antwoorden en worden echte requests ook geblokkeerd. Dit kan leiden tot een immens vertraagde server en/of website. \citep{Grid2010}
 
 Bij een webserver hebben deze soort aanvallen een grote kans om uitgevoerd te worden door de verbinding die deze server heeft met het internet en omdat het zo gemakkelijk is om uit te voeren. Om een soortgelijke aanval te doen heeft een persoon weinig kennis nodig, dit maakt deze aanval zo angstaanjagend omdat iedereen het zou kunnen na een tutorial van 5 minuten. Hierdoor krijgt de factor \textit{kans op aanval} een 10. De schade die deze aanval kan veroorzaken is echter vrij bescheiden. Het is niet dat een soortgelijke aanval een server kan plat gooien, maar het kan wel voor de nodige vertraging zorgen. Dit kan ervoor zorgen dat de website of server veel trager zal reageren op requests en dat de netwerkverbinding veel trager zal gaan. Aangezien deze aanval geen permanente schade kan veroorzaken maar enkel overlast, krijgt deze bij de factor \textit{schade van de aanval} een 3 mee. Hiermee komt de totale waarde van de aanval op \textbf{30}.
 
+\subsubsection{ARP spoofing}
 
 
-\subsubsection{Ping of Death}
-
-
-\subsubsection{INVITE of Death}
 
 
 IP protocol werkt hier, zorgt voor netwerkadressen en routering
 
 $http://kalilinuxfans.blogspot.be/2013/06/hack-remote-computer-via-ip-and-open.html$
 
-Ping of Death = $http://en.wikipedia.org/wiki/Ping_of_death$
 Ping flood (ICMP flood) = $http://ghostgrid.blog.com/2010/12/16/ping-flooding/$
 fingerprinting
 Port knocking
 IPSec attack
+ARP spoofing = voorbeeld $http://en.wikipedia.org/wiki/Network_interface_layer_security$
 
-\subsection{Netwerklaag}
+\subsection{Netwerktoeganglaag}
+combinatie van data-link en fysieke laag
+
 Ethernet, token-ring, individuele netwerk protocollen 
 
-ARP spoofing = voorbeeld $http://en.wikipedia.org/wiki/Network_interface_layer_security$
 DHCP starvation?
 packet sniffing
 MAC adres spoofing
-ARP flooding
 WEP cracking
 VLAN attack
-
-\subsection{Fysieke laag}
-hardware
-
+metasploit
 Keystroke logging
 lockpicking
 kabel knippen
 keylogger?
+
+\subsection{Fysieke laag}
+hardware
+
+
 
 \section{Netwerkscanner}
 \cite{Jackson2010} schreef dat nmap de netwerk -en scanningtool is die de meeste beveiligingsexperts gebruiken. Deze is gratis, open source applicatie is beschikbaar op alle Windows besturingssystemen. In deze situatie wordt er ook gebruik gemaakt van deze bekende tool. Nmap kan gebruikt worden om een netwerk van alle grotes te scannen. Deze tool werkt vrij simpel, als je nmap voorziet van een IP-adres dan kan je alle "`open deuren"' of poorten te zien krijgen van een specifiek IP-apparaat of een range van IP-apparaten. Dit gebeurt door een ping sweep die de hosts zal identificeren die acief zijn op een netwerk en voor deze actieve hosts zal er gekeken worden welke services er antwoorden. \citep{Messer2007}. \newline
@@ -511,7 +518,7 @@ Allereerst moeten er policies ingesteld worden die zullen gebruikt worden om het
 \begin{center}
 \includegraphics[scale=0.60]{img/Nessus1}
 \end{center}
-\caption{Voorbeeld Nessus-scan (Bron: http://soft365.vn)}
+\caption{Voorbeeld Nessus-scan}
 \end{figure}
 
 Nadat deze zijn ingesteld kan er één of meerdere IP-adressen ingegeven worden om de bijhorende apparaten te scannen. Voor elke host die is gescannend komt er een lijst met alle zwaktes op een overzichtsscherm. Deze zwaktes worden gecatalogiseerd naargelang de grootte. (Afbeelding 4-1) \newline
