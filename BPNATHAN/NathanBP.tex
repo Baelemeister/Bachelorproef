@@ -313,37 +313,91 @@ Nog een belangrijke onderdeel van een server met best practice beveiliging, is h
 \subsection{Backup}
 Het maken van geautomatiseerde backups is essentieel voor een server binnen een netwerk. Een fout, probleem of aanval kan elke moment van de dag gebeuren en als dit gebeurt moet het mogelijk zijn om het systeem terug te zetten van een eerder gemaakte backup. In de Windows Server Backup-wizard kan dit worden ingesteld voor elke harde schijf. In dit geval wordt er enkel elke nacht om 03:00u een back-up genomen van de C-schijf, maar dit varieert van bedrijf tot bedrijf en hangt af van hoeveel geheugen er beschikbaar is voor back-ups en welke dataschijven het belangrijkste zijn. 
 
-%----Tot hier is het goed-----%
-
 \subsection{Firewall}
-De firewall is enorm belangrijk en heeft vooraf al een configuratie meegekregen. Er is echter één aanpassing van de configuratie die in de praktijk veel wordt toegepast en die ook door \cite{Nabors2013} wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. Dit wordt gedaan door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "`blokkeren"' te zetten. Standaard staat dit geconfigureerd als "`toestaan"'. Hierna kunnen er eigen inkomende en uitgaande regels geconfigureerd worden naargelang de applicaties die op de server komen te staan en welke poorten open of dicht moeten zijn.
+De firewall is enorm belangrijk en heeft vooraf al een configuratie meegekregen. Er is echter één aanpassing van de configuratie die in de praktijk veel wordt toegepast en die ook door \cite{Nabors2013} wordt genoemd als een best practise-instelling voor een Firewall-configuratie. Dit betreft het blokkeren van alle uitgaande verbindingen die niet overeenkomen met één van de gedefinieerde regels. \newline 
+
+Dit wordt gedaan door naar de eigenschappen te gaan en daar in alledrie de profielen de uitgaande verbindingen op "`blokkeren"' te zetten. Standaard staat dit geconfigureerd als "`toestaan"'. Hierna kunnen er eigen inkomende en uitgaande regels geconfigureerd worden naargelang de applicaties die op de server komen te staan en welke poorten open of dicht moeten zijn. Bij uitgaande verbindingen is het belangrijk dat de TCP-poorten 80 (hhtp) en 443 (https) worden toegevoegd aan de uitzonderingen. Nadat deze poorten zijn toegevoegd dan ziet de verzameling van toegestane uitgaande verbinden eruit als in figuur~\ref{img:FirewallUitgaand} te zien is.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.45]{img/FirewallUitgaand}
+\end{center}
+\label{img:FirewallUitgaand}
+\caption{Alle toegestane uitgaande verbindingen}
+\end{figure}
 
 \subsection{Anti-virus}
-Een degelijke anti-virus is enorm belangrijk om een server, computer of ander online apparaat te beschermen. Bij het gebruiken van een desktop of laptop voor persoonlijk gebruik, is een gratis versie van een bepaalde anti-virus-software voldoen. Voor in een bedrijfsomgeving is het beter dat er een betaalde versie wordt genomen aangezien deze veel meer functies en opties hebben. Het is ook belangrijk dat de software dagelijks wordt geupdate zodat er geen nieuwe bedreigingen ongezien binnen geraken. Best wordt er 's nachts, als niemand de server gebruikt, automatisch een anti-virus scan gedaan om te kijken of alles nog steeds veilig is.
+\subsubsection{Goede anti-virus installeren}
+Een degelijke anti-virus is enorm belangrijk om een server, computer of ander online apparaat te beschermen. Bij het gebruiken van een desktop of laptop voor persoonlijk gebruik, is een gratis versie van een bepaalde anti-virus-software voldoen. Voor in een bedrijfsomgeving is het beter dat er een betaalde versie wordt genomen aangezien deze veel meer functies en opties hebben. Microsoft heeft een gratis beveiligingssoftwarepakket genaamd \textit{Microsoft Security Essentials}, maar deze heeft geen versie voor op de Windows Server 2012-besturingssystemen te worden geïnstalleerd. Dit wil niet zeggen dat de installatie van deze software niet lukt natuurlijk op een Windows server.
+
+Allereerst moet er gegaan worden naar de website van Microsoft Security Essentials om daar de recentste versie te downloaden en dit voor een Windows 7 64-bit machine. Als deze installer is gedownload dan moet er gegaan worden naar de eigenschappen om daar de compatibiliteit te veranderen naar Windows 7. Hierna moet er een opdrachtprompt gestart worden en moet er genavigeerd worden naar de map waar de installer is in geplaatst. Daar wordt er met het volgende lijntje \begin{verbatim} mseinstall /disableoslimit \end{verbatim} de installer succesvol gestart. Bij de installatie hoeft er enkel op \textit{volgende} gedrukt te worden en de software wordt succesvol geïnstalleerd. Hierna kan er een eerste scan worden gestart die de hele server onderzoekt op virussen en spyware nadat deze zichzelf heeft bijgewerkt met de nieuwste updates. \citep{Herring2014}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/AntiVirus}
+\end{center}
+\label{img:AntiVirus}
+\caption{Voorbeeld van succesvolle scan met volgende geplande scan}
+\end{figure}
+
+\subsubsection{Regelmatig scannen en updaten}
+Het spreekt voor zich dat deze anti-virus regelmatig moet ge-update worden zodat wanneer er een nieuwe bedreiging gesignaleerd wordt, deze direct kan toegevoegd worden aan de anti-virus software. Door het dagelijks uitvoeren van updates en een anti-virusscan blijft de server optimaal beschermt. Het beste is om dit 's nachts te doen als het netwerk niet gebruikt wordt om zo de gebruikers van het netwerk niet te belasten. 
 
 \section{IIS best practices WebServer}
 \subsection{Dedicated server}
 Het is zeer belangrijk dat IIS een dedicated server is. Het is volgens \cite{Microsoft2013} gebruikelijk om de webserver apart van de domeincontroller te doen. Dit heeft als reden dat er geen lokale accounts zijn op een domeincontroller en deze lokale accounts zijn belangrijk voor een veilige IIS-server. Het samenplaatsen van een DC en een webserver beperkt de beveiligingsmogelijkeden enorm. Bijvoorbeeld een nieuwe exploit die door een hacker wordt gebruikt zal zo niet alleen de webserver aantasten, maar ook het hele netwerk. Daarom zijn deze twee dus het best gescheiden, zoals in deze opstelling het geval is.
 
 \subsection{Inetpub}
-De inetpub-map wordt bij elke installatie van IIS aangemaakt en standaard wordt die geplaatst op de C-schijf. Aangezien dit dezelfde schijf is waar het besturingssysteem opstaat, is het gebruikelijk om deze map op een aparte schijf te zetten zodat de toegang tot deze schijf beter kan beschermt worden. De schijf waar het besturingssysteem opstaat kan nooit zo goed beschermt worden als een aparte schijf. \citep{Microsoft2013}
+De inetpub-map wordt bij elke installatie van IIS aangemaakt en standaard wordt die geplaatst op de C-schijf. Aangezien dit dezelfde schijf is waar het besturingssysteem opstaat, is het gebruikelijk om deze map op een aparte schijf te zetten zodat de toegang tot deze schijf beter kan beschermt worden. De schijf waar het besturingssysteem opstaat kan nooit zo goed beschermt worden als een aparte schijf. \citep{Darmanin2014}
 
 \subsection{Modules}
-In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn. In de IIS manager kan er in het modulescherm van de geselecteerde website bepaalde modules op inactief gezet worden. In de lijst moet er beslist worden welke modules nodig zijn en de welke overbodig zijn. De overbodige modules kunnen dan worden uitgeschakeld door deze uit de lijst te verwijderen. 
+In totaal bevat IIS meer dan 30 modules en deze moeten niet allemaal actief zijn. In de IIS manager kan er in het modulescherm van de geselecteerde website bepaalde modules op inactief gezet worden. In de lijst moet er beslist worden welke modules nodig zijn en de welke overbodig zijn. De overbodige modules kunnen dan worden uitgeschakeld door deze uit de lijst te verwijderen. In dit geval blijven alle modules staan want deze zijn nodig voor het uitvoeren van de applicatie. \citep{Darmanin2014} \citep{Microsoft2013}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/IIS_Modules}
+\end{center}
+\label{img:IISModules}
+\caption{Alle modules die geactiveerd blijven}
+\end{figure}
 
 \subsection{Opties methode uitschakelen}
-De opties methode geeft een lijst van methodes weer die worden ondersteund door de webserver. Dit kan waardevolle informatie opleveren voor een hacker. Het is dan ook een best practice om deze methode uit te schakelen en dit gebeurd door het woord "`OPTIONS"' uit te sluiten van de \textit{HTTP Verb request filtering rules} in IIS. Dit wordt gedaan door de website te selecteren in de IIS-manager en dan dubbel te klikken op "`aanvraagfiltering"' en naar het tabblad "`HTTP-termen"' te gaan. Hier wordt als actie gekozen "`Term weigeren..."' en wordt "`OPTIONS"' ingevuld en op "`OK"' gedrukt. Nu staat deze regel als enige in de lijst en is deze best practice in orde gebracht.
+De opties methode geeft een lijst van methodes weer die worden ondersteund door de webserver. Dit kan waardevolle informatie opleveren voor een hacker. Het is dan ook een best practice om deze methode uit te schakelen en dit gebeurd door het woord \textit{OPTIONS} uit te sluiten van de \textit{HTTP Verb request filtering rules} in IIS. Dit wordt gedaan door de website te selecteren in de IIS-manager en dan dubbel te klikken op \textit{aanvraagfiltering} en naar het tabblad \textit{HTTP-termen} te gaan. Hier wordt als actie gekozen \textit{Term weigeren...} en wordt \textit{OPTIONS} ingevuld en op OK gedrukt. Nu staat deze regel als enige in de lijst en is deze best practice in orde gebracht zoals in figuur~\ref{img:IISOptions} te zien is. \citep{Darmanin2014}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/IIS_Options}
+\end{center}
+\label{img:IISOptions}
+\caption{De term OPTIONS wordt niet toegestaan}
+\end{figure}
 
 \subsection{Dynamische IP restricties}
-Het inschakelen van dynamic IP restrictions module zorgt ervoor dat IP-adressen die een bepaald aantal requests hebben verzonden worden geblokkeerd. Hierdoor worden \textit{Denial of Service-aanvallen} voorkomen. Deze module inspecteert het IP-adres van elke request en zal deze requests filteren om de Ip-adressen met slechte bedoelingen tijdelijk te blokkeren. Dit kan gedaan worden door naar de IIS-manager te gaan en de naam van de website te selecteren en te dubbelklikken op "`beperkingen voor IP-adressen en domeinen"'. In het actie paneel wordt er geklikt op "`instellingen voor dynamische beperking bewerken.."' en kunnen er restricties ingevoerd worden. De eerste twee vakjes van de drie moeten worden aangevinkt en de waarden kunnen naar keuze ingevuld worden, in dit geval is "`5-20-200"' ingevuld. 
+Het inschakelen van dynamic IP restrictions module zorgt ervoor dat IP-adressen die een bepaald aantal requests hebben verzonden worden geblokkeerd. Hierdoor worden \textit{Denial of Service-aanvallen} voorkomen. Deze module inspecteert het IP-adres van elke request en zal deze requests filteren om de IP-adressen met slechte bedoelingen tijdelijk te blokkeren. Dit kan gedaan worden door naar de IIS-manager te gaan en de naam van de website te selecteren en te dubbelklikken op \textit{beperkingen voor IP-adressen en domeinen}. In het actie paneel wordt er geklikt op \textit{instellingen voor dynamische beperking bewerken.. }en kunnen er restricties ingevoerd worden. De eerste twee vakjes van de drie moeten worden aangevinkt en de waarden kunnen naar keuze ingevuld worden, in dit geval is 5-20-200 ingevuld. \citep{Darmanin2014}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/IIS_Restrictie}
+\end{center}
+\label{img:IISRestrictie}
+\caption{Instellingen voor dynamische IP-beperking}
+\end{figure}
 
 \subsection{Request Filtering Rules}
-Het is altijd een goed idee om de verschillende types van HTTP-request die worden verwerkt door IIS te beperken. Door het instellen van uitsluitingen en regels kunnen potentieel gevaarlijke request er nooit doorkomen. Dit gebeurd in de IIS Manager waar de juiste website wordt gekozen en waarna er dubbel wordt geklikt op "`Requestfilters"'. Hier wordt er gegaan naar het tabblad "`regels"' en kunnen verschillende filterregels toegevoegd worden.
+Het is altijd een goed idee om de verschillende types van HTTP-request die worden verwerkt door IIS te beperken. Door het instellen van uitsluitingen en regels kunnen potentieel gevaarlijke request er nooit doorkomen. Dit gebeurd in de IIS Manager waar de juiste website wordt gekozen en waarna er dubbel wordt geklikt op \textit{Requestfilters}. Hier wordt er gegaan naar het tabblad \textit{regels} en kunnen verschillende filterregels toegevoegd worden.\citep{Darmanin2014} \citep{Microsoft2013}
 
 \subsection{Inschakkelen logs}
-Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-request gelogged. Indien er problemen voordoen dan kan er hier gekeken worden om een betere kennis te vergaren over het probleem. Dit kan vrij snel en simpel ingeschakeld worden door te gaan naar de IIS manager en daar de gewenste website te slecteren en op logging te klikken. Best wordt er gekozen om een nieuw bestand aan te maken want deze bestanden groeien vrij snel.
+Door het in te schakelen van het IIS logsysteem worden verschillende HTTP-request gelogged. Indien er problemen voordoen dan kan er hier gekeken worden om een betere kennis te vergaren over het probleem. Dit kan vrij snel en simpel ingeschakeld worden door te gaan naar de IIS manager en daar de gewenste website te selecteren en op \textit{logging} te klikken. Best wordt er gekozen om een nieuw bestand aan te maken want deze bestanden groeien vrij snel. \citep{Darmanin2014} \citep{Microsoft2013}
 
 \section{SQL Server best practices WebServer}
+\subsection{Uitschakelen van onnodige features}
+Nadat de software is geïnstalleerd wordt er best gegaan naar de \textit{SQL Server Configuration Manager Tool} om alle onnodige features te verwijderen. In dit geval zijn er geen extra features geïnstalleerd die niet gebruikt zijn dus hier is dit overbodig. \citep{Mam2013}
+
+\subsection{Patchen en updaten}
+Zoals elk Microsoft-product wordt ook SQL Server regelmatig voorzien van de nieuwste updates en patches om de applicatie zo goed mogelijk te beveiligen tegen hedendaagse aanvallen. Het is best dat deze updates eerst eens worden gedownload en geïnstalleerd in een testomgeving om daarna deze in de echte omgeving te implementeren. Dit kan voorkomen dat er bugs in de patch de server in gevaar brengen. \citep{Mam2013}
+
+\subsection{Loggen van aanmeldpogingen}
+Het kan zeer handig zijn om logbestanden bij te houden van iedereen die zich aanmeldt op de SQL Server. Zowel de gelukte als de mislukte login-pogingen zouden moeten geregistreerd worden. Dit kan gedaan worden door naar \textit{SQL Server Management Studio} te gaan en te rechterklikken op de gewenste SQL Server en dan de \textit{Eigenschappen} te selecteren. Aan de linkerkant is er dan de mogelijkheid om op \textit{Security} te klikken en daar kan er gekozen worden voor \textit{Both failed and successful logins}. Als dit is gedaan dan hoeft SQL enkel opnieuw worden opgestart en dan zal dit vanaf nu altijd gebeuren. \citep{Mam2013}
 
 \chapter{Risico-analyse}
 Het uitvoeren van een risico-analyse kan in verschillende stappen onderverdeeld worden. Allereerst moet er een opsomming zijn van alles \textit{assets} die zullen onderzocht worden in de risico-analyse. Dan kan er gebrainstormed worden om te kijken welke soort bedreigingen er voor de specifieke server zijn, in dit geval een webserver. Tot slot wordt er m.b.v. enkele tools en wat opzoekwerk gekeken naar welk van deze bedreigingen het belangrijkste zijn. Dit wil zeggen dat er wordt gekeken naar de kans dat deze voorvalt en de mogelijke schade die deze kan toebrengen en zo worden de bedreigingen dan gecatalogiseerd op het vlak van belang.
@@ -379,7 +433,7 @@ Een SQL-injectie is simpel uitgelegd een aanval die slechte code in een webappli
 Volgens \cite{Acunetix2014} is een SQL-injectie één van de meest voorkomende aanvallen op de applicatielaag die vandaag voorkomen. Hierdoor is de kans dus vrij groot dat een webserver met een achterliggende webapplicatie hiermee te maken krijgt. Dus de factor \textit{kans op een aanval} krijgt hier ook een 10 mee. De schade die deze aanval kan veroorzaken is natuurlijk ook zeer groot. Een goed gecoördineerde SQL-injectie kan de inloggegevens van alle gebruikers stelen en kan zelfs velden van de database verwijderen. Hierdoor krijgt de factor \textit{schade van de aanval} een 9 mee. Dit brengt de totale waarde van de aanval op \textbf{90}, hetgeen zeer hoog is.
 
 \subsection{Transportlaag}
-eventuele uitleg over transportlaag
+eventuele uitleg over transportlaag, TCP en UDP werken hier
 \subsubsection{Port scanning}
 Een port scan kan gebruikt worden als een aanval, maar kan ook gebruikt worden voor de administrator te helpen. Bij een port scan wordt er gekeken bij een computer of een netwerk welke TCP -en/of UDP-poorten er allemaal open zijn en luisteren. Als aanvaller kan er zo gekeken worden waardat er mogelijkheden zijn om in te breken en als administrator kan er gekeken worden naar de zwakke plekken in het netwerk of op een computer/server. Via een port scan kan een administrator ook zien of er \textit{bad ports} open zijn. Dit zijn poorten die open staan omdat er een trojan horse, DDoS-tool of een andere soort van kwaadaardige software op het systeem staat. Zo kan er ook tijdig ingegrepen worden. \citep{Kessler2001} \newline
 
@@ -398,22 +452,28 @@ Deze aanval is een soort van DOS-aanval waar de aanvaller de bekende \textit{thr
 
 Dit is een aanval die veel kan voorkomen en die ook door gerespecteerd lid van de security community \cite{Bown2013} als zeer gevaarlijk wordt beschouwd. Het feit dat de webserver rechtreeks in verbinding staat met het internet, wilt zeggen dat de kans zeer groot is dat deze aanval zal plaatsvinden dus daarom is de factor \textit{kans op aanval} een 9. Een succesvolle aanval kan een server doen vastlopen en ook al wordt de aanval gestopt, de server kan alleen maar terug werken nadat deze handmatig opnieuw is opgestart. Dit zorgt ervoor dat de webserver onbereikbaar is tot dat er iemand naar de locatie gaat en op de shutdown-knop drukt en de server weer laat rebooten. Deze aanval kan geen gevoelige gegevens wissen of stelen, maar kan wel voor een lange downtime zorgen van een website/server. Daarom krijgt deze aanval een 7 mee bij de factor \textit{schade van de aanval}. Hierdoor komt de waarde van deze aanval op \textbf{63} te staan.
 
-\subsubsection{ARP spoofing}
-
-TCP en UDP werken hier
-
-Aanvallen tegen TLS/SSL = voorbeeld $http://en.wikipedia.org/wiki/Transport_Layer_Security$
-TCP flooding = $http://searchsecurity.techtarget.com/definition/SYN-flooding$ $https://samsclass.info/123/proj10/sockstress.htm$
-Sockstress = $https://www.youtube.com/watch?v=hKj_Dwyt0a0$ 
-port scanning = $http://www.garykessler.net/library/is_tools_scan.html$
-
-
 \subsection{Internetlaag}
+Beetje uitleg, IP protocol werkt hier, zorgt voor netwerkadressen en routering
+
+\subsubsection{Ping flood}
+Een Ping flood is eigenlijk de oudste en meest primitieve vorm van een DOS-aanval want iedereen kan het doen en het is extreem gemakkelijk. Als een server een Ping flood-aanval te verduren krijgt, dan krijgt deze server zoveel ping requests dat deze het niet meer aankan omdat er teveel CPU-resources gebruikt worden. De aanvaller stuurt dan pings, via ICMP-pakketten, zonder te wachten op een antwoord. Hierdoor kan de server niet tijdig antwoorden en worden echte requests ook geblokkeerd. Dit kan leiden tot een immens vertraagde server en/of website. \citep{Grid2010}
+
+Bij een webserver hebben deze soort aanvallen een grote kans om uitgevoerd te worden door de verbinding die deze server heeft met het internet en omdat het zo gemakkelijk is om uit te voeren. Om een soortgelijke aanval te doen heeft een persoon weinig kennis nodig, dit maakt deze aanval zo angstaanjagend omdat iedereen het zou kunnen na een tutorial van 5 minuten. Hierdoor krijgt de factor \textit{kans op aanval} een 10. De schade die deze aanval kan veroorzaken is echter vrij bescheiden. Het is niet dat een soortgelijke aanval een server kan plat gooien, maar het kan wel voor de nodige vertraging zorgen. Dit kan ervoor zorgen dat de website of server veel trager zal reageren op requests en dat de netwerkverbinding veel trager zal gaan. Aangezien deze aanval geen permanente schade kan veroorzaken maar enkel overlast, krijgt deze bij de factor \textit{schade van de aanval} een 3 mee. Hiermee komt de totale waarde van de aanval op \textbf{30}.
+
+
+
+\subsubsection{Ping of Death}
+
+
+\subsubsection{INVITE of Death}
+
+
 IP protocol werkt hier, zorgt voor netwerkadressen en routering
 
 $http://kalilinuxfans.blogspot.be/2013/06/hack-remote-computer-via-ip-and-open.html$
 
-Ping flood (ICMP flood)
+Ping of Death = $http://en.wikipedia.org/wiki/Ping_of_death$
+Ping flood (ICMP flood) = $http://ghostgrid.blog.com/2010/12/16/ping-flooding/$
 fingerprinting
 Port knocking
 IPSec attack
