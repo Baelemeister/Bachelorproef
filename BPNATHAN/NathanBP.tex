@@ -420,11 +420,12 @@ In dit geval wordt er gewerkt met een webserver waarop de recenste versie van Wi
 \end{itemize}
 De waarde die aan deze assets wordt meegegeven, wordt verklaard in het volgende deel.
 
-\section{Bedreigingen en mogelijkheid}
-De soorten bedreigingen kunnen ingedeeld worden per laag van het OSI-model. Hierdoor kan er structureel gekeken worden naar elke laag om zo te kijken welke bedreigingen er aanwezig zijn voordat er wordt verder gekeken. Deze werkwijze zorgt er ook voor dat er minder snel een bedreiging over het hoofd wordt gezien. Er wordt ook gekeken naar wat de mogelijkheid is dat deze aanvallen op een webserver zullen plaatsvinden en wat de mogelijke schade kan zijn en zo wordt er een cijfer meegegeven aan een aanval om te kijken hoe belangrijk deze is. Hoe hoger cijfer, hoe belangrijker het is om de server te beschermen tegen deze aanval. Het berekenen van dit cijfer gebeurt door deze formule: "`schade van de aanval x kans op een aanval"'. Beide factoren krijgen een cijfer van 1 tot 10 mee waar 10 de hoogste factor (meeste schade of grootste kans op een aanval) voorsteld en 1 dus het omgekeerde. \citep{Sim2005}
+\section{Bedreigingen en risicofactor}
+De soorten bedreigingen kunnen ingedeeld worden per laag van het TCP/IP-model. Hierdoor kan er structureel gekeken worden naar elke laag om zo te kijken welke bedreigingen er aanwezig zijn voordat er wordt verder gekeken. Deze werkwijze zorgt er ook voor dat er minder snel een bedreiging over het hoofd wordt gezien. Er wordt ook gekeken naar wat de mogelijkheid is dat deze aanvallen op een webserver zullen plaatsvinden en wat de mogelijke schade kan zijn en zo wordt er een cijfer meegegeven aan een aanval om te kijken hoe belangrijk deze is. Hoe hoger cijfer, hoe belangrijker het is om de server te beschermen tegen deze aanval. Het berekenen van dit cijfer gebeurd door deze formule: "`schade van de aanval x kans op een aanval"'. Beide factoren krijgen een cijfer van 1 tot 10 mee waar 10 de hoogste factor (meeste schade of grootste kans op een aanval) voorstelt en 1 dus het omgekeerde. \citep{Sim2005}
 
 \subsection{Applicatielaag}
-applicatie services, samenvoeging van applicatie, presentatie en sessielaag.
+Dit is de 4de en de hoogste laag van het TCP/IP-model en is een samenvoeging van de applicatie -, presentatie -en sessielaag van het OSI-model. Deze laag bevat al de ''high-level'' protocollen zoals DNS, HTTP, Telnet, SSH, FTP, TFTP, SNMP, ... noem maar op. Deze laag heeft ook een rechtstreekse verbinding met de eindgebruiker en de applicaties. \citep{Thomas2013}
+
 \subsubsection{Laag 7 DoS-aanvallen}
 Een DoS-aanval (of Denial of Service-aanval) die zich afspeelt in de applicatielaag kan een hele server doen crashen. Dit kan gedaan worden door één gebruiker. Indien er meerdere personen samenwerken om een netwerk/server plat te leggen dan wordt er gesproken van een DDoS-aanval (of Distributed Denial of Service-aanval). Een voordeel van DDoS-aanvallen zijn dat deze moeilijker zijn om na te trekken aangezien er verschillende mensen op hetzelfde moment aanvallen i.p.v. één persoon bij een DoS-aanval. \citep{Blagov2014} Er zijn verschillende soorten applicatielaag DoS-aanvallen zoals RUDY (R-U-Dead-Yet) waar IIS 8 het slachtoffer wordt en XerXes waar de server via een TCP-connectie het slachtoffer wordt. \newline
 
@@ -440,8 +441,14 @@ Een SQL-injectie is simpel uitgelegd een aanval die slechte code in een webappli
 
 Volgens \cite{Acunetix2014} is een SQL-injectie één van de meest voorkomende aanvallen op de applicatielaag die vandaag voorkomen. Hierdoor is de kans dus vrij groot dat een webserver met een achterliggende webapplicatie hiermee te maken krijgt. Dus de factor \textit{kans op een aanval} krijgt hier ook een 10 mee. De schade die deze aanval kan veroorzaken is natuurlijk ook zeer groot. Een goed gecoördineerde SQL-injectie kan de inloggegevens van alle gebruikers stelen en kan zelfs velden van de database verwijderen. Hierdoor krijgt de factor \textit{schade van de aanval} een 9 mee. Dit brengt de totale waarde van de aanval op \textbf{90}, hetgeen zeer hoog is.
 
+\subsubsection{Metasploit telnet + putty}
+In deze aanval wordt er gekeken via een port scan of poort 23 (telnet) open is bij een specifieke machine. Indien deze poort open is dat kan er via metasploit een exploit gezocht worden om via poort 23 binnen te breken in een machine. Dit kan gedaan worden door via een \textit{dictionairy attack} het wachtwoord en inlogaccount probeert te achterhalen van telnet op die specifieke machine. Als dit gelukt is kan er via \textit{Putty} een verbinding worden gemaakt met de doelmachine. Metasploit is de grootste database van gekende exploits en het kan gebruikt worden door administrators om een server goed te beveiligen, maar helaas wordt het ook gebruikt door hackers die een server willen binnenbreken. \citep{majestro2014} \newline
+
+Dit is een aanval die moeilijk aan te leren is en die vele tijd en oefening vergt en hierdoor neemt de kans op een aanval een beetje af. Toch krijgt deze aanval nog bij de factor \textit{kans op aanval} een 7 mee. De schade die deze aanval kan aanrichten is immens. Bij een succesvolle aanval zal de hacker volledige controle krijgen over het doelwit, in dit geval een webserver. Hij kon zo alle gegevens inkijken, kopiëren en verwijderen. Zo kan er gevoelige en geheime informatie doorgespeeld worden en kunnen er allerlei soorten chantage en spionage plaatsvinden. Bij de volledige controle over een machine zijn er veel zaken die een hacker kan doen dus hierdoor krijgt de factor \textit{schade van de aanval} een 10 mee. Hierdoor komt de totale waarde van deze aanval op een \textbf{70} te staan.
+
 \subsection{Transportlaag}
-eventuele uitleg over transportlaag, TCP en UDP werken hier
+Dit is de derde laag van het TCP/IP-model en is hetzelfde als de 4de laag van het OSI-model. Deze laag is vooral gekenmerkt door de twee transportprotocollen TCP en UDP die hier op werken. De bedoeling van deze laag is om foutvrije berichten te verzenden tussen hosts. \citep{Thomas2013}
+
 \subsubsection{Port scanning}
 Een port scan kan gebruikt worden als een aanval, maar kan ook gebruikt worden voor de administrator te helpen. Bij een port scan wordt er gekeken bij een computer of een netwerk welke TCP -en/of UDP-poorten er allemaal open zijn en luisteren. Als aanvaller kan er zo gekeken worden waardat er mogelijkheden zijn om in te breken en als administrator kan er gekeken worden naar de zwakke plekken in het netwerk of op een computer/server. Via een port scan kan een administrator ook zien of er \textit{bad ports} open zijn. Dit zijn poorten die open staan omdat er een trojan horse, DDoS-tool of een andere soort van kwaadaardige software op het systeem staat. Zo kan er ook tijdig ingegrepen worden. \citep{Kessler2001} \newline
 
@@ -461,92 +468,48 @@ Deze aanval is een soort van DOS-aanval waar de aanvaller de bekende \textit{thr
 Dit is een aanval die veel kan voorkomen en die ook door gerespecteerd lid van de security community \cite{Bown2013} als zeer gevaarlijk wordt beschouwd. Het feit dat de webserver rechtreeks in verbinding staat met het internet, wilt zeggen dat de kans zeer groot is dat deze aanval zal plaatsvinden dus daarom is de factor \textit{kans op aanval} een 9. Een succesvolle aanval kan een server doen vastlopen en ook al wordt de aanval gestopt, de server kan alleen maar terug werken nadat deze handmatig opnieuw is opgestart. Dit zorgt ervoor dat de webserver onbereikbaar is tot dat er iemand naar de locatie gaat en op de shutdown-knop drukt en de server weer laat rebooten. Deze aanval kan geen gevoelige gegevens wissen of stelen, maar kan wel voor een lange downtime zorgen van een website/server. Daarom krijgt deze aanval een 7 mee bij de factor \textit{schade van de aanval}. Hierdoor komt de waarde van deze aanval op \textbf{63} te staan.
 
 \subsection{Internetlaag}
-Beetje uitleg, IP protocol werkt hier, zorgt voor netwerkadressen en routering, is de netwerklaag in OSI-model.
+De internetlaag is de tweede laag van het TCP/IP-model en staat gelijk aan de 3de laag, de netwerklaag, in het OSI-model. Deze laag steekt de data in pakketten genaamd IP-datagrammen waar de bron -en eindbestemming van het pakket in verwerkt zitten. Deze laag is ook verantwoordelijk voor het routeren van deze pakketten. De protocollen die vooral worden gebruikt op deze laag zijn IP, ICMP en ARP. \citep{Thomas2013}
 
 \subsubsection{Ping flood}
 Een Ping flood is eigenlijk de oudste en meest primitieve vorm van een DOS-aanval want iedereen kan het doen en het is extreem gemakkelijk. Als een server een Ping flood-aanval te verduren krijgt, dan krijgt deze server zoveel ping requests dat deze het niet meer aankan omdat er teveel CPU-resources gebruikt worden. De aanvaller stuurt dan pings, via ICMP-pakketten, zonder te wachten op een antwoord. Hierdoor kan de server niet tijdig antwoorden en worden echte requests ook geblokkeerd. Dit kan leiden tot een immens vertraagde server en/of website. \citep{Grid2010}
 
 Bij een webserver hebben deze soort aanvallen een grote kans om uitgevoerd te worden door de verbinding die deze server heeft met het internet en omdat het zo gemakkelijk is om uit te voeren. Om een soortgelijke aanval te doen heeft een persoon weinig kennis nodig, dit maakt deze aanval zo angstaanjagend omdat iedereen het zou kunnen na een tutorial van 5 minuten. Hierdoor krijgt de factor \textit{kans op aanval} een 10. De schade die deze aanval kan veroorzaken is echter vrij bescheiden. Het is niet dat een soortgelijke aanval een server kan plat gooien, maar het kan wel voor de nodige vertraging zorgen. Dit kan ervoor zorgen dat de website of server veel trager zal reageren op requests en dat de netwerkverbinding veel trager zal gaan. Aangezien deze aanval geen permanente schade kan veroorzaken maar enkel overlast, krijgt deze bij de factor \textit{schade van de aanval} een 3 mee. Hiermee komt de totale waarde van de aanval op \textbf{30}.
 
-\subsubsection{ARP spoofing}
+\subsubsection{ARP spoofing - Man in the middle}
+Deze aanval wordt ook wel eens \textit{ARP cache poisoning} of \textit{ARP poison routing} genoemd. Dit is een aanval waar een aanval valse Address Resolution Protocol-berichten (ARP) over een LAN verzendt. Dit heeft als resultaat dat het MAC-adres van de aanvaller wordt gelinkt met een IP-adres van een echte computer in het netwerk. Vanaf deze link is geslaagd, zal de aanvaller alle data ontvangen die is bedoeld voor de computer waarvan de aanvaller het IP-adres gebruikt. De Man in the middle-aanval is de variant van ARP spoofing waar het verkeer tussen twee hosts eerst naar de hacker zijn machine wordt verzonden en nadat deze persoon de pakketten heeft kunnen bekijken (sniffen), dan wordt het verkeer naar de normale bestemming verzonden. Dit gebeurd zonder dat iemand er weet van heeft. Deze aanval kan alleen gebruikt worden, maar wordt in vele gevallen ook gebruikt in combinatie met een andere aanval. Bij een DoS-aanval kan ARP spoofing worden gebruikt om meerdere IP-adressen te linken aan één MAC-adres en zo het verkeer van al deze IP-adressen naar het doelsysteem waar het MAC-adres van is gebruikt. Zo wordt het doel overspoeld met verkeer. \citep{Glynn2014} \newline
 
-
-
-
-IP protocol werkt hier, zorgt voor netwerkadressen en routering
-
-$http://kalilinuxfans.blogspot.be/2013/06/hack-remote-computer-via-ip-and-open.html$
-
-Ping flood (ICMP flood) = $http://ghostgrid.blog.com/2010/12/16/ping-flooding/$
-fingerprinting
-Port knocking
-IPSec attack
-ARP spoofing = voorbeeld $http://en.wikipedia.org/wiki/Network_interface_layer_security$
+Een soortgelijke aanval kan voorkomen op een webserver omdat deze rechtstreeks in verbinding staat met de router, maar deze is echter niet zo makkelijk uit te voeren als een ping flood. Hierdoor krijgt deze aanval bij de factor \textit{kans op aanval} een 8. De schade die een hacker kan toebrengen aan een server of netwerk is dan weer vrij groot. Zo kan deze alle pakketten die worden verstuurd naar een ''vergiftigde'' host om zo gevoelige informatie te verkrijgen. Als een hacker de verbinding tussen bijvoorbeeld de baas en onderbaas van bedrijf A aanvalt, dan kan deze al het verkeer dat deze twee tussen elkaar uitwisselen inkijken zonder dat er iemand weet van heeft. Als deze personen dan gevoelige informatie uitwisselen met elkaar kan dit grote gevolgen hebben. Dit is dus een vrij gevaarlijke aanval die niet direct kan worden opgemerkt dus deze krijgt als factor \textit{schade van de aanval} een 9. Dit brengt de totale waarde van deze aanval op \textbf{72}.
 
 \subsection{Netwerktoeganglaag}
-combinatie van data-link en fysieke laag
+Dit is laag 1 van het TCP/IP-model en is een samenvoeging van de fysieke -en datalinklaag bij het OSI-model, die daar laag 1 en 2 zijn. Hier worden de details meegegeven over hoe data precies over een netwerk moet verzonden worden. De protocollen die hier het meeste voorkomen zijn Ethernet, Token Ring en Frame Relay. 
 
-Ethernet, token-ring, individuele netwerk protocollen 
-
-DHCP starvation?
-packet sniffing
-MAC adres spoofing
-WEP cracking
-VLAN attack
-metasploit
-Keystroke logging
-lockpicking
-kabel knippen
-keylogger?
-
-\subsection{Fysieke laag}
-hardware
-
-
-
-\section{Netwerkscanner}
-\cite{Jackson2010} schreef dat nmap de netwerk -en scanningtool is die de meeste beveiligingsexperts gebruiken. Deze is gratis, open source applicatie is beschikbaar op alle Windows besturingssystemen. In deze situatie wordt er ook gebruik gemaakt van deze bekende tool. Nmap kan gebruikt worden om een netwerk van alle grotes te scannen. Deze tool werkt vrij simpel, als je nmap voorziet van een IP-adres dan kan je alle "`open deuren"' of poorten te zien krijgen van een specifiek IP-apparaat of een range van IP-apparaten. Dit gebeurt door een ping sweep die de hosts zal identificeren die acief zijn op een netwerk en voor deze actieve hosts zal er gekeken worden welke services er antwoorden. \citep{Messer2007}. \newline
-
-Met behulp van een netwerkscanner, in dit geval nmap, kan er gekeken worden welke poorten kunnen geëxploit worden. Hackers gebruiken dit om te zoeken naar open poorten waardoor ze binnen een computer of netwerk kunnen breken m.b.v. een exploit. Op de webserver zullen er meer poorten open zijn dan op de ADServer die ook domeincontroller is. Bijvoorbeeld poorten 80 en 443 zijn specifiek voor een webserver. In het geval dat er poorten open zijn die niet open moeten staan, dan kunnen deze worden gesloten door naar het takenbeheer te gaan en te kijken welke service er bij deze poort hoort. Hoort deze service niet thuis op het netwerk of op de computer, dan kan deze verwijderd worden. Dankzij het uitvoeren van een port scan kan er gekeken worden of er op een server poorten open staan die vatbaar zijn voor een aanval. Indien deze tijdig worden gevonden kan een potentiële aanval afgewend zijn.
-
-\section{Kwestbaarheidscanner}
-Nessus is volgens \cite{Jackson2010} een populaire kwetsbaarheidscanner die zoekt naar zwakke plekken in besturingssystemen, netwerkapparaten en applicaties. Deze scans gebeuren via een database zodat alle nieuwste bedreigingen direct kunnen gevonden worden. Daarom is het ook belangrijk dat Nessus wekelijks of dagelijks wordt geupdate zodat elke scan zo efficiënt mogelijk kan gebeuren. Deze soort scan is een uitgebreidere versie van de nmap-scan. \newline
-
-Allereerst moeten er policies ingesteld worden die zullen gebruikt worden om het netwerk in te schatten. In deze sectie worden ook plugins ingesteld die het hart van Nessus voorstellen. Er kunnen duizenden plugins worden ingesteld, maar om de snelheid van de scan te verbeteren is het gebruikelijk om enkel de plugins te pakken die van toepassing zijn om het te onderzoeken netwerk. \newline
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[scale=0.60]{img/Nessus1}
-\end{center}
-\caption{Voorbeeld Nessus-scan}
-\end{figure}
-
-Nadat deze zijn ingesteld kan er één of meerdere IP-adressen ingegeven worden om de bijhorende apparaten te scannen. Voor elke host die is gescannend komt er een lijst met alle zwaktes op een overzichtsscherm. Deze zwaktes worden gecatalogiseerd naargelang de grootte. (Afbeelding 4-1) \newline
-
-Bij het klikken op een specifieke bedreiging is er een gedetailleerde uitleg zichtbaar. Deze uitleg bevat o.a. een voorgestelde oplossing op het probleem en hyperlinks die verwijzen naar technische documenten die het probleem toelichten. Dit is enkel een simpel gebruik van de Nessus-tool, deze kan nog veel uitgebreider gebruikt worden, maar dit is in dit geval niet aan de orde. \citep{Jackson2010}
-
-\section{Packet capture tools}
-Bij het uitvoeren van een risico-analyse mag er niet vanuit gegaan worden dat de IPS en Firewall zomaar werken zonder problemen. Deze zaken moeten grondig getest worden en dit kan gedaan worden via een packet capture tool. Volgens \cite{Jackson2010} is Wireshark hiervoor de meest geschikte tool die elke persoon die een risico-analyse uitvoerd moet kunnen gebruiken. \newline
-
-Wireshark slaat live verkeer op van de kabels, leest verkeer van een opgeslagen bericht en vertaald honderden protocollen. Zijn gebruikersvriendelijke GUI zorgt ervoor dat het makkelijker te gebruiken is dan zijn concurrenten en geven ook een mooi overzicht van wat er al gedaan is en wat er nog moet gebeuren. Bij het opstarten van de applicatie kan er een direct een interface gekozen worden waar het verkeer van moet worden onderzocht. Bij het klikken op de startknop wordt er direct begonnen met de scan, maar in het "`capture options"'-scherm kan er verder gespecifieerd worden welk verkeer er precies moet worden bekeken.
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[scale=0.50]{img/Wireshark1}
-\end{center}
-\caption{Voorbeeld van Wireshark-opties}
-\end{figure}
-
-Bij het drukken op start komt er een scherm tevoorschijn waar er alle specifieke pakketten waar naar zijn gevraagd zichtbaar worden. In dit geval is er gekozen om alle IP-pakketten van de wifi te onderzoeken. De kleurcode van de pakketten is ook belangrijk. Zo zijn groene pakketten TCP-verkeer, de blauwe zijn DNS, licht blauw is UPD-verkeer en zwart zijn TCP-pakketten met problemen. Deze kleuren kunnen natuurlijk naar eigen voorkeur ingesteld worden. \citep{Hoffm2014}
+\subsubsection{Keylogging}
+Bij dit soort aanvallen wordt input van het toetsenbord opgeslagen zonder dat de gebruiker dit doorheeft. Deze aanval wordt vooral gebruikt om zo aan wachtwoorden en gevoelige informatie te komen. Keylogging hoeft ook niet direct illegaal te zijn, er zijn veel varianten van keylogging die in softwareprogramma's worden gebruikt om zo een beter egebruikerservaring aan te bieden. Ook is er legale software waarmee administrators kunnen meekijken met wat de gebruikers op een netwerk allemaal doen. Natuurlijk is de lijn tussen het controleren van de werknemers en spionage een dunne lijn. Legale software kan zo ook gebruikt worden om illegale zaken uit te voeren. In tegenstelling tot de meeste aanvallen die eerder al besproken zijn, kan software voor deze aanval op de vrije markt gekocht worden en dat maakt het ook gevaarlijker. Bij een soortgelijke aanval krijgt een hacker de keylogger-software op de doelmachine en kan zo wachtwoorden of bankinformatie te weten komen. Een bekend voorbeeld van deze aanval is het keylogger-incident bij een grote Scandinavische bank waar 1 miljoen dollar is gestolen van bepaalde accounts. De aanvaller stuurde mails in de naam van de bank naar bepaalde klanten met de melding dat deze nieuwe anti-spamsoftware moesten installeren. Bij het downloaden van de bijlage werd er een keylogger geïnstalleerd en zo kreeg de aanvaller de bankinformatie van al deze klanten. \citep{Grebennikov2007} \newline
  
-\begin{figure}[H]
-\begin{center}
-\includegraphics[scale=0.40]{img/Wireshark2}
-\end{center}
-\caption{Voorbeeld van Wireshark-scan op wifi}
-\end{figure}
+Deze soort aanval is niet moeilijk om uit te voeren en komt vrij veel voor. Op een server zal deze echter veel minder voorkomen aangezien er op een server zo goed als nooit bestanden zullen gedownload worden van het internet of e-mails en al zeker niet van niet-vertrouwde bronnen. Een keylogging-aanval zal vooral plaatsvinden op een client. Hierdoor krijgt de factor \textit{kans op aanval} een 2 mee. De schade die deze aanval kan aanrichten is dan weer vrij groot. Als een server/computer slachtoffer wordt van een keylogging aanval, kunnen wachtwoorden en gebruikersnamen gestolen worden om zo veel schade aan te richten of gevoelige informatie te stelen. Hierdoor krijgt de factor \textit{schade van de aanval} een 9 mee. De totale waarde van deze aanval komt dan op \textbf{18} te staan.
 
-Voor een auditor is dit zeer handig omdat er specifieke "`captures"' kunnen opgeslagen en bekeken worden. Deze captures kunnen ook opnieuw worden gedraaid door een netwerkinterface op bijvoorbeeld een willekeurige laptop om beveiligingstesten uit te voeren. Zo kan er gekeken worden per applicatie, per specifieke soort pakketten waar er eventuele beveiligingsproblemen zijn. Bij het dubbelklikken op een pakket kan er ook gekeken worden naar verdere details. 
+\section{Prioriteiten}
+Nu er een opsomming is gemaakt van de verschillende bedreigingen kunnen er prioriteiten gesteld worden bij het onderzoeken van al deze bedreigingen. Er kan nu een tabel gemaakt worden met de naam van de bedreiging en de bijhorende waarde die deze heeft megekregen. Hoe groter de waarde, hoe hoger de aanval in de tabel zal geplaatst worden. Zo kunnen de aanvallen met het grootste risicogehalte eerst onderzocht worden.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Bedreiging}              & \textbf{Risicowaarde} \\ \hline
+SQL-injectie                     & 90                    \\ \hline
+ARP spoofing - Man in the middle & 72                    \\ \hline
+Metasploit telnet + putty        & 70                    \\ \hline
+TCP SYN flood                    & 63                    \\ \hline
+Laag 7 DoS-aanvallen             & 54                    \\ \hline
+Ping flood                       & 30                    \\ \hline
+Port Scanning                    & 18                    \\ \hline
+Keylogging                       & 18                    \\ \hline
+DNS Poisoning                    & 9                     \\ \hline
+\end{tabular}
+\caption{Ordening bedreiging op risicogehalte}
+\label{RisicoTabel}
+\end{table}
+
 
 \chapter{Penetration Testing}
 %Hier ga ik verschillende aanvallen doen op deze server, zowel intern als extern, en ga ik mijn bevindingen noteren. Als de aanval slaagt, dan ga ik er een oplossing voor zoeken en 
