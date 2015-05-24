@@ -441,10 +441,10 @@ Een SQL-injectie is simpel uitgelegd een aanval die slechte code in een webappli
 
 Volgens \cite{Acunetix2014} is een SQL-injectie één van de meest voorkomende aanvallen op de applicatielaag die vandaag voorkomen. Hierdoor is de kans dus vrij groot dat een webserver met een achterliggende webapplicatie hiermee te maken krijgt. Dus de factor \textit{kans op een aanval} krijgt hier ook een 10 mee. De schade die deze aanval kan veroorzaken is natuurlijk ook zeer groot. Een goed gecoördineerde SQL-injectie kan de inloggegevens van alle gebruikers stelen en kan zelfs velden van de database verwijderen. Hierdoor krijgt de factor \textit{schade van de aanval} een 9 mee. Dit brengt de totale waarde van de aanval op \textbf{90}, hetgeen zeer hoog is.
 
-\subsubsection{Metasploit telnet + putty}
-In deze aanval wordt er gekeken via een port scan of poort 23 (telnet) open is bij een specifieke machine. Indien deze poort open is dat kan er via metasploit een exploit gezocht worden om via poort 23 binnen te breken in een machine. Dit kan gedaan worden door via een \textit{dictionairy attack} het wachtwoord en inlogaccount probeert te achterhalen van telnet op die specifieke machine. Als dit gelukt is kan er via \textit{Putty} een verbinding worden gemaakt met de doelmachine. Metasploit is de grootste database van gekende exploits en het kan gebruikt worden door administrators om een server goed te beveiligen, maar helaas wordt het ook gebruikt door hackers die een server willen binnenbreken. \citep{majestro2014} \newline
+\subsubsection{Dictionary attack telnet}
+In deze aanval wordt er gekeken via een port scan of poort 23 (telnet) open is bij een specifieke machine. Indien deze poort open is dat kan er via een \textit{dictionary attack} een juiste wachtwoord/gebruikersnaam-combinate gezocht worden om via poort 23 binnen te breken in een machine. Als dit gelukt is kan er via \textit{Putty} een verbinding worden gemaakt met de doelmachine. De tool die hier het best voor wordt gebruikt is \textit{Hydra}. Deze tool staat ook in elke Kali Linux-machine bij de top 10 meest gebruikte tools. \citep{Wilde2013} \newline
 
-Dit is een aanval die moeilijk aan te leren is en die vele tijd en oefening vergt en hierdoor neemt de kans op een aanval een beetje af. Toch krijgt deze aanval nog bij de factor \textit{kans op aanval} een 7 mee. De schade die deze aanval kan aanrichten is immens. Bij een succesvolle aanval zal de hacker volledige controle krijgen over het doelwit, in dit geval een webserver. Hij kon zo alle gegevens inkijken, kopiëren en verwijderen. Zo kan er gevoelige en geheime informatie doorgespeeld worden en kunnen er allerlei soorten chantage en spionage plaatsvinden. Bij de volledige controle over een machine zijn er veel zaken die een hacker kan doen dus hierdoor krijgt de factor \textit{schade van de aanval} een 10 mee. Hierdoor komt de totale waarde van deze aanval op een \textbf{70} te staan.
+Dit is een aanval die niet moeilijk aan te leren is maar die wel veel tijd en oefening vergt en hierdoor neemt de kans op een aanval toch een beetje af. Toch krijgt deze aanval nog bij de factor \textit{kans op aanval} een 7 mee. De schade die deze aanval kan aanrichten is immens. Bij een succesvolle aanval zal de hacker volledige controle krijgen over het doelwit, in dit geval een webserver. Hij kon zo alle gegevens inkijken, kopiëren en verwijderen. Zo kan er gevoelige en geheime informatie doorgespeeld worden en kunnen er allerlei soorten chantage en spionage plaatsvinden. Bij de volledige controle over een machine zijn er veel zaken die een hacker kan doen dus hierdoor krijgt de factor \textit{schade van de aanval} een 10 mee. Hierdoor komt de totale waarde van deze aanval op een \textbf{70} te staan.
 
 \subsection{Transportlaag}
 Dit is de derde laag van het TCP/IP-model en is hetzelfde als de 4de laag van het OSI-model. Deze laag is vooral gekenmerkt door de twee transportprotocollen TCP en UDP die hier op werken. De bedoeling van deze laag is om foutvrije berichten te verzenden tussen hosts. \citep{Thomas2013}
@@ -498,7 +498,7 @@ Nu er een opsomming is gemaakt van de verschillende bedreigingen kunnen er prior
 \textbf{Bedreiging}              & \textbf{Risicowaarde} \\ \hline
 SQL-injectie                     & 90                    \\ \hline
 ARP spoofing - Man in the middle & 72                    \\ \hline
-Metasploit telnet + putty        & 70                    \\ \hline
+Dictionary attack telnet         & 70                    \\ \hline
 TCP SYN flood                    & 63                    \\ \hline
 Laag 7 DoS-aanvallen             & 54                    \\ \hline
 Ping flood                       & 30                    \\ \hline
@@ -523,44 +523,90 @@ DNS Poisoning                    & 9                     \\ \hline
 
 
 
-\section{Metasploit telnet + putty}
-Telnet wordt in het algemeen gezien als onveilig en wordt daarom niet zoveel meer gebruikt. De variant van telnet, genaamd ssh, wordt veel meer gebruikt. Dit voorbeeld kan ook toegepast worden op dezelfde manier bij ssh, het enige verschil is dat het poortnummer van ssh nummer 22 is i.p.v. 23 voor telnet. 
+\section{Dictionary attack telnet}
+Telnet wordt in het algemeen gezien als onveilig en wordt daarom niet zoveel meer gebruikt. De variant van telnet, genaamd ssh, wordt veel meer gebruikt. Dit voorbeeld kan ook toegepast worden op dezelfde manier bij ssh, het enige verschil is dat het poortnummer van ssh nummer 22 is i.p.v. 23 voor telnet. Bij een portscan kunnen nog andere poorten gebruikt worden om binnen te breken via Hydra, maar in dit geval wordt er gefocussed op telnet
 
 \subsection{Uitvoering}
 Voor deze aanval uit te voeren moeten er in de Kali Aanvaller-machine twee terminalvensters geopend worden. In het eerste venster wordt er gestart met een port scan van het slachtoffer, in dit geval de webserver. Dit wordt gedaan door volgende lijn code in te geven:
 \begin{verbatim} nmap 192.168.1.3 \end{verbatim}
-Dit is het IP-adres van de webserver en dit zou een lijst moeten weergeven zoals in figuur~\ref{img:PortScan}) is te zien. Er is echter maar één waarde belangrijk in deze lijst en dat is poort 23/tcp waar de service TELNET op draait. Dit wil zeggen dat de poort open staat.
+Dit is het IP-adres van de webserver en dit zou een lijst moeten weergeven zoals in figuur~\ref{img:PortScan} is te zien. Er is echter maar één waarde belangrijk in deze lijst en dat is poort 23/tcp waar de service TELNET op draait. Dit wil zeggen dat de poort open staat.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.60]{img/Metasploit_PortScan}
+\includegraphics[scale=0.60]{img/HydraPortscan}
 \end{center}
 \caption{Resultaat van een port scan van de webserver}
 \label{img:PortScan}
 \end{figure}
 
-In het andere terminalvenster kan nu de metasploit console worden geopend en kan er gezocht worden naar bekende exploit voor telnet. Dit gebeurt met de volgende twee lijnen: 
-\begin{verbatim} msfconsole \end{verbatim}
-\begin{verbatim} search telnet \end{verbatim}
-Dit geeft een hele lijst van exploits voor telnet weer, maar in dit geval is er maar één nodig en dat is \textit{telnet\_login}. Deze exploit wordt geselecteerd door het volgende in te geven:
-\begin{verbatim} use auxiliary/scanner/telnet/telnet\_login \end{verbatim}
-Nu is de exploit geselecteerd en kan er begonnen worden met de nodige opties in te geven om de aanval succesvol te laten uitvoeren. Er kan eens gekeken worden naar de opties door het volgende in te geven:
-\begin{verbatim} show options \end{verbatim}
-Er zijn talrijke opties zichtbaar maar er zijn er maar een paar die nodig zijn. Het eerste wat handig is om aan te zetten is \textit{BLANK\_PASSWORDS}. Dit zorgt ervoor dat er eens wordt geprobeerd om in te loggen zonder wachtwoord, dit zal zelden lukken maar het kan gebeuren. Het volgende dat zeker moet ingevuld worden is de \textit{RHOSTS}-optie. Hier wordt het IP-adres ingegeven van het slachtoffer, de webserver die eerder is onderzocht door een portscan. Het volgende dat kan worden ingevuld is de optie \textit{USERNAME}. Dit kan het beste worden ingesteld als \textit{Administrator} omdat dit de defaultnaam is. Tot slot moet er een wachtwoordbestand meegegeven worden met de optie \textit{PASS\_FILE}. Dit is een txt-bestand waarin er allemaal verschillende wachtwoordcombinaties staan en deze zullen allemaal één voor één utigeprobeerd worden. Dit kan allemaal gedaan worden met de volgende lijnen code:
-\begin{verbatim} set BLANK\_PASSWORDS true \end{verbatim}
-\begin{verbatim} set RHOSTS 192.168.1.3 \end{verbatim}
-\begin{verbatim} set USERNAME Administrator \end{verbatim}
-\begin{verbatim} set PASS\_FILE /root/Desktop/pass.txt \end{verbatim}
+In het andere terminalvenster kan nu de hydra-aanval uitgevoerd worden. Dit gebeurt met de volgende lijn:
+\begin{verbatim} hydra -t 1 -l Administrator -P /root/test.txt -vV 192.168.1.3 telnet \end{verbatim}
+In deze lijn code wordt er de inlognaam van het Administrator-account meegegeven. Standaard is dit \textit{Administrator} maar in de meeste gevallen zal dit een andere naam zijn. Daarna wordt er een bestand meegegeven genaamd test.txt waar er een hele lijst met wachtwoorden in zit. Deze lijst wordt dan volledig overlopen tijdens de aanval. Ten slotte wordt nog het IP-adres van het slachtoffer meegegeven en de service waarmee de aanval zich moet verbinden wat in dit geval \textit{telnet} is. Na het uitvoeren van deze aanval zullen alle mogelijke combinaties geprobeerd worden zoals te zien is in figuur~\ref{img:HydraAanval} en als er een positieve match is tussen gebruikersnaam en wachtwoord dan worden deze in het groen aangetoond zoals in figuur~\ref{img:HydraGeslaagd} te zien is. \citep{Moon2013}
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.40]{img/HydraAanval}
+\end{center}
+\caption{Woordenlijst wordt doorlopen.}
+\label{img:HydraAanval}
+\end{figure}
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.40]{img/HydraGeslaagd}
+\end{center}
+\caption{Er is een match gevonden.}
+\label{img:HydraGeslaagd}
+\end{figure}
+
+Hierna kan er met de net verkregen inloggegeven ingelogged worden via het programma \textit{Putty}. Hier wordt er het slachtoffer IP-adres ingevoerd en wordt er gekozen voor poort 23 om daarna de inloggegevens in te vullen. Als deze kloppen dan komt er een verbinding tot stand met het slachtoffer zoals in figuur~\ref{img:HydraPutty} te zien is. Nu heeft de aanvaller volledige controle over de machine.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.80]{img/HydraPutty}
+\end{center}
+\caption{Toegang tot de server via putty.}
+\label{img:Putty}
+\end{figure}
+
+\subsection{Resultaten en beveiliging}
+Deze aanval is geslaagd, maar dit is zonder rekening te houden met de best practices. Indien de best practices met betrekking tot het wachtwoord -en accountbeleid van kracht zijn dan heeft deze aanval veel minder kans op slagen. Bij het kiezen van een complex wachtwoord met voldoende tekens zal er veel meer tijd inkruipen om een woordenlijst te doorlopen. Hij het uitschakelen van het administratoraccount en het aanmaken van een nieuw account is er ook al specifieke voorkennis vereist om deze aanval aan te doen of de aanvaller zal moeten gokken. Een woordenlijst met potentiële namen voor een administratoraccount kan eventueel ook toegevoegd worden in dit geval, maar dit neemt ook extra tijd in beslag voor de hacker. Natuurlijk kan er nog een extra best practice worden toegevoegd en dat is om niet onnodige applicatie op de server te installeren. Als telnet of ssh of een ander alternatief nodig zijn, dan zijn de vooropgestelde best practices aan te raden. Indien deze software niet nodig is dan moet deze niet onnodig geïnstalleerd worden, dit geeft een hacker alleen maar mogelijkheden om binnen te breken.
 
 
 \section{TCP SYN flood}
+In deze aanval gaat Sockstress gebruikt worden, dit is één tool die kan gebruikt worden om een TCP SYN flood aanval uit te voeren. Allereerst moet er terug een port scan uitgevoerd worden om te kijken welke poorten er open zijn. Dit zal dezelfde uitvoer hebben als figuur~\ref{img:PortScan}. Alle poorten die hier zichtbaar zijn worden best even ergens genoteerd omdat deze later nog gebruikt zullen worden. Om deze aanval uit te voeren via de Kali Aanvaller-machine moet sockstress eerst gedownload worden aangezien dit niet standaard op Kali Linux staat. Dit wordt gedaan door de volgende lijnen code:
+\begin{verbatim} apt-get update \end{verbatim}
+\begin{verbatim} apt-get install libpcap0.8 libssl-dev -y \end{verbatim}
+\begin{verbatim} wget http://samsclass.info/123/proj10/sockstress-outpost24.tar.gz \end{verbatim}
+Indien dit commando niet werkt kan er gegaan worden naar \url{https://defuse.ca/sockstress.htm} waar sockstress ook kan gedownload worden.
+\begin{verbatim} tar xzf sockstress-outpost24.tar.gz \end{verbatim}
+\begin{verbatim} cd sockstress \end{verbatim}
+\begin{verbatim} ./configure \end{verbatim}
+\begin{verbatim} nano config.h \end{verbatim}
+Met dat laatste lijntje wordt er in het configuratiebestand gegaan en daar moet \textit{\#include <pcap.h>} aangepast worden naar \textit{\#include </usr/include/pcap.h>}. Nu dit is aangepast kan de effectieve aanval worden uitgevoerd. Dit wordt gedaan met volgende lijn code:
+\begin{verbatim} ./sockstress -A -c -1 -d 192.168.1.3 -m -1 -Ms -p 23,80,135,445,
+1801,2103,2105,2107,49154,49176 -r 100000 -s 192.168.2.0/24 -vv
+ \end{verbatim}
+Nu kan er naar de webserver gegaan worden om in het taakbeheer te kijken naar de prestaties van het geheugen om te kijken of de aanval is geslaagd. In figuur~\ref{img:SockVoor} is het geheugen te zien voor de aanval en in figuur~\ref{img:SockNa} het geheugen na de aanval. Het geheugen is helemaal volgelopen en er kan niets meer gebeuren op de server, deze moet nu handmatig worden afgesloten.
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.50]{img/SockVoor}
+\end{center}
+\caption{Gebruikt geheugen voor sockstress-aanval.}
+\label{img:SockVoor}
+\end{figure}
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.50]{img/SockNa}
+\end{center}
+\caption{Gebruikt geheugen na sockstress-aanval.}
+\label{img:SockNa}
+\end{figure}
 
-
-
+\subsection{Resultaten en beveiliging}
+Het gevolg van deze aanval is dat het RAM-geheugen helemaal is volgelopen zoals te zien is in figuur~\ref{img:SockNa} en dat er op de server niets meer kan gedaan worden. Deze kan ook niet via een remote verbinding worden afgesloten, dit moet effectief handmatig gebeuren. Indien de server een virtuele machine is dan moet er op \textit{Power Off} geklikt worden. Dit kan ervoor zorgen dat alle niet opgeslagen zaken verloren gaan. 
 
 
 
