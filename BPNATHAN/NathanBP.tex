@@ -87,7 +87,7 @@
 \newcommand{\instelling}{---}
 
 % De titel van het rapport/bachelorproef
-\newcommand{\titel}{Beveiliging van een Windows Server 2012 R2 webserver met ASP.NET applicatie}
+\newcommand{\titel}{Beveiliging van een Windows Server 2012 R2 webserver met ASP.NET-applicatie}
 
 % Datum van indienen
 \newcommand{\datum}{29 mei 2015}
@@ -766,7 +766,13 @@ Nu is zijn er maximaal 5 half-open tcp-verbindingen mogelijk en kan een TCP SYN 
 % onderzoeksvra(a)g(en). Reflecteer kritisch over het resultaat. Zijn er
 % zaken die nog niet duidelijk zijn? Heeft het ondezoek geleid tot nieuwe
 % vragen die uitnodigen tot verder onderzoek?
-De conclusie zal geschreven worden na de feedback, als de laatste wijzingen uitgevoerd zijn!
+Er kan geconcludeerd worden dat van de vier aanvallen met de hoogste risicofactor er maar één goed kan tegengehouden worden door de best practices die eerder geïmplementeerd zijn en dat is de Hydra-aanval. Bij de andere drie aanvallen zijn er extra maatregelen die moeten worden genomen om de webserver te beschermen tegen deze soort aanvallen. \newline
+
+Bij een SQL-injectie ligt de verantwoordelijkheid vooral bij de ontwikkeleraars en niet echt bij de netwerkbeheerders. De ontwikkelaars moeten ervoor zorgen dat hun code foutvrij en goed gemaakt is. Dit kan met behulp van geparameteriseerde queries of het gebruik van stored procedures. Beide technieken zijn een goede manier om de ASP.net-applicatie die draait op de server te beschermen tegen SQL-injecties. Bij een Man in the middle-aanval is er ook een extra maatregel nodig. De huidige best practices zijn hier ook niet voldoende en hier wordt er best een SSL en/of VPN gebruikt om er zo voor te zorgen dat het duidelijk is wanneer er een aanval plaatsvindt en wanneer niet. Een Sockstress-aanval geraakt ook probleemloos door de best practices en een eventuele oplossing die hier kan gehanteerd worden is het plaatsen en configureren van een Cisco ASA-firewall waardat de configuratie ervoor zorgt dat er maar maximaal 5 openstaande verbindingen kunnen zijn waardoor ook deze aanval geen kans heeft. \newline
+
+Er kan dus gezegd worden dat dit onderzoek een betere kijk geeft over welke aanvallen er relevant zijn voor een webserver met een ASP.net-applicatie en hoe iemand zich hiertegen kan beschermen. Het onderzoek leidt wel tot enkele nieuwe vragen die verder onderzoek niet uitsluiten. Zijn er manieren om rond deze verbeterde best practices te werken? Zijn dit wel de beste oplossingen voor budgetbeperkte ondernemingen? 
+
+
 
 
 \bibliographystyle{apa}
