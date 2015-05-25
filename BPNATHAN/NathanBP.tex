@@ -107,11 +107,13 @@
 %  - tweede zit = 3e examenperiode
 \newcommand{\examenperiode}{Tweede examenperiode}
 
-\newcommand*{\captionsource}[2]{%
+\newcommand*{\captionsource}[2]{
+%
   \caption[{#1}]{%
     #1%
     \\\hspace{\linewidth}%
     Bron: #2%
+
   }%
 }
 
@@ -184,11 +186,13 @@
 % thesis) synthese van het document. In ons geval beschrijf je kort de
 % probleemstelling en de context, de onderzoeksvragen, de aanpak en de
 % resultaten.
-Vandaag de dag komt cybercrime meer en meer voor in de bedrijfswereld. Professionele hackers en oplichters proberen binnen te dringen in een netwerk van een bedrijf om gevoelige informatie te gebruiken om zaken te verkrijgen of om het bedrijf op te lichten. Dit probleem groeit even snel als de groei van netwerken in het bedrijfsleven. Daarom is het belangrijk om een zeer goed beveiligd netwerk te hebben tegen bedreigingen van zowel binnen als buiten het bedrijf. \newline 
+Vandaag de dag komt cybercrime meer en meer voor bij bedrijven. Professionele hackers en oplichters proberen binnen te dringen in een netwerk van een bedrijf om gevoelige informatie te gebruiken om zaken te verkrijgen of om het bedrijf op te lichten. In deze thesis zal een onderzoek uitgevoerd worden of de algemene best practices om een webserver met ASP.net-applicatie op te zetten voldoende zijn om beschermd te zijn tegen enkele van de gevaarlijkste aanvallen. Daarvoor moet er eerst een webserver met ASP.net-applicatie opgezet worden in een virtueel netwerk waarop deze best practices geïmplementeerd zijn. \newline
 
-De doelstelling van dit onderzoek is om een duidelijk overzicht te geven van welke beveilgings best practices er zeker aanwezig moeten zijn op een webserver in een netwerk om beschermd te zijn tegen enkele van de bekendste aanvallen. Na het lezen van deze scriptie zou het mogelijk moeten zijn om zelf een beveilgde webserver op te zetten die voorzien is van deze best practices. \newline
+De aanvallen worden gekozen door vooraf een risico-analyse te doen waar per laag van het TCP/IP-model wordt gekeken naar mogelijke aanvallen. Deze aanvallen zullen besproken worden en krijgen een cijfer toegekent die de risicofactor moet voorstellen. Bij het einde van de risico-analyse wordt er een tabel samengesteld waarbij de aanvallen met de grootste risicofactor bovenaan staan. \newline
 
-Om dit probleem te onderzoeken heb ik op voorhand enkele onderzoeksvragen vastgesteld. Wat zijn de bekendste soorten van externe en interne bedreigingen en hoe worden deze het efficiëntst opgelost? Hoe word de webserver zo optimaal mogelijk beveiligd? Waar kan een administrator aanvallen terugvinden in de logs?
+De vier aanvallen met de grootste risicofactor zullen uitvoerig besproken en uitgevoerd worden om te kijken of de best practices die eerder geïmplementeerd zijn voldoende zijn ter berscherming. Deze aanvallen zullen uitgevoerd worden vanaf een Kali Linux-aanvallersmachine die een verbinding heeft met het netwerk. Na het uitvoeren van de aanval kan er gekeken worden of de best practices deze aanval hebben kunnen tegenhouden ofdat er extra maatregelen moeten genomen. Indien er extra beveiliging moet geïmplementeerd worden, werden deze zaken toegevoegd aan de best practices. \newline
+
+Na het onderzoek kon er geconcludeerd worden dat de best practices voldoende zijn voor één aanval, maar dat bescherming tegen de andere drie aanvallen niet lukte. Hierdoor zijn de best practices aangevuld met enkele punten om de webserver met een ASP.net-applicatie zo veel veiliger te maken.
 \end{abstract}
 
 \chapter*{Voorwoord}
@@ -218,24 +222,19 @@ In deze scriptie zal een fictief netwerk opgezet worden dat een domeincontroller
 
 Er moet dus ergens een keuze gemaakt worden welke aanvallen er in dit onderzoek zullen besproken worden. Dit zal gebeuren a.d.h.v. een risico-analyse van de webserver om te kijken welke aanvallen het meeste kans hebben om uitgevoerd te worden en dus van belang zijn. De aanvallen die de grootste kans hebben of die het meeste schade kunnen toebrengen aan de webserver zullen dan later in dit onderzoek één voor één besproken worden. \newline 
 
-Deze aanvallen zullen dan ook uitgevoerd worden met een Kali Linux-aanvallersmachine tegen de webserver om te kijken of de eerder geïmplementeerde best practices voldoende zijn om de server te beveiligen, of dat er extra maatregelen moeten getroffen worden. Dit heeft niet alleen als doel om de best practices aan te vullen en te verbeteren, maar ook om de typische aanpak van beveilingsproblemen waar er enkel wordt gehandeld nadat er iets is gebeurd te vermijden. Het probleem hierbij is dat er niet preventief wordt nagedacht en dat er al een aanval is uitgevoerd voordat er naar een oplossing wordt gezocht. Dit kan resulteren in schade of diefstal binnen het netwerk en zo is het dus belangrijk dat het ad-hoc controleren op fouten niet de meest gebruikte beveiligingsmanier is. \newline
-
-Tot slot wordt er gekeken naar hoe de administrator deze aanvallen kan terugvinden in de logs als ze zijn uitgevoerd of nog bezig zijn. Er kan altijd een aanval door de bevieliging geraken en dan is het belangrijk om snel en goed te reageren. Hoe sneller dat een aanval gesignaleerd wordt, hoe sneller er ook een oplossing kan gevonden worden. Dit is cruciaal om toekomstige aanvallen af te weren want hoe langer een zwakte na een aanval onopgelost blijft, hoe meer risico er is dat er meerdere aanvallen zullen plaatsvinden. Dus het maken van geautomatiseerde logs en scans kan ervoor zorgen dat problemen bijna direct worden opgemerkt.
+Deze aanvallen zullen dan ook uitgevoerd worden met een Kali Linux-aanvallersmachine tegen de webserver om te kijken of de eerder geïmplementeerde best practices voldoende zijn om de server te beveiligen, of dat er extra maatregelen moeten getroffen worden. Dit heeft niet alleen als doel om de best practices aan te vullen en te verbeteren, maar ook om de typische aanpak van beveilingsproblemen waar er enkel wordt gehandeld nadat er iets is gebeurd te vermijden. Het probleem hierbij is dat er niet preventief wordt nagedacht en dat er al een aanval is uitgevoerd voordat er naar een oplossing wordt gezocht. Dit kan resulteren in schade of diefstal binnen het netwerk en zo is het dus belangrijk dat het ad-hoc controleren op fouten niet de meest gebruikte beveiligingsmanier is.
 
 
-\section{Probleemstelling en Onderzoeksvragen}
+\section{Probleemstelling en Onderzoeksvraag}
 \label{sec:onderzoeksvragen}
 
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
 % onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
-\subsection{Zijn de best practices voldoende als beveiliging tegen een externe of interne aanval?}
+\subsection{Zijn de best practices voor een webserver voldoende als beveiliging tegen een externe en/of interne aanval?}
 
-Allereerst wordt de webserver geconfigureerd volgende de best practices van \cite{Cott2012}, \cite{Microsoft2013}, \cite{Poley2013}, \cite{Posey2011} en \cite{Vialle2012}. Daarna wordt er een risico-analyse uitgevoerd en wordt er gekeken naar welke aanvallen relevant zijn en verder zullen onderzocht worden. Deze selectie van aanvallen zullen uitgevoerd worden om te kijken of de geïmplementeerde best practices voldoende zijn om de server te beveiligen of dat er aanvullingen moeten gedaan worden. 
+Allereerst wordt de webserver geconfigureerd volgende de best practices van \cite{Cott2012}, \cite{Microsoft2013}, \cite{Poley2013}, \cite{Posey2011} en \cite{Vialle2012}. Daarna wordt er een risico-analyse uitgevoerd en wordt er gekeken naar welke aanvallen relevant zijn en de hoogste risicofactor hebben. De aanvallen die de hoogste risicofactor hebben meegekregen zullen uitgevoerd worden tegen de server om na te gaan of de geïmplementeerde best practices voldoende zijn om deze aanvallen af te weren. Indien dit niet het geval is dan zal er een mogelijke oplossing vermeld worden om te implementeren op de server of in het netwerk. Dit heeft als doel om de best practices aan te vullen en te optimaliseren voor een veilige webserver.
 
-\subsection{Wat is de beste manier om als administrator sporen terug te vinden van een aanval?}
-
-Het spreekt voor zich dat, wanneer er zich een aanval voordoet of heeft voorgedaan, dat een netwerkbeheerder dit direct of toch zo snel mogelijk wilt te weten komen. Als er een aanval gaande is dan is het belangrijk dat de beheerder dit snel weet en dat deze snel de oorzaak vindt en weet wat er precies aan het gebeuren is. Hetzelfde geldt voor wanneer er een aanval heeft plaatsgevonden in de geschiedenis. Het is de taak van de administrator om ervoor te zorgen dat aanvallen makkelijk terug te vinden zijn ofwel manueel ofwel automatisch zodat deze tijdig kunnen onderbroken worden of niet meer zullen voorvallen.
 
 \chapter{Methodologie}
 \label{ch:methodologie}
@@ -286,7 +285,15 @@ AS
 Select * from People;
 \end{verbatim}
 
-De volgende stap is om een basis ASP.net-applicatie te maken en dit wordt gedaan met de hulp van \cite{Nuckolls2011}. Met behulp van deze persoon zijn tutorial, de link is te vinden in de bibliografie, is er direct een ASP.net-applicatie met een achterliggende database toegevoegd. \newline
+De volgende stap is om een basis ASP.net-applicatie te maken en dit wordt gedaan met de hulp van \cite{Nuckolls2011}. Met behulp van deze persoon zijn tutorial, de link is te vinden in de bibliografie, is er direct een ASP.net-applicatie met een achterliggende database toegevoegd zoals te zien is in figuur~\ref{img:ASPapp}. \newline
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.45]{img/ASPapp}
+\end{center}
+\caption{Voorbeeld van een basis applicatie.}
+\label{img:ASPapp}
+\end{figure}
 
 \section{Installatie + configuratie aanvallersmachine}
 De derde en laatste virtuele machine die nodig is in dit onderzoek is de Kali Linux-aanvallersmachine. Deze is vrij makkelijk te installeren en heeft ook niet zo hoge systeemvereisten. Voor deze machine is er maar 20Gb aan gealloceerd geheugen nodig samen met 1 netwerkadapter die op \textit{VMnet0} staat en 512MB aan RAM-geheugen. Bij het starten van de installatie moet er gekozen worden voor \textit{graphical install}. De meeste stappen zijn voor de hand liggend, maar bij partition disks wordt er \textit{guided-use entire disk} het best geselecteerd. De naam van de machine wordt ingesteld op \textit{KaliAanvaller}. Op het moment dat er wordt gevraagd van welk netwerk deze computer deel uit maakt, wordt er \textit{baele.be} gekozen. Voor de rest zijn de overige stappen niet zo belangrijk en is de installatie zo afgerond.
@@ -413,10 +420,10 @@ Het uitvoeren van een risico-analyse kan in verschillende stappen onderverdeeld 
 \section{Assets}
 In dit geval wordt er gewerkt met een webserver waarop de recenste versie van Windows Server 2012 R2 staat geïnstalleerd met de volgende rollen/programma's/besturingssystemen op geïnstalleerd:
 \begin{itemize}
-	\item Windows Server 2012 R2 (waarde 10)
-	\item Internet Information Services 8 (waarde 8)
-	\item Externe toegang, routering (waarde 9)
-	\item Microsoft SQL Server Express 2014 (waarde 7)
+	\item Windows Server 2012 R2 
+	\item Internet Information Services 8 
+	\item Externe toegang, routering 
+	\item Microsoft SQL Server Express 2014 
 \end{itemize}
 De waarde die aan deze assets wordt meegegeven, wordt verklaard in het volgende deel.
 
@@ -516,19 +523,136 @@ DNS Poisoning                    & 9                     \\ \hline
 %de oplossing testen, als de aanval niet slaagt, dan zijn de best practises voldoende.
 
 \section{SQL-injectie}
-
-
-
-\section{ARP Spoofing - Man in the middle}
-
+Dit is de aanval met de grootste risicofactor en is zelf zo een grote dreiging dat het door OWASP zelf wordt gezien als de nummer 1 bedreiging voor webapplicaties. Het spreekt voor zich dat deze aanval hier dan zal besproken worden met wat voorbeelden en een manier om een webapplicatie hiertegen zo goed mogelijk te beschermen.
 
 \subsection{Uitvoering}
-Om deze aanval uit te voeren staan er best drie terminalvenster open
+Aangezien de webapplicatie die eerder in dit onderzoek is aangemaakt niet uitgebreid genoeg is, wordt er gebruik gemaakt van een testwebsite waar er express fouten in zitten om SQL-injectie uit te voeren. Deze bevindingen kunnen dan gebruikt worden voor de eigen ASP.net-applicatie. Hier wordt gebruik gemaakt van de website \url{testasp.vulnweb.com}. \newline
 
+Bij het surfen naar deze website en bij het klikken op een willekeurig onderwerp is er in de url het volgende zichtbaar: \textit{.asp?id=0}. Als er zoiets soortgelijk in een url staat, dan is deze kwestbaar voor een SQL-injectie. Dit kan ook getest worden door op het einde van de link een \textit{'} te plaatsen. De link \url{testasp.vulnweb.com/showforum.asp?id=0} wordt dan \url{testasp.vulnweb.com/showforum.asp?id=0'}. Nu zou er een SQL-foutboodschap op het scherm moeten komen en dit is goed nieuws voor de aanvaller. \newline
 
+De volgende stap is het openen van een terminalvenster op de Kali Aanvaller-Machine en de volgende lijn in te geven:
+\begin{verbatim} sqlmap -u http://testasp.vulnweb.com/showforum.asp?id=0 --dbs \end{verbatim}
+Dit voert een SQL-injectie uit en geeft de beschikbare databasen terug weer zoals te zien is in figuur~\ref{img:SQLDatabasen}. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/SQLDatabasen}
+\end{center}
+\caption{Beschikbare databasen.}
+\label{img:SQLDatabasen}
+\end{figure}
+
+Nu kan er een tabel gekozen worden om verder te gaan met het volgende commando om de verschillende soorten tabbellen in die specifieke database op te vragen:
+\begin{verbatim} sqlmap -u http://testasp.vulnweb.com/showforum.asp?id=0 -D acuforum 
+--tables \end{verbatim}
+
+Zo zijn alle tabbellen zichtbaar en ook hier wordt er weer één uitgekozen om te kijken welke kolommen er precies allemaal in deze tabel zitten:
+\begin{verbatim} sqlmap -u http://testasp.vulnweb.com/showforum.asp?id=0 -D acuforum 
+-T users --columns \end{verbatim}
+
+Nu kan er al heel veel gedaan worden, nu dat de kolommen zichtbaar zijn, kan er informatie opgevraagd worden uit deze kolommen. In dit geval is het dus mogelijk om de gebruikersnaam en wachtwoord op te vragen:
+\begin{verbatim} sqlmap -u http://testasp.vulnweb.com/showforum.asp?id=0 -D acuforum 
+-T users -C uname,upass \end{verbatim}
+
+Dit geeft een lijst van 112 velden, zoals te zien is in figuur~\ref{img:SQLData}, want blijkbaar zijn er 112 gebruikers die een account hebben op dit forum. Het is nu mogelijk om al deze gegevens te gebruiken om in te loggen op dit forum. De data wordt ook automatisch lokaal opgeslagen, in dit geval is dit in \textit{/usr/share/sqlmap/output/testasp.vulnweb.com}.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/SQLData}
+\end{center}
+\caption{Deel van de uitvoer van SQL-injectie.}
+\label{img:SQLData}
+\end{figure}
+
+\subsection{Resultaten en beveiliging}
+Het spreekt voor zich dat voorgaande aanval een grote catastrofe zou zijn moest dit voorvallen in een eigen ASP.net-webapplicatie. Als een hacker de inloggegevens van gebruikers in handen krijgt kan deze persoonlijke informatie zoals kredietkaartgegevens stelen, maar bij het verkrijgen van een administratorwachtwoord heeft de hacker de touwtjes helemaal in handen. Een goede beveiliging is dus essentieel hier. \newline
+
+Allereerst zouden ontwikkelaars geparameteriseerde queries moeten gebruiken i.p.v. dynamische queries. Hierbij moet de ontwikkelaar alle SQL-code definiëren voordat er parameters doorgegeven worden. Deze manier van coderen zorgt ervoor dat de database het verschil kent tussen code en data. Hierdoor kan een aanvaller de bedoeling van een query niet veranderen, zelfs als deze SQL-commando's toevoegd. \citep{Wichers2013}
+
+Ten tweede is het gebruik van \textit{stored procedures} zeker en vast aan te raden. Deze hebben hetzelfde effect als geparameteriseerde queries, de ontwikkelaar moet ook hier eerst de SQL-code definiëren en daarna worden pas de parameters doorgegeven. Het enige verschil tussen de twee is dat stored procedures in de database worden opgeslagen en dat de webapplicatie ze oproept. Beide technieken zijn goede opties om SQL-injecties tegen te gaan en het is aan de ontwikkelaar om te beslissen welke optie het best in de applicatie past. \citep{Wichers2013}
+
+\section{ARP Spoofing - Man in the middle}
+Deze internetlaagaanval kan zeer gevaarlijk zijn omdat het de hacker de mogelijkheid geeft om mee te kijken naar het verkeer dat van een host/server naar de router gaat. Dit kan meekijken met afbeeldingen zijn tot het inkijken van inloggegevens. Hier worden 3 mogelijke Man in the middle-aanvallen uitgeprobeerd om zo tot een oplossing te komen om deze aanval geen kans te geven in een netwerk.
+
+\subsection{Uitvoering}
+\subsubsection{Meekijken met slachtoffer}
+Om deze aanval uit te voeren staan er best drie terminalvenster open in de Kali Aanvaller-machine zodat er overzichtelijk kan gewerkt worden. In deze aanval wordt het verkeer tussen twee hosts, in dit geval de ADServer met de router (die ook webserver is) onderschept door een derde host die in dit geval de hacker is. Als eerst stap moet er eerst iets nagekeken worden op de Kali-machine en dit gebeurd met volgende lijn:
+\begin{verbatim} cat /proc/sys/ipv4/ip_forward \end{verbatim}
+Dit zou als uitvoer de waarde 1 moeten geven, indien deze waarde een 0 geeft dan kan dit makkelijk aangepast worden door volgende lijn:
+\begin{verbatim} echo 1 >> /proc/sys/net/ipv4/ip_forward \end{verbatim}
+Nu dit gedaan is moet de volgende stap gebeuren en dat is de ADServer laten denken dat de aanvallersmachine de default gateway is en de default gateway laten denken dat de aanvallersmachine de ADServer is. Dit gebeurd met volgende twee lijnen:
+\begin{verbatim} sudo arpspoof -i eth0 -t 192.168.1.2 192.168.1.3 \end{verbatim}
+\begin{verbatim} sudo arpspoof -i eth0 -t 192.168.1.3 192.168.1.2 \end{verbatim}
+Het verkeer dat tussen deze twee zal verzonden worden, zal eerst eens passeren voorbij de aanvallersmachine. Zo kan er bijvoorbeeld gekeken worden naar wat de persoon op ADServer zit te kijken in zijn internetbrowser. Bij het typen van volgende lijn in terminalvenster 3 kan dit gedaan worden: 
+\begin{verbatim} sudo driftnet -i eth0 \end{verbatim}
+Als de persoon op ADServer nu in google zit te kijken naar afbeeldingen van een tijger, dan kan dit via driftnet bekeken worden op de aanvallersmachine zoals te zien is in figuur~\ref{img:Driftnet}. Bij het klikken op één van de afbeelingen wordt deze lokaal opgeslagen. \citep{Walsh2013}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/Driftnet}
+\end{center}
+\caption{Aanvaller kijkt mee met persoon op ADServer}
+\label{img:Driftnet}
+\end{figure}
+
+\subsubsection{HTTP-inloggegevens}
+Het bekijken van afbeeldingen is één ding, maar het bekijken van inloggegevens is natuurlijk nog een andere zaak. Via het programma \textit{Ettercap} op de Kali-machine kan er gekeken worden naar inloggegevens van http-website. De werkwijze is als volgt:
+\begin{enumerate}
+	\item Openen van Ettercap door naar Applicaties - Kali Linux - Sniffing/Spoofing - Network Sniffers - etercap-graphical te gaan.
+	\item Kiezen voor Sniff - Unified Snif en de interface selecteren die met het netwerk verbonden is.
+	\item Klikken op Hosts - Scan for hosts.
+	\item Bij Mitm - ARP Poisining kiezen voor \textit{sniff remote connections}.
+	\item Start - Start sniffing om de aanval te starten.
+\end{enumerate}
+Zoals in figuur~\ref{img:EttercapInlogHTTP} te zien is worden de inloggegevens van een website zonder https getoond in het programma. Deze website is bezocht geweest op de ADServer. \citep{DemmSec2013} 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/EttercapInlogHTTP}
+\end{center}
+\caption{De inloggegevens van een http-website op ADServer.}
+\label{img:EttercapInlogHTTP}
+\end{figure}
+
+\subsubsection{HTTPS-inloggegevens}
+Met voorgaande techniek zijn HTTPS-wachtwoorden goed beveiligd en dus niet zichtbaar, maar met deze techniek moeten ook deze inloggegevens eraan geloven. Allereerst moet er in het configuratiebestand van Ettercap wat veranderd worden. Bij het openen van het configuratiebestand met volgende lijn code, moet er naar beneden gegaan worden totdat de iptables worden bereikt en moeten 2 lijnen uit commentaar gezet worden zoals te zien is in figuur~\ref{img:EttercapIptables}.
+\begin{verbatim} vim /etc/ettercap/etter.conf \end{verbatim}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/EttercapIptables}
+\end{center}
+\caption{Configuratiebestand zonder iptables in commentaar.}
+\label{img:EtterIptables}
+\end{figure}
+
+Nu kan er met één lijn een aanval gestart worden in een terminalvenster.
+\begin{verbatim} ettercap -TqM ARP:REMOTE /192.168.1.2/ /192.168.1.3/ \end{verbatim}
+Dit wil zeggen dat er een Man in the middle aanval met ARP spoofing wordt gestart tussen host 1 (de ADServer met IP 192.168.1.2) en de default gateway (de WebServer met IP 192.168.1.3). Als er nu wordt ingelogged op de ADServer op een website met https-beveiliging om in te loggen, dan worden de inloggegevens toch zichtbaar zoals te zien is in figuur~\ref{img:EttercapInlogHTTPS}. Dit komt doordat de beveiligingscertificaten worden uitgeschakeld door deze aanval. Voordat de aanvaller een website bezoekt waardat er normaal gezien een beveilingscertificaat voor nodig is, dan zal hij de volgende boodschap zien zoals in figuur~\ref{img:EttercapCertificaat} \citep{Canitank2009}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.60]{img/EttercapInlogHTTPS}
+\end{center}
+\caption{De inloggegevens van een https-website op ADServer.}
+\label{img:EttercapInlogHTTPS}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.50]{img/EttercapCertificaat}
+\end{center}
+\caption{De foutboodschap die door de aanval wordt weergeven.}
+\label{img:EttercapCertificaat}
+\end{figure}
+
+\subsection{Resultaten en beveiliging}
+De resultaten van deze aanval vormt de conclusie dat deze inderdaad zeer gevaarlijk is. Het surfgedrag kan niet alleen bekeken worden, maar wachtwoord en inloggegevens van zowal HTTP -en HTTPS-website worden ook doorgegeven aan de aanvaller. Hierdoor is er zeker en vast een aanvulling nodig van de best practices omdat deze duidelijk niet goed genoeg zijn. \newline
+
+Een oplossing om deze soort aanval tegen te werken is het gebruiken van SSL (Secure Socket Layer). Dit is een technology die gebruikt worden om een versleutelde link tussen de server en het browser te maken zodat een soortgelijke aanval niet onopgemerkt kon worden uitgevoerd. Elke keer als er nu een Mitm-aanval plaatsvindt, dan zal er bij het bezoeken van een website met een certificaat nu de foutboodschap van in figuur~\ref{img:EttercapCertificaat} te zien zijn. Indien deze foutboodschap te zien is, dan is het niet aangeraden om verder te gaan en is het beter om gewoon de webpagina te sluiten want dan is de kans groot dat er een aanval plaatsvindt en dat de gegevens kunnen gestolen worden. Tot slot is het gebruik van een VPN (Virtual Private Network) ook een aanrader.
 
 \section{Dictionary attack telnet}
-Telnet wordt in het algemeen gezien als onveilig en wordt daarom niet zoveel meer gebruikt. De variant van telnet, genaamd ssh, wordt veel meer gebruikt. Dit voorbeeld kan ook toegepast worden op dezelfde manier bij ssh, het enige verschil is dat het poortnummer van ssh nummer 22 is i.p.v. 23 voor telnet. Bij een portscan kunnen nog andere poorten gebruikt worden om binnen te breken via Hydra, maar in dit geval wordt er gefocussed op telnet
+Telnet wordt in het algemeen gezien als onveilig en wordt daarom niet zoveel meer gebruikt. De variant van telnet, genaamd ssh, wordt veel meer gebruikt. Dit voorbeeld kan ook toegepast worden op dezelfde manier bij ssh, het enige verschil is dat het poortnummer van ssh nummer 22 is i.p.v. 23 voor telnet. Bij een portscan kunnen nog andere poorten gebruikt worden om binnen te breken via Hydra, maar in dit geval wordt er gefocussed op telnet.
 
 \subsection{Uitvoering}
 Voor deze aanval uit te voeren moeten er in de Kali Aanvaller-machine twee terminalvensters geopend worden. In het eerste venster wordt er gestart met een port scan van het slachtoffer, in dit geval de webserver. Dit wordt gedaan door volgende lijn code in te geven:
@@ -610,44 +734,30 @@ Nu kan er naar de webserver gegaan worden om in het taakbeheer te kijken naar de
 \end{figure}
 
 \subsection{Resultaten en beveiliging}
-Het gevolg van deze aanval is dat het RAM-geheugen helemaal is volgelopen zoals te zien is in figuur~\ref{img:SockNa} en dat er op de server niets meer kan gedaan worden. Deze kan ook niet via een remote verbinding worden afgesloten, dit moet effectief handmatig gebeuren. Indien de server een virtuele machine is dan moet er op \textit{Power Off} geklikt worden. Dit kan ervoor zorgen dat alle niet opgeslagen zaken verloren gaan....... 
+Het gevolg van deze aanval is dat het RAM-geheugen helemaal is volgelopen zoals te zien is in figuur~\ref{img:SockNa} en dat er op de server niets meer kan gedaan worden. Deze kan ook niet via een remote verbinding worden afgesloten, dit moet effectief handmatig gebeuren. Indien de server een virtuele machine is dan moet er op \textit{Power Off} geklikt worden. Dit kan ervoor zorgen dat alle niet opgeslagen zaken verloren gaan.
 
+Een mogelijke oplossing is het configureren van een Cisco ASA-firewall waarin er regels worden opgesteld waardoor er maar maximum een aantal verbindingen mogelijk zijn. In het terminalvenster van de ASA-firewall worden de volgende lijnen uitgevoerd:
+\begin{verbatim} access-list To-Server permit tcp any host 192.168.1.3 \end{verbatim}
+Bovenstaande lijn maakt een ACL om het verkeer dat naar de server gaat te identificeren.
+\begin{verbatim} class-map Traffic-to-webserver \end{verbatim}
+Deze lijn in combinatie met volgende 2 lijnen maakt een class map aan die de ACL oproept. 
+\begin{verbatim} match access-list TO-Server \end{verbatim}
+\begin{verbatim} exit \end{verbatim}
+Nu kan er een policy map aangemaakt worden die als er verkeer voldoet aan de class-map de sessielimiet op 5 zet. Dit wil zeggen dat er dan maar 5 sessies mogelijk zijn.
+\begin{verbatim} policy-map global_policy
+class Traffic-to-webserver
+set connection embryonic-conn-max 5
+exit
+exit \end{verbatim}
+Nu is zijn er maximaal 5 half-open tcp-verbindingen mogelijk en kan een TCP SYN FLOOD-aanval niet meer voorvallen! Bij een aanval zijn er nu maximaal 5 openstaande verbindingen zoals te zien is in figuur~\ref{img:SockOplossing}
 
-
-
-
-
-
-
-
-
-
-
-\chapter{Post mortem}
-%Hier ga ik een aanval uitvoeren en ga ik kijken waar je dit precies kan terugvinden als administrator of waar je kan het kan zien als het aan het gebeuren is.
-\section{Manueel}
-\subsection{RAM-geheugen}
-Manueel kan er makkelijk gekeken worden naar het RAM-geheugen dat wordt gebruikt door "`ctrl+alt+del"' in te drukken of door met de rechtermuisknop te drukken op het Windows-logo linksonder op het scherm en "`Taakbeheer"' te selecteren. Hierin zijn er verschillende tabbladen en het RAM-geheugen kan gevonden worden in het tabblad "`Prestaties"' waarna er kan geklikt worden op "`Geheugen"' in de linkerkolom. In dit venster is het geheugengebruik voor de laatste 60 seconden zichtbaar en wordt deze elke seconden ververst. Als de curve per seconde omhoog gaat dan kan er sprake zijn van een Sockstress DDOS-aanval en kan er tijdig gehandeld worden. Het manueel bekijken van het RAM-geheugen kan handig zijn als de server opeens trager begint te werken om te kijken of het probleem niet hier ligt.
-
-\subsection{Geblokkeerde accounts}
-Na 3 foutieve inlogpogingen wordt een gebruikersaccount direct in een "`lock"' gestoken en moet deze door de administrator, of iemand met de benodigde rechten, weer uit deze lock gehaald worden. Om te kijken hoeveel en welke accounts er precies in een lock zitten, kan een zeer simpel powershell-commando uitgevoerd worden. Bij het openen van Powershell en met het volgende lijntje code worden alle geblokkeerde accounts weergegeven: "`Search-ADAccount -LockedOut"'. \newline 
-
-Als alle accounts die in een lock zitten we op actief mogen staan, kan dit ook gedaan worden met een simpel lijntje code: "`Search-ADAccount -LockedOut | Unlock-ADAccount"'. Indien niet alle accounts terug actief mogen worden, kan er nog een stukje toegevoegd worden aan de code zodat er voor elk gelocked account een bevestiging moet gegeven worden: "`Search-ADAccount -LockedOut | Unlock-ADAccount -Confirm"'. Voor de accounts die weer op actief mogen staan moet er een "`y"' ingestyped worden en voor de accounts die in een lock moeten blijven wordt er een "`n"' getyped.
-
-\subsection{Malware}
-Om manueel te kijken of er malware aanwezig is op de server is er anti-virus-software nodig. Er zijn honderden verschillende keuzes en bij elke keuze kan er manueel een scan gestart worden en kan er manueel gekeken worden welke bedreigingen er gevonden zijn en welke risico's er aanwezig zijn. Deze kunnen dan manueel verwijderd of in quarantaine geplaatst worden. 
-
-\section{Automatisch}
-\subsection{Prestatiemeter}
-Met behulp van de prestatiemeter-tool kunnen bepaalde zaken makkelijk in de gaten gehouden worden. In de prestatiemeter kunnen er gegevensverzamelaarset aangemaakt worden naar persoonlijke voorkeur die het mogelijk maken om elk aspect apart onder de loep te nemen en deze in log files op de slaan.
-
-\subsubsection{RAM-geheugen}
-De eerste gegevensverzamelaarset die zeer handig is om te maken is één die het gebruik van het RAM-geheugen in de gaten houdt. Deze kan worden ingesteld door allereerst naar de tool "`prestatiemeter"' te gaan en te rechterklikken op "`Prestatiemeter"' onder het tabblad "`controlehulpprogramma's"'. Daarna moet er onder de keuze "`Nieuw"' gekozen worden voor "`gegevensverzamelaarset"'. Nu kan er een gepaste naam gekozen worden voor deze set, in dit geval is "`RAMGeheugen"' een goede naam aangezien we hier het RAM-geheugen gaan bekijken. Bij de volgende keuzes mag er 2x op "`volgende"' gedrukt worden. \newline
-
-Nu is de set aangemaakt en is deze terug te vinden onder het tabblad "`Gedefinieerd door de gebruiker"' en moet er hier op gedubelklikt worden tot "`Logboek voor Systeemmonitor"' zichtbaar is en dan moet er hier op gedubbelklikt worden. Nu zijn de eigenschappen van de set zichtbaar en kunnen er via "`Toevoegen"' specifieke paramters toegevoegd worden. In dit geval is het handig om naar "`Geheugen"' te gaan en daar te kiezen voor "`Beschikbare megabytes"' en "`Percentage toegewezen bytes in gebruik"'.	Nadat deze zaken zijn toegevoegd kan er 2x geklikt worden op de OK-knop. Nu moet er met de rechtermuisknop op de juist aangemaakt set geklikt worden om dan op "`starten"' te klikken, dit een 10-tal minuten te laten lopen en daarna op "`stoppen"' te drukken. Nu kan er gekeken worden naar het tabblad "`rapporten"' en "`gedefinieerd door de gebruiker"' naar wat deze actie juist heeft opgebracht. In dit scherm is er een bestand zichtbaar (met de bijhorende datum) die bij het dubbeklikken alle paramters laat zien met de bijhorende tijd in een mooie grafiek. Hier is duidelijk wanneer precies er pieken zijn in het gebruik van het RAM-geheugen en wanneer deze precies een bepaalde grens overschrijdt.
-
-\subsubsection{foutieve inlogpogingen}
-Het is mogelijk om foutieve aanmeldpogingen op de server te registreren in logbestanden. Dit kan gedaan worden door naar het "`lokaal beveiligingsbeleid"' te gaan en daar in de beveiligingsinstellingen bij "`lokaal beleid"' en "`controlebeleid"' kan er gekozen worden voor "`aanmeldingsgebeurtenissen controleren"'. Hierin kan er gekozen worden om mislukte pogingen te registreren. Hetzelfde wordt gedaan voor "`accountbeheer controleren"'. Elke keer dat er nu iemand wilt inloggen en deze geeft een foutief antwoord, dan wordt er een logbestand aangemaakt. 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.70]{img/SockOplossing}
+\captionsource{Maximaal 5 actieve verbindingen bij een aanval.}{https://www.youtube.com/watch?v=AqY3UxXyQTY}
+\label{img:SockOplossing}
+\end{center}
+\end{figure}
 
 \chapter{Conclusie}
 \label{ch:conclusie}
